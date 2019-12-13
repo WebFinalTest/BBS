@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>这是一个测试</h1>
+    <table>
+        <tr>
+            <th>用户名</th>
+            <th>用户ID</th>
+            <th>电子邮箱</th>
+            <th>密码</th>
+            <th>用户类型</th>
+        </tr>
+        <tr th:each="user:${users}">
+            <td th:text="${user.getUserName()}"></td>
+            <td th:text="${user.getUserId()}"></td>
+            <td th:text="${user.getEmail()}"></td>
+            <td th:text="${user.getPassword()}"></td>
+            <td th:text="${user.getType()}"></td>
+            <td><a th:href="@{/User/deleteById/{id}(id=${user.getUserId()})}">删除</a></td>
+            <td><a th:href="@{/User/findById/{id}(id=${user.getUserId()})}">修改</a></td>
+        </tr>
+    </table>
+    <a href="/User/create">添加</a>
+</body>
+</html>
