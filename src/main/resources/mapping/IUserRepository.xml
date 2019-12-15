@@ -11,8 +11,8 @@
     </select>
 
     <insert id="save" parameterType="User">
-        insert into user(userName,email,password,type)
-        values (#{userName},#{email},#{password},#{type})
+        insert into user(userName,email,password,type,userId)
+        values (#{userName},#{email},#{password},#{type},#{userId})
     </insert>
     
     <update id="update" parameterType="User">

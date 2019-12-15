@@ -1,10 +1,11 @@
 package com.bbs.repository;
 
 import com.bbs.entity.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@Repository
 public interface IUserRepository {
     public List<User> findAll();
     public User findById(Long id);

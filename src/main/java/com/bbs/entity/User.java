@@ -9,4 +9,5 @@ public class User {
     private String password;
     private Long type;
     private Long userId;
+    private Long points;
 }
