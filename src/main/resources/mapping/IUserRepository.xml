@@ -6,20 +6,58 @@
         select * from user
     </select>
     
-    <select id="findById" resultType="User" parameterType="long">
-        select * from user where userId = #{id}
+    <select id="findByUserId" resultType="User" parameterType="long">
+        select * from user where userId = #{userId}
     </select>
 
     <insert id="save" parameterType="User">
-        insert into user(userName,email,password,type,userId)
-        values (#{userName},#{email},#{password},#{type},#{userId})
+        insert into user(userId,userName,password,email,userType,points,qq,phone,workplace,habitation)
+        values (#{userId},#{userName},#{password},#{email},#{userType},#{points},#{qq},#{phone},#{workplace},#{habitation})
     </insert>
     
     <update id="update" parameterType="User">
-        update user set userName = #{userName},email = #{email},password = #{password},type = #{type} where userId = #{userId}
+        update user set
+        userName = #{userName},
+        password = #{password},
+        email = #{email},
+        userType = #{userType},
+        points = #{points},
+        qq = #{qq},
+        phone = #{phone},
+        workplace = #{workplace},
+        habitation = #{habitation}
+        where userId = #{userId}
     </update>
 
-    <delete id="deleteById" parameterType="long">
-        delete from user where userId = #{id}
-    </delete>
+    <select id="login" resultType="User">
+        select * from user
+        where email = #{email} and password = #{password}
+    </select>
+
+    <select id="findByEmail" parameterType="String" resultType="User">
+        select * from user
+        where email = #{email}
+    </select>
+
+    <select id="findByUserName" resultType="User">
+        select * from user
+        where password = #{userName}
+    </select>
+
+    <update id="increasePointsByUserId">
+        update user set points = points + #{points}
+        where userId = #{userId}
+    </update>
+
+    <update id="reducePointsByUserId">
+        update user set points = points - #{points}
+        where userId = #{userId}
+    </update>
+
+
+
+
+    <!--<delete id="deleteById" parameterType="long">-->
+        <!--delete from user where userId = #{userId}-->
+    <!--</delete>-->
 </mapper>

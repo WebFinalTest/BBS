@@ -1,6 +1,7 @@
 package com.bbs.controller;
 
 import com.bbs.entity.User;
+import com.bbs.service.ICommentService;
 import com.bbs.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserHandler {
 
     private IUserService userService;
+    private ICommentService commentService;
+
+    @Autowired
+    public void setCommentService(ICommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @Autowired
     public UserHandler(IUserService userService) {
@@ -28,6 +35,7 @@ public class UserHandler {
     @GetMapping("/index")
     public String findAll(Model model){
         model.addAttribute("users",userService.findAll());
+        model.addAttribute("comments",commentService.findByPostId(1L));
         return "index";
     }
 
@@ -35,14 +43,14 @@ public class UserHandler {
     public ModelAndView findById(@PathVariable("id") Long id){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("update");
-        modelAndView.addObject("user",userService.findById(id));
+        modelAndView.addObject("user",userService.findByUserId(id));
         return modelAndView;
     }
 
     @PostMapping("/save")
     public String save(User user){
         try {
-            userService.save(user);
+            userService.register(user);
         }catch (Exception e) {
             System.out.println("Error");
         }
@@ -55,10 +63,10 @@ public class UserHandler {
         return "redirect:/User/index";
     }
 
-    @GetMapping("/deleteById/{id}")
-    public String deleteById(@PathVariable("id") Long id){
-        userService.deleteById(id);
-        return "redirect:/User/index";
-    }
+//    @GetMapping("/deleteById/{id}")
+//    public String deleteById(@PathVariable("id") Long id){
+//        userService.deleteById(id);
+//        return "redirect:/User/index";
+//    }
 
 }

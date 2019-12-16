@@ -6,49 +6,58 @@ import com.bbs.service.IUserService;
 import com.bbs.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    private IUserRepository iUserRepository;
+    private IUserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(IUserRepository iUserRepository) {
-        this.iUserRepository = iUserRepository;
+    public UserServiceImpl(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public User findByUserId(Long userId) {
+        return userRepository.findByUserId(userId);
+    }
+
+    @Override
+    public User login(String email, String password) {
+        return userRepository.login(email,password);
+    }
+
+    @Override
+    public boolean isUsedByEmail(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
+    @Override
+    public boolean isUsedByUserName(String userName) {
+        return userRepository.findByUserName(userName) != null;
     }
 
     @Override
     public List<User> findAll() {
-        return iUserRepository.findAll();
+        return userRepository.findAll();
     }
 
-    @Override
-    public User findById(Long id) {
-        return iUserRepository.findById(id);
-    }
 
     @Override
-    @Transactional
-    public void save(User user) {
-        iUserRepository.deleteById(194915045L);
-        Long id;
+    public User register(User user) {
+        Long userId;
         do {
-            id = Utils.randomId(9);
-        }while (iUserRepository.findById(id) != null);
-        user.setUserId(id);
-        iUserRepository.save(user);
+            userId = Utils.randomId(9);
+        }while (userRepository.findByUserId(userId) != null);
+        user.setUserId(userId);
+        userRepository.save(user);
+        return user;
     }
 
     @Override
-    @Transactional
     public void update(User user) {
-        iUserRepository.update(user);
+        userRepository.update(user);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        iUserRepository.deleteById(id);
-    }
 }

@@ -8,9 +8,13 @@ spring:
     suffix: .html
     mode: HTML5
     encoding: UTF-8
+#配置jason数据
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
 #配置数据源
   datasource:
-    url: jdbc:mysql://localhost:3306/bbsforum?&useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/bbsforum?&useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
     username: root
     password: "000413"
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -18,4 +22,5 @@ spring:
 mybatis:
   mapper-locations: classpath:/mapping/*.xml
   type-aliases-package: com.bbs.entity
+
 
