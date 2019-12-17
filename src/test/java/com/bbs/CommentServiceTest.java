@@ -31,20 +31,32 @@ public class CommentServiceTest {
         comment.setUserId(123226946L);
         commentService.createComment(comment);
 
-        //返回一个帖子的所有评论
+        //返回一个帖子的第一页的所有评论
         System.out.println("返回一个帖子的所有评论");
-        List<Comment> comments = commentService.findByPostId(1L);
+        List<Comment> comments = commentService.findByPostId(1L,1L,20L);
         System.out.println(comments);
 
+        //返回一个帖子的评论页数
+        Long pages = commentService.countCommentPagesByPostId(1L,20L);
+        System.out.println(pages);
+
         //返回一个层级所有的评论
-        System.out.println("返回一个层级的所有评论");
-        comments = commentService.findByFloorId(2L);
+        System.out.println("返回一个层级的第1页评论");
+        comments = commentService.findByFloorId(2L,1L,20L);
         System.out.println(comments);
+
+        //返回一个层级的评论页数
+        pages = commentService.countCommentPagesByFloorId(2L,20L);
+        System.out.println(pages);
 
         //返回一个用户的所有评论
         System.out.println("返回一个用户的所有评论");
-        comments = commentService.findByPostId(1L);
+        comments = commentService.findByUserId(1L,1L,20L);
         System.out.println(comments);
+
+        //返回一个用户的评论页数
+        pages = commentService.countCommentPagesByUserId(1L,20L);
+        System.out.println(pages);
 
         //删除一个评论
         commentService.deleteByCommentId(183025142983L);

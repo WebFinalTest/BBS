@@ -44,6 +44,11 @@
         where password = #{userName}
     </select>
 
+    <select id="findPointsByUserId" resultType="Long">
+        select points from user
+        where userId = #{userId}
+    </select>
+
     <update id="increasePointsByUserId">
         update user set points = points + #{points}
         where userId = #{userId}

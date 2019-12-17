@@ -8,17 +8,29 @@ import java.util.List;
 
 @Repository
 public interface ICommentRepository {
-    //返回一个帖子的所有评论
-    public List<Comment> findByPostId(@Param("postId") Long postId);
+    //返回一个帖子的某页的评论
+    public List<Comment> findByPostId(@Param("postId") Long postId,@Param("page") Long page,@Param("pageSize") Long pageSize);
 
-    //返回一个层级所有的评论
-    public List<Comment> findByFloorId(@Param("floorId") Long floorId);
+    //返回一个帖子评论总数
+    public Long countCommentByPostId(@Param("postId") Long postId);
 
-    //返回一个用户的所有评论
-    public List<Comment> findByUserId(@Param("userId") Long userId);
+    //返回一个层级的某页的评论
+    public List<Comment> findByFloorId(@Param("floorId") Long floorId,@Param("page") Long page,@Param("pageSize") Long pageSize);
+
+    //返回一个层级评论总数
+    public Long countCommentByFloorId(@Param("floorId") Long floorId);
+
+    //返回一个用户的某页的评论
+    public List<Comment> findByUserId(@Param("userId") Long userId,@Param("page") Long page,@Param("pageSize") Long pageSize);
+
+    //返回一个用户评论数
+    public Long countCommentByUserId(@Param("userId") Long userId);
 
     //按评论ID返回一个评论
     public Comment findByCommentId(@Param("commentId") Long commentId);
+
+    //按评论ID返回一个UserId
+    public Long findUserIdByCommentId(@Param("commentId") Long commentId);
 
     //创建一个评论
     public void createComment(Comment comment);

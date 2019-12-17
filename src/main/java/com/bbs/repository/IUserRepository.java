@@ -26,6 +26,9 @@ public interface IUserRepository {
     //按照用户ID查找用户
     public User findByUserId(Long userId);
 
+    //按照用户ID返回一个积分值
+    public Long findPointsByUserId(@Param("userId") Long userId);
+
     //增加积分
     public void increasePointsByUserId(@Param("points") Long points,@Param("userId") Long userId);
 

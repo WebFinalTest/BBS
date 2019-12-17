@@ -30,6 +30,10 @@ public class CommentRepositoryTest {
         //取消点赞评论
         commentRepository.unlikeByCommentId(2L);
 
+        //按评论ID返回一个用户ID
+        Long userId = commentRepository.findUserIdByCommentId(2L);
+        System.out.println(userId);
+
         comment = commentRepository.findByCommentId(2L);
         System.out.println(comment);
     }

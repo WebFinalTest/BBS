@@ -35,7 +35,7 @@ public class UserHandler {
     @GetMapping("/index")
     public String findAll(Model model){
         model.addAttribute("users",userService.findAll());
-        model.addAttribute("comments",commentService.findByPostId(1L));
+        model.addAttribute("comments",commentService.findByPostId(1L,1L,10L));
         return "index";
     }
 
