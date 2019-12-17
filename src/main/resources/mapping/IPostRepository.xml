@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.repository.IPostRepository">
+    <!-- 新建方法 -->
+    <insert id="saveWithPostPoints" parameterType="Post">
+        insert into post(postId, userId, postTitle, postContent, postType, postPoints)
+        values (#{postId}, #{userId}, #{postTitle}, #{postContent}, #{postType}, #{postPoints})
+    </insert>
+    <insert id="saveWithOutPostPoints" parameterType="Post">
+        insert into post(postId, userId, postTitle, postContent, postType)
+        values (#{postId}, #{userId}, #{postTitle}, #{postContent}, #{postType})
+    </insert>
+
+    <!-- 删除方法 -->
+    <delete id="deleteById">
+        delete
+        from post
+        where postId = #{postId}
+    </delete>
+
+    <!-- 修改方法 -->
+    <update id="changeQuality">
+        update post
+        set quality = #{bool}
+        where postId = #{postId}
+    </update>
+
+    <update id="changeTop">
+        update post
+        set top = #{bool}
+        where postId = #{postId}
+    </update>
+
+    <update id="adoptComment">
+        update post
+        set adoptCommentId = #{commentId}
+        where postId = #{postId}
+    </update>
+
+    <update id="update" parameterType="Post">
+        update post
+        set postTitle      = #{postTitle},
+            postContent    = #{postContent},
+            updateDate     = #{updateDate},
+            renewDate      = #{updateDate},
+            top            = #{top},
+            quality        = #{quality},
+            postPoints     = #{postPoints},
+            adoptCommentId = #{adoptCommentId},
+            likes          = #{likes},
+            collects       = #{collects}
+        where postId = #{postId}
+    </update>
+
+    <update id="updateDate">
+        update post
+        set updateDate = #{updateDate}
+        where postId = #{postId}
+    </update>
+
+    <!-- 查找方法 -->
+    <select id="findPosts" resultType="Post">
+        select *
+        from post
+    </select>
+
+    <select id="findPostsByUserId" resultType="Post">
+        select *
+        from post
+        where userId = #{userId}
+    </select>
+
+    <select id="findByPostId" resultType="Post">
+        select *
+        from post
+        where postId = #{postId}
+    </select>
+</mapper>
