@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements ICommentService {
     private ICommentRepository commentRepository;
+    private final Long pageSize = 20L;
 
     @Autowired
     public void setCommentRepository(ICommentRepository commentRepository) {
@@ -19,35 +20,35 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public Long countCommentPagesByPostId(Long postId,Long pageSize) {
+    public Long countCommentPagesByPostId(Long postId) {
         Long pages = commentRepository.countCommentByPostId(postId);
         return pages % pageSize == 0 ? pages / pageSize : pages / pageSize + 1;
     }
 
     @Override
-    public List<Comment> findByFloorId(Long floorId, Long page, Long pageSize) {
+    public List<Comment> findByFloorId(Long floorId, Long page) {
         return commentRepository.findByFloorId(floorId, page, pageSize);
     }
 
     @Override
-    public Long countCommentPagesByFloorId(Long floorId,Long pageSize) {
+    public Long countCommentPagesByFloorId(Long floorId) {
         Long pages = commentRepository.countCommentByFloorId(floorId);
         return pages % pageSize == 0 ? pages / pageSize : pages / pageSize + 1;
     }
 
     @Override
-    public List<Comment> findByUserId(Long userId, Long page, Long pageSize) {
+    public List<Comment> findByUserId(Long userId, Long page) {
         return commentRepository.findByUserId(userId, page, pageSize);
     }
 
     @Override
-    public Long countCommentPagesByUserId(Long userId,Long pageSize) {
+    public Long countCommentPagesByUserId(Long userId) {
         Long pages = commentRepository.countCommentByUserId(userId);
         return pages % pageSize == 0 ? pages / pageSize : pages / pageSize + 1;
     }
 
     @Override
-    public List<Comment> findByPostId(Long postId,Long page,Long pageSize) {
+    public List<Comment> findByPostId(Long postId,Long page) {
         return commentRepository.findByPostId(postId,page,pageSize);
     }
 

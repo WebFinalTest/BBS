@@ -4,13 +4,13 @@
 <mapper namespace="com.bbs.repository.ICommentRepository">
     <select id="findByPostId" resultType="Comment">
         select * from comment
-        where postId = #{postId}
+        where postId = #{postId} and isnull(floorId)
         limit ${(page - 1) * pageSize},#{pageSize}
     </select>
 
     <select id="countCommentByPostId" resultType="Long">
         select count(*) from comment
-        where postId = #{postId}
+        where postId = #{postId} and isnull(floorId)
     </select>
 
     <select id="findByFloorId" resultType="Comment">

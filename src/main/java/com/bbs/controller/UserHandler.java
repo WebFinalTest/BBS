@@ -32,10 +32,11 @@ public class UserHandler {
         return "create";
     }
 
+
     @GetMapping("/index")
     public String findAll(Model model){
         model.addAttribute("users",userService.findAll());
-        model.addAttribute("comments",commentService.findByPostId(1L,1L,10L));
+        model.addAttribute("comments",commentService.findByPostId(1L,1L));
         return "index";
     }
 
