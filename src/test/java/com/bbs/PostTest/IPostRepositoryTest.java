@@ -39,7 +39,7 @@ public class IPostRepositoryTest {
         return s.toString();
     }
 
-    // 测试新建需求
+    // 已测试新建需求
     @Test
     public void saveWithPostPointsTest() {
         Post post = new Post();
@@ -99,7 +99,7 @@ public class IPostRepositoryTest {
         System.out.println(postRepository.findByPostId(419706810L).isTop());
     }
 
-    // 测试采纳帖子
+    // 已测试采纳帖子
     @Test
     public void adoptCommentTest() {
         postRepository.adoptComment(419706810L, 4197L);
@@ -147,7 +147,7 @@ public class IPostRepositoryTest {
             }
     }
 
-    // 测试查找某一页所有帖子
+    // 已测试查找某一页所有帖子
     @Test
     public void findPostsByPageTest() {
         List<Post> postList = postRepository.findPostsByPage(3L, 2L);
@@ -161,7 +161,7 @@ public class IPostRepositoryTest {
 
     // 已测试查找某个用户某一页所有帖子
     @Test
-    public void findPostsByUserIdTest() {
+    public void findPostsByPageUserIdTest() {
         List<Post> postList = postRepository.findPostsByPageUserId(123321L, 3L, 2L);
         if (postList.size() == 0)
             System.out.println(postList);
@@ -177,13 +177,13 @@ public class IPostRepositoryTest {
         System.out.println(postRepository.findByPostId(1111L));
     }
 
-    // 测试计算帖子总数
+    // 已测试计算帖子总数
     @Test
     public void countPostsTest() {
         System.out.print(postRepository.countPosts());
     }
 
-    // 测试计算某个用户所建帖子总数
+    // 已测试计算某个用户所建帖子总数
     @Test
     public void countPostsByUserIdTest() {
         System.out.print(postRepository.countPostsByUserId(123321L));

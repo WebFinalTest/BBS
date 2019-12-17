@@ -1,151 +1,145 @@
 package com.bbs.service.impl;
 
 import com.bbs.entity.Post;
-import com.bbs.entity.User;
 import com.bbs.repository.IPostRepository;
 import com.bbs.repository.IUserRepository;
 import com.bbs.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class PostServiceImpl implements IPostService {
-    private IPostRepository iPostRepository;
-    private IUserRepository iUserRepository;
+    private final Long pageSize = 30L;
+    private IPostRepository postRepository;
+    private IUserRepository userRepository;
+//    private ICommentRepository commentRepository;
 
     @Autowired
-    public PostServiceImpl(IPostRepository iPostRepository) {
-        this.iPostRepository = iPostRepository;
+    public void setPostRepository(IPostRepository postRepository) {
+        this.postRepository = postRepository;
     }
 
+    @Autowired
+    public void setUserRepository(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+//    @Autowired
+//    public void setCommentRepository(ICommentRepository commentRepository) {
+//        this.commentRepository = commentRepository;
+//    }
+
     @Override
+    @Transactional
     public boolean createPost(Post post) {
-        User user = iUserRepository.findById(post.getUserId());
-        if (user == null)
-            return false;
-        // 如果该帖子是需求贴
-        if (post.isPostType())
-            iPostRepository.saveWithPostPoints(post);
-        else
-            iPostRepository.saveWithOutPostPoints(post);
-        Post post1 = iPostRepository.findByPostId(post.getPostId());
-        return post1 != null;
+//        // 如果该帖子是需求贴
+//        if (post.isPostType())
+//            postRepository.saveWithPostPoints(post);
+//        else {
+//            Long points = userRepository.findPointsByUserId(post.getUserId());
+//            if (points > post.getPostPoints())
+//                postRepository.saveWithOutPostPoints(post);
+//            else
+//                return false;
+//        }
+//        return true;
+        return false;
     }
 
     @Override
-    public boolean deletePost(Long postId) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post != null)
-            iPostRepository.deleteById(postId);
-        else
-            return false;
-        post = iPostRepository.findByPostId(postId);
-        return post == null;
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
     }
 
     @Override
-    public boolean adoptComment(Long postId, Long commentId) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post.isPostType()) {
-            if (post.getAdoptCommentId() == null)
-                iPostRepository.adoptComment(postId, commentId);
-            else
-                return false;
-        } else {
-            return false;
-        }
-        post = iPostRepository.findByPostId(postId);
-        return post.isPostType();
+    @Transactional
+    public void adoptComment(Long postId, Long commentId) {
+//        Post post = postRepository.findByPostId(postId);
+//        Long commentUserId = userRepository.findUserByCommentId(commentId);
+//        userRepository.increasePointsByUserId(post.getPostPoints(), commentUserId);
+//        postRepository.adoptComment(postId, commentId);
     }
 
     @Override
-    public boolean qualityPost(Long postId) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
-        iPostRepository.changeQuality(postId, true);
-        post = iPostRepository.findByPostId(postId);
-        return post.isQuality();
+    public void qualityPost(Long postId) {
+        postRepository.changeQuality(postId, true);
     }
 
     @Override
-    public boolean unQualityPost(Long postId) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
-        iPostRepository.changeTop(postId, false);
-        post = iPostRepository.findByPostId(postId);
-        return !post.isTop();
+    public void unQualityPost(Long postId) {
+        postRepository.changeTop(postId, false);
     }
 
     @Override
-    public boolean topPost(Long postId) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
-        iPostRepository.changeTop(postId, true);
-        post = iPostRepository.findByPostId(postId);
-        return post.isTop();
+    public void topPost(Long postId) {
+        postRepository.changeTop(postId, true);
     }
 
     @Override
-    public boolean unTopPost(Long postId) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
-        iPostRepository.changeTop(postId, false);
-        post = iPostRepository.findByPostId(postId);
-        return !post.isTop();
+    public void unTopPost(Long postId) {
+        postRepository.changeTop(postId, false);
     }
 
     @Override
-    public boolean updatePostTitle(Long postId, String postTitle) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
+    public void updatePostTitle(Long postId, String postTitle) {
+        Post post = postRepository.findByPostId(postId);
         post.setPostTitle(postTitle);
         Date date = new Date();
         post.setUpdateDate(date);
         post.setRenewDate(date);
-        iPostRepository.update(post);
-        post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
-        return post.getPostTitle().equals(postTitle);
+        postRepository.update(post);
     }
 
     @Override
-    public boolean updatePostContent(Long postId, String postContent) {
-        Post post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
+    public void updatePostContent(Long postId, String postContent) {
+        Post post = postRepository.findByPostId(postId);
         post.setPostContent(postContent);
         Date date = new Date();
         post.setUpdateDate(date);
         post.setRenewDate(date);
-        iPostRepository.update(post);
-        post = iPostRepository.findByPostId(postId);
-        if (post == null)
-            return false;
-        return post.getPostContent().equals(postContent);
+        postRepository.update(post);
+    }
+
+    /* 查找方法Start */
+    @Override
+    public List<Post> findPosts() {
+        return postRepository.findPosts();
     }
 
     @Override
-    public List<Post> findPosts() {
-        return iPostRepository.findPosts();
+    public List<Post> findPostsByPage(Long page) {
+        return postRepository.findPostsByPage(page, pageSize);
     }
 
     @Override
     public List<Post> findPostsByUserId(Long userId) {
-        return iPostRepository.findPostsByUserId(userId);
+        return postRepository.findPostsByUserId(userId);
+    }
+
+    @Override
+    public List<Post> findPostsByPageUserId(Long userId, Long page) {
+        return postRepository.findPostsByPageUserId(userId, page, pageSize);
     }
 
     @Override
     public Post findPostByPostId(Long postId) {
-        return iPostRepository.findByPostId(postId);
+        return postRepository.findByPostId(postId);
     }
-}
 
+    @Override
+    public Long countPostsPage() {
+        Long postsNum = postRepository.countPosts();
+        return postsNum / pageSize + (postsNum % pageSize == 0 ? 0 : 1);
+    }
+
+    @Override
+    public Long countPostsPageByUserId(Long userId) {
+        Long postsNum = postRepository.countPostsByUserId(userId);
+        return postsNum / pageSize + (postsNum % pageSize == 0 ? 0 : 1);
+    }
+    /* 查找方法End */
+}
