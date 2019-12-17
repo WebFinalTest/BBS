@@ -7,6 +7,7 @@
         insert into post(postId, userId, postTitle, postContent, postType, postPoints)
         values (#{postId}, #{userId}, #{postTitle}, #{postContent}, #{postType}, #{postPoints})
     </insert>
+
     <insert id="saveWithOutPostPoints" parameterType="Post">
         insert into post(postId, userId, postTitle, postContent, postType)
         values (#{postId}, #{userId}, #{postTitle}, #{postContent}, #{postType})
@@ -53,9 +54,9 @@
         where postId = #{postId}
     </update>
 
-    <update id="updateDate">
+    <update id="renewDate">
         update post
-        set updateDate = #{updateDate}
+        set renewDate = #{renewDate}
         where postId = #{postId}
     </update>
 
@@ -63,6 +64,19 @@
     <select id="findPosts" resultType="Post">
         select *
         from post
+    </select>
+
+    <select id="findPostsByPage" resultType="Post">
+        select *
+        from post
+        limit ${(page-1)*pageSize}, #{pageSize}
+    </select>
+
+    <select id="findPostsByPageUserId" resultType="Post">
+        select *
+        from post
+        where userId = #{userId}
+        limit ${(page-1)*pageSize}, #{pageSize}
     </select>
 
     <select id="findPostsByUserId" resultType="Post">
@@ -75,5 +89,16 @@
         select *
         from post
         where postId = #{postId}
+    </select>
+
+    <select id="countPosts" resultType="Long">
+        select count(*)
+        from post
+    </select>
+
+    <select id="countPostsByUserId" resultType="Long">
+        select count(*)
+        from post
+        where userId = #{userId}
     </select>
 </mapper>
