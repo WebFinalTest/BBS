@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.repository.IFavoritesRepository">
+    <insert id="createFavorites" parameterType="Favorites">
+        insert  into favorites(favoritesId, userId, favoritesName)
+        values(#{favoritesId},#{userId},#{favoritesName})
+    </insert>
+
+    <update id="updateFavorites">
+        update favorites set favoritesName=#{favoritesName} where favoritesId=#{favoritesId}
+    </update>
+
+    <select id="findAllFavoritesByUserId" resultType="Long">
+        select * from favorites where userId =#{userId}
+    </select>
+
+    <select id="findFavoritesByfavoritesId" resultType="Favorites">
+        select * from favorites where favoritesId=#{favoritesId}
+    </select>
+
+    <delete id="deleteFavoritesByFavoritesId">
+        delete from favorites where favoritesId=#{favoritesId}
+    </delete>
+</mapper>
