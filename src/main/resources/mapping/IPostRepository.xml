@@ -101,4 +101,15 @@
         from post
         where userId = #{userId}
     </select>
+
+    <update id="collectByPostId">
+        update post set collects = collects + 1
+        where postId = #{postId}
+    </update>
+
+    <update id="uncollectByPostId">
+        update post set collects = collects - 1
+        where postId = #{postId}
+    </update>
+
 </mapper>

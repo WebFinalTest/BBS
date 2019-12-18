@@ -58,4 +58,10 @@ public interface IPostRepository {
 
     // 计算某个用户所建帖子总数
     public Long countPostsByUserId(@Param("userId") Long userId);
+
+    //收藏数+1
+    public Long collectByPostId(@Param("postId") Long postId);
+
+    //收藏数-1
+    public Long uncollectByPostId(@Param("postId") Long postId);
 }

@@ -20,14 +20,6 @@ public class FavoritesServiceImpl implements IFavoritesService {
         this.favoritesRepository=favoritesRepository;
     }
 
-    /*@Override
-    public void createFirstFavorites(Long userId,Long favoritersId){
-        Favorites favorites = new Favorites();
-        favorites.setUserId(userId);
-        favorites.setFavoritesId(favoritersId);
-        favorites.setFavoritesName("默认收藏夹");
-        favoritesRepository.createFavorites(favorites);
-    }*/
 
     @Override
     public void createFavorites(Long userId,String favoritesName){
