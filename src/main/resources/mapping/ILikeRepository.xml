@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.repository.ILikeRepository">
+    <select id="findAll" resultType="Like">
+        select * from `like`
+    </select>
+    
+    <select id="findByUserId" resultType="Like" parameterType="long">
+        select * from `like` where userId = #{userId}
+    </select>
+
+    <select id="findByPostId" resultType="Like" parameterType="long">
+        select * from `like` where postId = #{postId}
+    </select>
+
+    <select id="findByCommentId" resultType="Like" parameterType="long">
+        select * from `like` where commentId = #{commentId}
+    </select>
+
+    <select id="findByPostIdAndUserId" resultType="Like">
+        select * from `like` where postId = #{postId} and userId = #{userId}
+    </select>
+
+    <select id="findByCommentIdAndUserId" resultType="Like">
+        select * from `like` where commentId = #{commentId} and userId = #{userId}
+    </select>
+
+    <insert id="save" parameterType="Like">
+        insert into `like` (postId,commentId,userId) values(#{postId},#{commentId},#{userId})
+    </insert>
+    
+    <update id="update" parameterType="Like">
+        update `like` set postId = #{postId},commentId = #{commentId},userId = #{userId}
+    </update>
+
+    <delete id="deleteByPostId">
+        delete from `like` where postId = #{postId} and userId = #{userId}
+    </delete>
+
+    <delete id="deleteByCommentId">
+        delete from `like` where commentId = #{commentId} and userId = #{userId}
+    </delete>
+</mapper>
