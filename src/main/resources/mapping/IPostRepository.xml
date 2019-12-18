@@ -102,13 +102,14 @@
         where userId = #{userId}
     </select>
 
-    <update id="likeByPostId">
-        update post set likes = likes + 1
+    <update id="collectByPostId">
+        update post set collects = collects + 1
         where postId = #{postId}
     </update>
 
-    <update id="unlikeByPostId">
-        update post set likes = likes - 1
+    <update id="uncollectByPostId">
+        update post set collects = collects - 1
         where postId = #{postId}
     </update>
+
 </mapper>
