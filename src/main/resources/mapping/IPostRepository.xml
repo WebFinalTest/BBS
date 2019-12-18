@@ -112,4 +112,14 @@
         where postId = #{postId}
     </update>
 
+    <update id="likeByPostId">
+        update post set likes = likes + 1
+        where postId = #{postId}
+    </update>
+
+    <update id="unlikeByPostId">
+        update post set likes = likes - 1
+        where postId = #{postId}
+    </update>
+
 </mapper>

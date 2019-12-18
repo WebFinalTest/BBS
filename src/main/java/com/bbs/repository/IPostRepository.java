@@ -65,4 +65,10 @@ public interface IPostRepository {
     //收藏数-1
     public Long uncollectByPostId(@Param("postId") Long postId);
 
+    //对帖子点赞
+    public void likeByPostId(@Param("postId") Long postId);
+
+    //取消对帖子的点赞
+    public void unlikeByPostId(@Param("postId") Long postId);
+
 }
