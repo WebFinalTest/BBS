@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ILikeService {
     //创建点赞
-    public boolean createLike(Like like);
+    public void createLike(Like like);
     //查看点赞过的帖子
     public List<Like> findPostLikes(@Param("userId") Long userId);
     //查看帖子点赞数

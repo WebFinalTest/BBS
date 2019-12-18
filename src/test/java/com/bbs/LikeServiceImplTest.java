@@ -46,30 +46,10 @@ public class LikeServiceImplTest{
         l2.setPostId(5L);
         l3.setCommentId(6L);
         l4.setCommentId(6L);
-//        if(likeService.createLike(l1)){
-//            System.out.println("l1创建成功");
-//        }
-//        else{
-//            System.out.println("l1创建失败");
-//        }
-//        if(likeService.createLike(l2)){
-//            System.out.println("l2创建成功");
-//        }
-//        else{
-//            System.out.println("l2创建失败");
-//        }
-//        if(likeService.createLike(l3)){
-//            System.out.println("l3创建成功");
-//        }
-//        else{
-//            System.out.println("l3创建失败");
-//        }
-//        if(likeService.createLike(l4)){
-//            System.out.println("l4创建成功");
-//        }
-//        else{
-//            System.out.println("l4创建失败");
-//        }
+//        likeService.createLike(l1);
+//        likeService.createLike(l2);
+//        likeService.createLike(l3);
+//        likeService.createLike(l4);
 //        List<Like> likes1=likeService.findPostLikes(l1.getUserId());
 //        for(Like l:likes1){
 //            System.out.println(l);

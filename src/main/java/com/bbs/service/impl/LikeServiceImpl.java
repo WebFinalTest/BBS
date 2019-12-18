@@ -3,6 +3,7 @@ package com.bbs.service.impl;
 import com.bbs.entity.Like;
 import com.bbs.repository.ICommentRepository;
 import com.bbs.repository.ILikeRepository;
+import com.bbs.repository.IPostRepository;
 import com.bbs.service.ILikeService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,12 @@ import java.util.List;
 public class LikeServiceImpl implements ILikeService {
     private ILikeRepository iLikeRepository;
     private ICommentRepository iCommentRepository;
+    private IPostRepository iPostRepository;
+
+    @Autowired
+    public void setiPostRepository(IPostRepository iPostRepository) {
+        this.iPostRepository = iPostRepository;
+    }
 
     @Autowired
     public void setiCommentRepository(ICommentRepository iCommentRepository) {
@@ -28,21 +35,13 @@ public class LikeServiceImpl implements ILikeService {
 
     @Override
     @Transactional
-    public boolean createLike(Like like) {
+    public void createLike(Like like) {
         iLikeRepository.save(like);
-        Like returnLike;
         if(like.getCommentId()!=null){
-            returnLike = iLikeRepository.findByCommentIdAndUserId(like.getCommentId(),like.getUserId());
             iCommentRepository.likeByCommentId(like.getCommentId());
         }
         else{
-            returnLike = iLikeRepository.findByPostIdAndUserId(like.getPostId(), like.getUserId());
-        }
-        if(returnLike!=null){
-            return true;
-        }
-        else {
-            return false;
+            iPostRepository.likeByPostId(like.getPostId());
         }
     }
 
@@ -93,6 +92,7 @@ public class LikeServiceImpl implements ILikeService {
     @Override
     public void deleteLikeByPostId(@Param("postId") Long postId,@Param("userId") Long userId) {
         iLikeRepository.deleteByPostId(postId,userId);
+        iPostRepository.unlikeByPostId(postId);
     }
 
     @Override
