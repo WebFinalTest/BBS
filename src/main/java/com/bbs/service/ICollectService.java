@@ -10,11 +10,11 @@ public interface ICollectService {
     public void createCollect(Collect collect);
 
     //更新一个收藏，把帖子放置在另一个favoritesId
-    public void updateCollect(@Param("postId") Long postId, @Param("userId") Long userId, @Param("favoritesId") Long favoritesId);
+    public void updateCollect(Long postId,Long userId, Long favoritesId);
 
     //根据收藏夹返回全部收藏
-    public List<Collect> findAllCollectsByFavoritesId(@Param("favoritesId") Long favoritesId);
+    public List<Collect> findAllCollectsByFavoritesId( Long favoritesId);
 
     //删除一个收藏postId,userId
-    public void deleteCollect(@Param("postId") Long postId, @Param("userId") Long userId);
+    public void deleteCollect(Long postId,Long userId);
 }

@@ -11,14 +11,14 @@ public interface IFavoritesService {
     //public void createFirstFavorites(@Param("userId")Long userId,@Param("favoritersId")Long favoritersId);
 
     //创建一个收藏夹
-    public void createFavorites(@Param("userId") Long userId, @Param("favoritesName") String favoritesName);
+    public void createFavorites(Long userId,String favoritesName);
 
     //更新一个收藏夹,改收藏夹名字
-    public void updateFavorites(@Param("favoritesId") Long favoritesId, @Param("favoritesName") String favoritesName);
+    public void updateFavorites(Long favoritesId,String favoritesName);
 
     //根据userId返回该Id全部收藏夹
-    public List<Favorites> findAllFavoritesByUserId(@Param("userId") Long userId);
+    public List<Favorites> findAllFavoritesByUserId(Long userId);
 
     //根据收藏夹Id删除收藏夹
-    public void deleteFavoritesByFavoritesId(@Param("favoritesId") Long favoritesId);
+    public void deleteFavoritesByFavoritesId(Long favoritesId);
 }

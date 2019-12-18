@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(request.getSession().getAttribute("userName") != null )
+        if(request.getSession().getAttribute("user") != null )
             return true;
         else {
-            response.sendRedirect("/User/register");
+            response.sendRedirect("/Index/login");
             return false;
         }
     }
