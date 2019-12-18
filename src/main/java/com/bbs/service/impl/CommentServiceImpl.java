@@ -2,17 +2,25 @@ package com.bbs.service.impl;
 
 import com.bbs.entity.Comment;
 import com.bbs.repository.ICommentRepository;
+import com.bbs.repository.IUserRepository;
 import com.bbs.service.ICommentService;
 import com.bbs.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class CommentServiceImpl implements ICommentService {
     private ICommentRepository commentRepository;
+    private IUserRepository userRepository;
     private final Long pageSize = 20L;
+
+    @Autowired
+    public void setUserRepository(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Autowired
     public void setCommentRepository(ICommentRepository commentRepository) {
@@ -53,11 +61,16 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
+    @Transactional
     public void createComment(Comment comment) {
         Long commentId;
         do {
             commentId = Utils.randomId(12);
         }while (commentRepository.findByCommentId(commentId) != null);
+
+        //增加10积分
+        userRepository.increasePointsByUserId(10L,comment.getUserId());
+
         comment.setCommentId(commentId);
         commentRepository.createComment(comment);
     }

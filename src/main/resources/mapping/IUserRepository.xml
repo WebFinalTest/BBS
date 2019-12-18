@@ -11,9 +11,14 @@
     </select>
 
     <insert id="save" parameterType="User">
-        insert into user(userId,userName,password,email,userType,points,qq,phone,workplace,habitation)
-        values (#{userId},#{userName},#{password},#{email},#{userType},#{points},#{qq},#{phone},#{workplace},#{habitation})
+        insert into user(userId,userName,password,email)
+        values (#{userId},#{userName},#{password},#{email})
     </insert>
+
+    <!--<insert id="save" parameterType="User">-->
+        <!--insert into user(userId,userName,password,email,userType,points,qq,phone,workplace,habitation)-->
+        <!--values (#{userId},#{userName},#{password},#{email},#{userType},#{points},#{qq},#{phone},#{workplace},#{habitation})-->
+    <!--</insert>-->
     
     <update id="update" parameterType="User">
         update user set
