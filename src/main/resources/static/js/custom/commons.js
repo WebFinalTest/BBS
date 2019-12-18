@@ -41,7 +41,7 @@ function register(){
             success: function (result) {
                 if (result.message === "success") {
                     alert("注册成功！");
-                    window.location.href = "/User/login";
+                    window.location.href = "/Index/login";
                 }
                 else {
                     alert("注册失败！");
