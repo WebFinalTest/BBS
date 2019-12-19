@@ -109,7 +109,7 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public void unQualityPost(Long postId) {
-        postRepository.changeTop(postId, false);
+        postRepository.changeQuality(postId, false);
     }
 
     @Override

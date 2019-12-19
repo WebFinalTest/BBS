@@ -117,8 +117,13 @@ public class IPostServiceTest {
     @Test
     public void findPostsTest() {
         List<Post> postList = postService.findPosts();
-        if (postList == null)
+        List<Post> posts = postService.findPostsByPage(1L);
+        List<Post> topPosts = postService.findTopPostsByPage(1L);
+        if (postList == null){
             System.out.println(postList);
+            System.out.println(posts);
+            System.out.println(topPosts);
+        }
         else
             for (Post post : postList)
                 System.out.println(post);

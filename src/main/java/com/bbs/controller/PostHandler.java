@@ -35,9 +35,9 @@ public class PostHandler {
         }catch (Exception e) {
             System.out.println("Error:view");
         }
-        model.addAttribute(posts);
-        model.addAttribute(topPosts);
-        return "/post/main";
+        model.addAttribute("posts",posts);
+        model.addAttribute("topPosts",topPosts);
+        return "/user/showPosts";
     }
 
     //传到修改帖子页面
