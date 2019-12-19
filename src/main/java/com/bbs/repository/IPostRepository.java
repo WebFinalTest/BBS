@@ -19,7 +19,7 @@ public interface IPostRepository {
 
     /* 删除方法 */
     // 删除帖子
-    public void deleteById(Long postId);
+    public void deleteById(@Param("postId") Long postId);
 
     /* 修改方法 */
     // 修改帖子加精属性
