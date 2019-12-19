@@ -5,6 +5,7 @@ import com.bbs.entity.Like;
 import com.bbs.entity.Post;
 import com.bbs.repository.*;
 import com.bbs.service.IPostService;
+import com.bbs.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,11 @@ public class PostServiceImpl implements IPostService {
     @Override
     @Transactional
     public boolean createPost(Post post) {
+        Long postId;
+        do {
+            postId = Utils.randomId(10);
+        }while (postRepository.findByPostId(postId) != null);
+        post.setPostId(postId);
         // 如果该帖子是需求贴
         if (post.isPostType())
             postRepository.saveWithPostPoints(post);
