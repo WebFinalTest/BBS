@@ -15,14 +15,18 @@
     <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
 
-    <link rel="shortcut icon" href="./img/favicon.ico">
-    <link href="./css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link rel="stylesheet" href="./css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="./css/plugins/toastr/toastr.min.css">
-    <link href="./css/animate.css" rel="stylesheet">
-    <link href="./css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
 </head>
 <body class="gray-bg">
+<script>
+    var topPage = 1;
+    var page = 1;
+</script>
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-sm-12">
@@ -32,42 +36,45 @@
                         <div class="pull-left m-r-md">
                             <i class="fa fa-globe text-navy mid-icon"></i>
                         </div>
-                        <h2>欢迎来到BBs论坛</h2>
+                        <h2>欢迎来到BBS论坛</h2>
                         <span>你可以自由选择你感兴趣的话题。</span>
                     </div>
                 </div>
-                <div class="ibox-content forum-container" id="content">
+                <div class="ibox-content m-b-sm border-bottom forum-container">
                     <div th:if="${topPosts.size()>0}" class="forum-title">
                         <div class="pull-right forum-desc">
                             <small th:text="|总帖子数是${topPosts.size()}|"></small>
                         </div>
                         <h3>主版</h3>
                     </div>
-                    <div th:each="topPosts${topPosts}" class="forum-item">
+                    <div th:each="topPost:${topPosts}" class="forum-item">
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="forum-icon">
                                     <i class="fa fa-shield"></i>
                                 </div>
                                 <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${topPost.getPostId()})}" th:text="${topPost.getPostTitle()}"></a>
-                                <div class="forum-sub-title" th:text="${topPost.getPostContent().subString(0, 20)}"></div>
+                                <div class="forum-sub-title" th:text="${topPost.getPostContent()}"></div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="ibox-content forum-container" id="content">
+
                     <div th:if="${posts.size()>0}" class="forum-title">
                         <div class="pull-right forum-desc">
                             <small th:text="|总帖子数是${posts.size()}|"></small>
                         </div>
                         <h3>副板</h3>
                     </div>
-                    <div th:each="post${posts}" class="forum-item">
+                    <div th:each="post:${posts}" class="forum-item">
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="forum-icon">
                                     <i class="fa fa-star"></i>
                                 </div>
                                 <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}" th:text="${post.getPostTitle()}"></a>
-                                <div class="forum-sub-title" th:text="${post.getPostContent().subString(0, 20)}"></div>
+                                <div class="forum-sub-title" th:text="${post.getPostContent()}"></div>
                             </div>
                             <div class="col-sm-1 forum-info">
                                 <span class="views-number" th:text="${post.getLikes()}">
@@ -84,8 +91,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-1 forum-info">
-                                <span class="views-number">
-                                    123
+                                <span th:text="${countComments.get(post.getPostId())}" class="views-number">
+
                                 </span>
                                 <div>
                                     <small>评论</small>
@@ -106,6 +113,9 @@
 <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/js/plugins/layer/layer.min.js"></script>
 
+<!-- Peity -->
+<script src="/js/plugins/peity/jquery.peity.min.js"></script>
+
 <!-- 自定义js -->
 <script src="/js/hAdmin.js?v=4.1.0"></script>
 <script src="/js/index.js"></script>
@@ -115,5 +125,8 @@
 <!-- 第三方插件 -->
 <script src="/js/plugins/pace/pace.min.js"></script>
 <script src="/js/plugins/toastr/toastr.min.js"></script>
+<script>
+
+</script>
 </body>
 </html>

@@ -15,12 +15,12 @@
     <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
 
-    <link rel="shortcut icon" href="./img/favicon.ico">
-    <link href="./css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link rel="stylesheet" href="./css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="./css/plugins/toastr/toastr.min.css">
-    <link href="./css/animate.css" rel="stylesheet">
-    <link href="./css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg">
 <div id="wrapper">
@@ -76,7 +76,7 @@
                         <i class="fa fa-user"></i>
                         <span class="nav-label">我的收藏</span>
                     </a>
-                    <ul th:each="favorites${favoritess}" class="nav nav-second-level">
+                    <ul th:each="favorites:${favoritess}" class="nav nav-second-level">
                         <li>
                             <a class="J_menuItem" th:text="favorites.getFavoritesName()"
                                th:href="@{/Collect/viewCollect/{favoritesId}(favoritesId=${favorites.getFavoritesId()})}"></a>
@@ -103,7 +103,39 @@
     <!--左侧导航结束-->
     <!--右侧部分开始-->
     <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-minimalize minimalize-styl-2 btn btn-info">
+                        <i class="fa fa-bars">
 
+                        </i>
+                    </a>
+                    <!-- 搜索栏 -->
+                    <!-- <form action="post" class="navbar-form-custom"></form>-->
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li th:if="${session.getAttribute('user') != null}">
+                        <a href="#" th:text="'欢迎你!'+${#session.getAttribute('user').getUserName()}"></a>
+                    </li>
+                    <li th:if="${#session.getAttribute('user') != null}" class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle count-info">
+                            <i class="fa fa-2x fa-user-circle-o"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user dropdown-menu-right">
+                            <li><a href="#" onclick="logOut();">退出系统</a></li>
+                        </ul>
+                    </li>
+                    <li th:if="${#session.getAttribute('user') == null}">
+                        <a href="/Index/login">登录</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row J_mainContent" id="content-main">
+            <iframe id="J_iframe" width="100%" height="100%" src="/Index/index" frameborder="0"
+                    data-id="./html/tmp.html" seamless></iframe>
+        </div>
     </div>
     <!--右侧部分结束-->
 </div>
