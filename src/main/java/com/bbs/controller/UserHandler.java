@@ -32,7 +32,7 @@ public class UserHandler {
         }catch (Exception e) {
             System.out.println("ERROR:View");
         }
-        return "/user/showUserInfo";
+        return "user/showUserInfo";
     }
 
     //注销
@@ -48,7 +48,40 @@ public class UserHandler {
         return map;
     }
 
-//    //修改用户信息界面
+
+    //修改用户信息提交
+    @PostMapping("/updateUserInfo/do")
+    @ResponseBody
+    public Map doUpdateUserInfo(HttpSession session,User user) {
+        Map map = new HashMap();
+        try {
+            User user1 = (User)session.getAttribute("user");
+            user.setUserId(user1.getUserId());
+            userService.update(user);
+            map.put("message","success");
+        }catch (Exception e) {
+            map.put("message","error");
+        }
+        return map;
+    }
+
+    //修改用户密码
+    @PostMapping("/updatePassword")
+    public Map<String,String> updatePassword(HttpSession session,String originalPassword,String newPassword) {
+        Map map = new HashMap();
+        try {
+            User user = (User) session.getAttribute("user");
+            if(userService.updatePasswordByUserId(user.getUserId(),originalPassword,newPassword))
+                map.put("message","success");
+            else
+                map.put("message","fail");
+        }catch (Exception e) {
+            map.put("message","error");
+        }
+        return map;
+    }
+
+    //    //修改用户信息界面
 //    @GetMapping("/updateUserInfo")
 //    public String updateUserInfo(Model model,HttpSession session){
 //        try{
@@ -59,21 +92,6 @@ public class UserHandler {
 //        }
 //        return "/user/updateUserInfo";
 //    }
-
-    //修改用户信息提交
-    @PostMapping("/updateUserInfo/do")
-    @ResponseBody
-    public Map doUpdateUserInfo(HttpSession session,User user) {
-        Map map = new HashMap();
-        try {
-            userService.update(user);
-            map.put("message","success");
-        }catch (Exception e) {
-            map.put("message","error");
-        }
-        return map;
-    }
-
 
 //    @GetMapping("/create")
 //    public String create(){

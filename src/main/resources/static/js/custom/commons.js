@@ -12,8 +12,10 @@ function loginin() {
         timeout:3000,
         async:true,
         success:function (result) {
-            if(result.message === "success")
+            if(result.message === "success"){
                 alert("登陆成功！");
+                window.location.herf="/Index/index";
+            }
             else
                 alert("登陆失败！");
         },

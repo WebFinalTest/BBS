@@ -44,4 +44,6 @@ public interface ICommentRepository {
     //取消赞评论
     public void unlikeByCommentId(@Param("commentId") Long commentId);
 
+    public Long countAllCommentsByPostId(@Param("postId") Long postId);
+
 }

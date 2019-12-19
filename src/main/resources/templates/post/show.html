@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <title th:text="${post.getPostTitle()}"></title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox-title text-right" th:text="${post.getPostTitle()}"></div>
+            <div class="ibox-content">
+                <div class="social-avatar">
+                    <div class="media-body">
+                        <a href="#" th:text="${postUserName}"></a>
+                        <small class="text-muted" th:text="${#dates.format(post.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></small>
+                    </div>
+                </div>
+                <div class="social-body">
+                    <p th:text="${post.getPostContent()}"></p>
+                    <div class="btn-group">
+                        <button class="btn btn-white btn-xs" onclick="like()">
+                            <i class="fa fa-thumbs-up"></i>赞
+                        </button>
+                        <button class="btn btn-white btn-xs" onclick="comment()">
+                            <i class="fa fa-comment"></i>评论
+                        </button>
+                        <button class="btn btn-white btn-xs">
+                            <i class="fa fa-collect"></i>收藏
+                        </button>
+                        <button class="btn btn-danger btn-xs" onclick="delete()">
+                            <i class="fa fa-recycle"></i>删除
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div th:each="comment:${comments}" class="social-feed-box">
+                <div class="social-avatar">
+                    <div class="media-body">
+                        <a href="#">用户名</a>
+                        <small class="text-muted" th:text="${#dates.format(comment.getCreateDate(), 'yyyy-MM-dd HH:mm')}"></small>
+                    </div>
+                </div>
+                <div class="social-body">
+                    <p th:text="${comment.getCommentContent()}"></p>
+                </div>
+                <!-- <div class="social-footer" th:if="${}"> -->
+                <!-- <div class="social-comment"> -->
+                <!-- <div class="media-body"> -->
+                <!-- <a href="">123</a> -->
+                <!-- -->
+                <!-- </div> -->
+                <!-- </div> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

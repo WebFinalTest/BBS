@@ -2,6 +2,7 @@ package com.bbs.controller;
 
 import com.bbs.entity.Post;
 import com.bbs.entity.User;
+import com.bbs.service.ICommentService;
 import com.bbs.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,12 @@ import java.util.Map;
 @Controller
 public class PostHandler {
     private IPostService postService;
+    private ICommentService commentService;
+
+    @Autowired
+    public void setCommentService(ICommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @Autowired
     public void setPostService(IPostService postService) {
@@ -29,18 +36,23 @@ public class PostHandler {
     public String view(Model model) {
         List<Post> posts = new ArrayList<>();
         List<Post> topPosts = new ArrayList<>();
+        Map<Long,Long> countComments = new HashMap<>();
         try{
             posts = postService.findPostsByPage(1L);
             topPosts = postService.findTopPostsByPage(1L);
             for (Post post: posts) {
-
+                countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
+            }
+            for (Post post: topPosts) {
+                countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
             }
         }catch (Exception e) {
             System.out.println("Error:view");
         }
         model.addAttribute("posts",posts);
         model.addAttribute("topPosts",topPosts);
-        return "/user/showPosts";
+        model.addAttribute("countComments",countComments);
+        return "user/showPosts";
     }
 
     //传到修改帖子页面
@@ -52,14 +64,14 @@ public class PostHandler {
         }catch (Exception e) {
             System.out.println("出错！");
         }
-        return "/post/change";
+        return "post/change";
     }
 
     //提交修改
 
 
     //根据页码查看帖子
-    @GetMapping("/view/{page}")
+    @GetMapping("view/{page}")
     @ResponseBody
     public List<Post> viewByPage(@PathVariable("page") Long page) {
         return postService.findPostsByPage(page);

@@ -13,6 +13,11 @@
         where postId = #{postId} and isnull(floorId)
     </select>
 
+    <select id="countAllCommentsByPostId" resultType="Long">
+        select count(*) from comment
+        where postId = #{postId}
+    </select>
+
     <select id="findByFloorId" resultType="Comment">
         select * from comment
         where floorId = #{floorId}

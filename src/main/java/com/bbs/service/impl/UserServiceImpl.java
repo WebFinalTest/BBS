@@ -8,6 +8,7 @@ import com.bbs.service.IUserService;
 import com.bbs.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -69,6 +70,17 @@ public class UserServiceImpl implements IUserService {
         favorites.setFavoritesName("默认收藏夹");
         favoritesRepository.createFavorites(favorites);
         return user;
+    }
+
+    @Override
+    @Transactional
+    public boolean updatePasswordByUserId(Long userId, String originalPassword, String newPassword) {
+        User user = userRepository.findByUserId(userId);
+        if(user == null || !user.getPassword().equals(originalPassword))
+            return false;
+        userRepository.updatePasswordByUserId(userId,originalPassword,newPassword);
+        user = userRepository.findByUserId(userId);
+        return (user != null && user.getPassword().equals(newPassword));
     }
 
     @Override

@@ -47,14 +47,14 @@
                         </div>
                         <h3>主版</h3>
                     </div>
-                    <div th:each="topPosts:${topPosts}" class="forum-item">
+                    <div th:each="topPost:${topPosts}" class="forum-item">
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="forum-icon">
                                     <i class="fa fa-shield"></i>
                                 </div>
                                 <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${topPost.getPostId()})}" th:text="${topPost.getPostTitle()}"></a>
-                                <div class="forum-sub-title" th:text="${topPost.getPostContent().subString(0, 20)}"></div>
+                                <div class="forum-sub-title" th:text="${topPost.getPostContent()}"></div>
                             </div>
                         </div>
                     </div>
@@ -91,8 +91,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-1 forum-info">
-                                <span class="views-number">
-                                    123
+                                <span th:text="${countComments.get(post.getPostId())}" class="views-number">
+
                                 </span>
                                 <div>
                                     <small>评论</small>

@@ -35,4 +35,6 @@ public interface IUserRepository {
     //减少积分
     public void reducePointsByUserId(@Param("points") Long points,@Param("userId") Long userId);
 
+    //修改密码
+    public void updatePasswordByUserId(@Param("userId") Long userId,@Param("originalPassword") String originalPassword,@Param("newPassword") String newPassword);
 }

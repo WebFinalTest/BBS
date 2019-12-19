@@ -31,6 +31,8 @@ public class CommentServiceTest {
         comment.setUserId(123226946L);
         commentService.createComment(comment);
 
+        System.out.println(commentService.countAllCommentsByPostId(1L));
+
         //返回一个帖子的第一页的所有评论
         System.out.println("返回一个帖子第一页的评论");
         List<Comment> comments = commentService.findByPostId(1L,1L);

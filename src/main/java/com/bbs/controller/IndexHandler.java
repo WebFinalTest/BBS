@@ -52,6 +52,7 @@ public class IndexHandler {
         try{
             user = userService.login(user.getEmail(),user.getPassword());
             if(user != null){
+                user.setPassword("");
                 session.setAttribute("user",user);
                 result.put("message","success");
             }

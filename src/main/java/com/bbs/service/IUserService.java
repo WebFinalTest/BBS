@@ -26,7 +26,8 @@ public interface IUserService {
     //查找用户昵称是否被使用
     public boolean isUsedByUserName(String userName);
 
-
+    //修改密码
+    public boolean updatePasswordByUserId(Long userId,String originalPassword,String newPassword);
 
     //不允许删除用户
 //    public void deleteById(Long id);

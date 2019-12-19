@@ -95,4 +95,14 @@ public class CommentServiceImpl implements ICommentService {
     public void deleteByCommentId(Long commentId) {
         commentRepository.deleteByCommentId(commentId);
     }
+
+    @Override
+    public Long countAllCommentsByPostId(Long postId) {
+        return commentRepository.countAllCommentsByPostId(postId);
+    }
+
+    @Override
+    public Long countCommentsByFloorId(Long floorId) {
+        return commentRepository.countCommentByFloorId(floorId);
+    }
 }
