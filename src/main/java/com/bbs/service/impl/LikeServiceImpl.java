@@ -48,7 +48,7 @@ public class LikeServiceImpl implements ILikeService {
 
     @Override
     public List<Like> findPostLikes(@Param("userId") Long userId) {
-        return iLikeRepository.findByUserId(userId);
+        return iLikeRepository.findPostsByUserId(userId);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class LikeServiceImpl implements ILikeService {
 
     @Override
     public List<Like> findCommentLikes(@Param("userId") Long userId) {
-        return iLikeRepository.findByUserId(userId);
+        return iLikeRepository.findCommentsByUserId(userId);
     }
 
     @Override

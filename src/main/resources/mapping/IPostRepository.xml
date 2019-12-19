@@ -45,12 +45,7 @@
             postContent    = #{postContent},
             updateDate     = #{updateDate},
             renewDate      = #{updateDate},
-            top            = #{top},
-            quality        = #{quality},
             postPoints     = #{postPoints},
-            adoptCommentId = #{adoptCommentId},
-            likes          = #{likes},
-            collects       = #{collects}
         where postId = #{postId}
     </update>
 
@@ -69,6 +64,24 @@
     <select id="findPostsByPage" resultType="Post">
         select *
         from post
+        where top == 0 and quality == 0
+        order by renewDate DESC
+        limit ${(page-1)*pageSize}, #{pageSize}
+    </select>
+
+    <select id="findQualityPostsByPage" resultType="Post">
+        select *
+        from post
+        where quality == 1
+        order by renewDate DESC
+        limit ${(page-1)*pageSize}, #{pageSize}
+    </select>
+
+    <select id="findTopPostsByPage" resultType="Post">
+        select *
+        from post
+        where top == 1
+        order by renewDate DESC
         limit ${(page-1)*pageSize}, #{pageSize}
     </select>
 

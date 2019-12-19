@@ -17,7 +17,11 @@ import java.util.Map;
 @Controller
 public class UserHandler {
 
-
+    //跳转到用户界面
+    @GetMapping("/view")
+    public String showUserInfo() {
+        return "/user/showUserInfo";
+    }
 
 //    @GetMapping("/create")
 //    public String create(){

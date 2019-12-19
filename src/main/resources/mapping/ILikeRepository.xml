@@ -6,8 +6,14 @@
         select * from `like`
     </select>
     
-    <select id="findByUserId" resultType="Like" parameterType="long">
-        select * from `like` where userId = #{userId}
+    <select id="findPostsByUserId" resultType="Like" parameterType="long">
+        select * from `like`
+        where userId = #{userId} and isnull(commentId)
+    </select>
+
+    <select id="findCommentsByUserId" resultType="Like" parameterType="long">
+        select * from `like`
+        where userId = #{userId} and isnull(postId)
     </select>
 
     <select id="findByPostId" resultType="Like" parameterType="long">

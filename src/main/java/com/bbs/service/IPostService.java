@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IPostService {
     /* 新建方法Start */
-    // 创建会议
+    // 创建帖子
     public boolean createPost(Post post);
     /* 新建方法End */
 
@@ -36,14 +36,24 @@ public interface IPostService {
 
     // 修改帖子内容
     public void updatePostContent(Long postId, String postContent);
+
+    //修改帖子
+    public void updatePost(Post post);
     /* 修改方法End */
 
     /* 查找方法Start */
     // 查找所有帖子
     public List<Post> findPosts();
 
-    // 分页查找帖子
+    // 分页查找普通帖子
     public List<Post> findPostsByPage(Long page);
+
+    // 分页查找精品帖子
+    public List<Post> findQualityPostsByPage(Long page);
+
+    //  分页查找置顶帖子
+    public List<Post> findTopPostsByPage(Long page);
+
 
     // 查找某个用户的所有帖子
     public List<Post> findPostsByUserId(Long userId);
@@ -59,6 +69,13 @@ public interface IPostService {
 
     // 计算某个用户所有帖子页数
     public Long countPostsPageByUserId(Long userId);
+
+    //根据某个收藏夹Id得到所有帖子
+    public List<Post> findPostsByFavoritesId(Long favoritesId,Long Page);
+
+    //根据某个用户Id得到所有的点赞过的帖子
+    public List<Post> findLikePostsByUserId(Long userId,Long Page);
+
 
 //    // 查看帖子的点赞数
 //    public Long getLikesByPostId(Long postId);

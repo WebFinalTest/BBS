@@ -9,7 +9,8 @@ import java.util.List;
 @Repository
 public interface ILikeRepository {
     public List<Like> findAll();
-    public List<Like> findByUserId(@Param("userId") Long userId);
+    public List<Like> findPostsByUserId(@Param("userId") Long userId);
+    public List<Like> findCommentsByUserId(@Param("userId") Long userId);
     public List<Like> findByPostId(@Param("postId") Long postId);
     public List<Like> findByCommentId(@Param("commentId") Long commentId);
     public Like findByPostIdAndUserId(@Param("postId") Long postId,@Param("userId") Long userId);

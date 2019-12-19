@@ -44,6 +44,12 @@ public interface IPostRepository {
     // 查找某一页所有帖子
     public List<Post> findPostsByPage(@Param("page") Long page, @Param("pageSize") Long pageSize);
 
+    // 分页查找精品帖子
+    public List<Post> findQualityPostsByPage(@Param("page") Long page, @Param("pageSize") Long pageSize);
+
+    //  分页查找置顶帖子
+    public List<Post> findTopPostsByPage(@Param("page") Long page, @Param("pageSize") Long pageSize);
+
     //查找所有帖子
     public List<Post> findPostsByUserId(@Param("userId") Long userId);
 
