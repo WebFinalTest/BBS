@@ -38,7 +38,7 @@ public interface IPostService {
     public void updatePostContent(Long postId, String postContent);
 
     //修改帖子
-    public void updatePost(Post post);
+    public Boolean updatePost(Post post);
     /* 修改方法End */
 
     /* 查找方法Start */

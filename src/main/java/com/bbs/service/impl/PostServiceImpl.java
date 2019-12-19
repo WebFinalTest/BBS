@@ -86,11 +86,13 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public void updatePost(Post post) {
+    @Transactional
+    public Boolean updatePost(Post post) {
         Date date = new Date();
         post.setUpdateDate(date);
         post.setRenewDate(date);
         postRepository.update(post);
+        return postRepository.findByPostId(post.getPostId()) != null
     }
 
     @Override

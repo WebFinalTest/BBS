@@ -32,6 +32,9 @@ public class PostHandler {
         try{
             posts = postService.findPostsByPage(1L);
             topPosts = postService.findTopPostsByPage(1L);
+            for (Post post: posts) {
+
+            }
         }catch (Exception e) {
             System.out.println("Error:view");
         }
@@ -167,13 +170,13 @@ public class PostHandler {
     //更新帖子
     @PostMapping("/updatePost")
     @ResponseBody
-    public Map updatePost (Post post,HttpSession session){
+    public Map updatePost (Post post){
         Map<String,String> result = new HashMap<>();
         try {
-            User user = (User)session.getAttribute("user");
-            post.setPostId(user.getUserId());
-            postService.updatePost(post);
-            result.put("message","success");
+            if(postService.updatePost(post))
+                result.put("message","success");
+            else
+                result.put("message","fail");
         }catch (Exception e) {
             result.put("message","error");
         }
