@@ -92,7 +92,7 @@ public class PostServiceImpl implements IPostService {
         post.setUpdateDate(date);
         post.setRenewDate(date);
         postRepository.update(post);
-        return postRepository.findByPostId(post.getPostId()) != null
+        return postRepository.findByPostId(post.getPostId()) != null;
     }
 
     @Override
