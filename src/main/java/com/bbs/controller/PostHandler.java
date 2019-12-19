@@ -167,9 +167,11 @@ public class PostHandler {
     //更新帖子
     @PostMapping("/updatePost")
     @ResponseBody
-    public Map updatePost (Post post){
+    public Map updatePost (Post post,HttpSession session){
         Map<String,String> result = new HashMap<>();
         try {
+            User user = (User)session.getAttribute("user");
+            post.setPostId(user.getUserId());
             postService.updatePost(post);
             result.put("message","success");
         }catch (Exception e) {

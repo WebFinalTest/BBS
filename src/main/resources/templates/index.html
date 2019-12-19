@@ -1,33 +1,152 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <title>BBs论坛</title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="./img/favicon.ico">
+    <link href="./css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link rel="stylesheet" href="./css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="./css/plugins/toastr/toastr.min.css">
+    <link href="./css/animate.css" rel="stylesheet">
+    <link href="./css/style.css?v=4.1.0" rel="stylesheet">
 </head>
-<body>
-    <h1>这是一个测试</h1>
-    <table>
-        <tr>
-            <th>用户名</th>
-            <th>用户ID</th>
-            <th>电子邮箱</th>
-            <th>密码</th>
-            <th>用户类型</th>
-        </tr>
-        <tr th:each="user:${users}">
-            <td th:text="${user.getUserName()}"></td>
-            <td th:text="${user.getUserId()}"></td>
-            <td th:text="${user.getEmail()}"></td>
-            <td th:text="${user.getPassword()}"></td>
-            <td th:text="${user.getUserType()}"></td>
-            <td><a th:href="@{/User/deleteById/{id}(id=${user.getUserId()})}">删除</a></td>
-            <td><a th:href="@{/User/findById/{id}(id=${user.getUserId()})}">修改</a></td>
-        </tr>
-        <tr th:each="comment:${comments}">
-            <td th:text="${comment.getCreateDate()}"></td>
-        </tr>
-    </table>
-    <a href="/Admin/create">添加</a><br>
-    <iframe style="width: 1000px;height: 2000px" src="/Admin/create">添加</iframe>
+<body class="fixed-sidebar full-height-layout gray-bg">
+<div id="wrapper">
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close">
+            <i class="fa fa-close"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                                <span class="block m-t-xs" style="font-size:20px;">
+                                    <i class="fa fa-2x fa-creative-commons"></i>
+                                    <strong class="font-bold">YZH's</strong>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="logo-element">BBs</div>
+                </li>
+                <li class="hidden-foled padder m-t m-b-sm text muted text-xs">
+                    <span class="ng-scope">基本信息</span>
+                </li>
+                <li>
+                    <a href="/Post/view">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">主页</span>
+                    </a>
+                </li>
+                <li th:if="${#session.getAttribute('user') != null}">
+                    <a href="/User/view" class="J_menuItem">
+                        <i class="fa fa-user"></i>
+                        <span class="nav-label">用户信息</span>
+                    </a>
+                </li>
+                <li th:if="${#session.getAttribute('user') != null}">
+                    <a href="" class="J_menuItem">
+                        <i class="fa fa-user"></i>
+                        <span class="nav-label">创建帖子</span>
+                    </a>
+                </li>
+                <li th:if="${#session.getAttribute('user') != null}">
+                    <a href="" class="J_menuItem">
+                        <i class="fa fa-user"></i>
+                        <span class="nav-label">我的帖子</span>
+                    </a>
+                </li>
+                <li th:if="${#session.getAttribute('user') != null}">
+                    <a href="" class="J_menuItem">
+                        <i class="fa fa-user"></i>
+                        <span class="nav-label">我的收藏</span>
+                    </a>
+                    <ul th:each="favorites${favoritess}" class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem" th:text="favorites.getFavoritesName()"
+                               th:href="@{/Collect/viewCollect/{favoritesId}(favoritesId=${favorites.getFavoritesId()})}"></a>
+                        </li>
+                    </ul>
+                </li>
+                <li th:if="${#session.getAttribute('user') != null}">
+                    <a href="" class="J_menuItem">
+                        <i class="fa fa-user"></i>
+                        <span class="nav-label">我的点赞</span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/Like/viewPosts" class="J_menuItem">帖子</a>
+                        </li>
+                        <li>
+                            <a href="/Like/viewComments" class="J_menuItem">评论</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--左侧导航结束-->
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg">
+
+    </div>
+    <!--右侧部分结束-->
+</div>
+
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+
+<!-- 自定义js -->
+<script src="/js/hAdmin.js?v=4.1.0"></script>
+<script src="/js/index.js"></script>
+<script src="/js/custom/commons.js"></script>
+<script src="/js/custom/custom.js"></script>
+
+<!-- 第三方插件 -->
+<script src="/js/plugins/pace/pace.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
 </body>
 </html>
+<!--    <h1>这是一个测试</h1>-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th>用户名</th>-->
+<!--            <th>用户ID</th>-->
+<!--            <th>电子邮箱</th>-->
+<!--            <th>密码</th>-->
+<!--            <th>用户类型</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="user:${users}">-->
+<!--            <td th:text="${user.getUserName()}"></td>-->
+<!--            <td th:text="${user.getUserId()}"></td>-->
+<!--            <td th:text="${user.getEmail()}"></td>-->
+<!--            <td th:text="${user.getPassword()}"></td>-->
+<!--            <td th:text="${user.getUserType()}"></td>-->
+<!--            <td><a th:href="@{/User/deleteById/{id}(id=${user.getUserId()})}">删除</a></td>-->
+<!--            <td><a th:href="@{/User/findById/{id}(id=${user.getUserId()})}">修改</a></td>-->
+<!--        </tr>-->
+<!--        <tr th:each="collect:${comments}">-->
+<!--            <td th:text="${collect.getCreateDate()}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--    <a href="/Admin/create">添加</a><br>-->
+<!--    <iframe style="width: 1000px;height: 2000px" src="/Admin/create">添加</iframe>-->

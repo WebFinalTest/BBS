@@ -12,4 +12,5 @@ public class ForumHandler {
     public String toIndex() {
         return "index";
     }
+
 }
