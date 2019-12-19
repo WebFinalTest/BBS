@@ -45,7 +45,7 @@
             postContent    = #{postContent},
             updateDate     = #{updateDate},
             renewDate      = #{updateDate},
-            postPoints     = #{postPoints},
+            postPoints     = #{postPoints}
         where postId = #{postId}
     </update>
 

@@ -3,6 +3,7 @@ package com.bbs.PostTest;
 import com.bbs.entity.Post;
 import com.bbs.service.IPostService;
 import com.bbs.util.Utils;
+import javafx.geometry.Pos;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,10 +105,16 @@ public class IPostServiceTest {
     // 已测试修改帖子内容
     @Test
     public void updatePostContentTest() {
-        Post post = postService.findPostByPostId(1323L);
-        System.out.println(post);
-        postService.updatePostContent(1323L, creatString(Utils.randomId(3)));
-        post = postService.findPostByPostId(1323L);
+//        Post post = postService.findPostByPostId(1L);
+////        System.out.println(post);
+////        postService.updatePostContent(1L, creatString(Utils.randomId(3)));
+////        post = postService.findPostByPostId(1L);
+        Post post = new Post();
+        post.setPostId(1L);
+        post.setPostContent("修改成功");
+        post.setPostTitle("修改成功");
+        post.setPostPoints(10L);
+        postService.updatePost(post);
         System.out.println(post);
     }
     /* 修改方法End */
