@@ -42,6 +42,11 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
+    public Comment findByCommentId(Long commentId) {
+        return findByCommentId(commentId);
+    }
+
+    @Override
     public List<Comment> findByFloorId(Long floorId, Long page) {
         return commentRepository.findByFloorId(floorId, page, pageSize);
     }

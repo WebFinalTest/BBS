@@ -1,6 +1,7 @@
 package com.bbs.service;
 
 import com.bbs.entity.Comment;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -28,4 +29,7 @@ public interface ICommentService{
 
     //删除一个评论
     public void deleteByCommentId(Long commentId);
+
+    //按评论ID返回一个评论
+    public Comment findByCommentId(Long commentId);
 }

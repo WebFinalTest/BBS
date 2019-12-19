@@ -39,10 +39,25 @@ public class CommentHandler {
             comments = commentService.findByPostId(postId,1L);
             post = postService.findPostByPostId(postId);
         }catch (Exception e) {
-
+            System.out.println("ERROR:goComments");
         }
         model.addAttribute("comments",comments);
         model.addAttribute("post",post);
         return "/post/show";
+    }
+
+    //查看层级评论
+    @GetMapping("/goFloorComments/{floorId}")
+    public String goFloorComments(@PathVariable("floorId") Long floorId,Model model) {
+        List<Comment> comments = new ArrayList<>();
+        try {
+            comments = commentService.findByFloorId(floorId,1L);
+            comments.add(0,commentService.findByCommentId(floorId));
+        }
+        catch (Exception e) {
+            System.out.println("Error:goFloorComments");
+        }
+        model.addAttribute("comments",comments);
+        return "/comment/showComment";
     }
 }
