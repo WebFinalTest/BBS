@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,17 @@ public class PostHandler {
 
     //跳转到帖子页面
     @GetMapping("/view")
-    public String view() {
+    public String view(Model model) {
+        List<Post> posts = new ArrayList<>();
+        List<Post> topPosts = new ArrayList<>();
+        try{
+            posts = postService.findPostsByPage(1L);
+            topPosts = postService.findTopPostsByPage(1L);
+        }catch (Exception e) {
+            System.out.println("Error:view");
+        }
+        model.addAttribute(posts);
+        model.addAttribute(topPosts);
         return "/post/main";
     }
 
@@ -40,6 +51,9 @@ public class PostHandler {
         }
         return "/post/change";
     }
+
+    //提交修改
+
 
     //根据页码查看帖子
     @GetMapping("/view/{page}")
