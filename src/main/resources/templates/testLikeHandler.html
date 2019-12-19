@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.min.js?v=2.1.4"></script>
+    <script>
+        function fun() {
+            // $.ajax({
+            //     url:"/Like/createLike",
+            //     type:"POST",
+            //     data:{"postId":5},
+            //     success:function(data){
+            //         var message=data["message"];
+            //         alert(message);
+            //     },
+            // })
+            // $.ajax({
+            //     url:"/Like/createLike",
+            //     type:"POST",
+            //     data:{"commentId":6},
+            //     success:function(data){
+            //         var message=data["message"];
+            //         alert(message);
+            //     },
+            // })
+            // $.ajax({
+            //     url:"/Like/countPostLikes",
+            //     type:"POST",
+            //     data:{"postId":5},
+            //     success:function(data){
+            //         var message=data["countPostLikes"];
+            //         alert(message);
+            //     },
+            // })
+            // $.ajax({
+            //     url:"/Like/countCommentLikes",
+            //     type:"POST",
+            //     data:{"commentId":6},
+            //     success:function(data){
+            //         var message=data["countCommentLikes"];
+            //         alert(message);
+            //     },
+            // })
+            // $.ajax({
+            //     url:"/Like/isPostLike",
+            //     type:"POST",
+            //     data:{"postId":5},
+            //     success:function(data){
+            //         var message=data["message"];
+            //         alert(message);
+            //     },
+            // })
+            // $.ajax({
+            //     url:"/Like/isCommentLike",
+            //     type:"POST",
+            //     data:{"commentId":6},
+            //     success:function(data){
+            //         var message=data["message"];
+            //         alert(message);
+            //     },
+            // })
+            // $.ajax({
+            //     url:"/Like/deleteLike",
+            //     type:"POST",
+            //     data:{"commentId":6},
+            //     success:function(data){
+            //         var message=data["message"];
+            //         alert(message);
+            //     },
+            // })
+            // $.ajax({
+            //     url:"/Like/deleteLike",
+            //     type:"POST",
+            //     data:{"postId":5},
+            //     success:function(data){
+            //         var message=data["message"];
+            //         alert(message);
+            //     },
+            // })
+            $.ajax({
+                url:"/Like/deleteLike",
+                type:"POST",
+                data:{"postId":5},
+                success:function(data){
+                    var message=data["message"];
+                    alert(message);
+                },
+            })
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="发送请求" onclick="fun()">
+</body>
+</html>

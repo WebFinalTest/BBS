@@ -18,7 +18,7 @@ public interface ILikeService {
     //查看点赞过的评论
     public List<Like> findCommentLikes(@Param("userId") Long userId);
     //查看评论点赞数
-    public Long countCommentLike(@Param("commentId") Long commentId);
+    public Long countCommentLikes(@Param("commentId") Long commentId);
     //查看评论是否点赞过
     public boolean isCommentLike(@Param("commentId") Long commentId);
     //根据帖子ID删除点赞

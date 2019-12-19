@@ -73,7 +73,7 @@ public class LikeServiceImpl implements ILikeService {
     }
 
     @Override
-    public Long countCommentLike(@Param("commentId") Long commentId) {
+    public Long countCommentLikes(@Param("commentId") Long commentId) {
         List<Like> commentLike=iLikeRepository.findByCommentId(commentId);
         return new Long((long)commentLike.size());
     }
