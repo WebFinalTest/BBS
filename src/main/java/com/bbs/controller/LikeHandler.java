@@ -6,9 +6,10 @@ import com.bbs.entity.User;
 import com.bbs.service.ILikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -17,23 +18,42 @@ import java.util.Map;
 @RequestMapping("/Like")
 @Controller
 public class LikeHandler {
-    ILikeService likeService;
+    public ILikeService likeService;
 
     @Autowired
     public void setLikeService(ILikeService likeService) {
         this.likeService = likeService;
     }
 
-    @RequestMapping("/createLike")
-    @ResponseBody
-    public Map createLike(Like like, HttpSession session) {
+    @PostMapping("/likePost")
+    public Map likePost(HttpSession session,Long postId) {
         Map<String,String> result = new HashMap<>();
+        User user;
+        Like like = new Like();
         try{
-            User user = (User)session.getAttribute("user");
+            user = (User)session.getAttribute("user");
+            like.setPostId(postId);
             like.setUserId(user.getUserId());
             likeService.createLike(like);
             result.put("message","success");
-        } catch (Exception e) {
+        }catch (Exception e) {
+            result.put("message","error");
+        }
+        return result;
+    }
+
+    @PostMapping("/likeComment")
+    public Map likeComment(HttpSession session, Long commentId) {
+        Map<String,String> result = new HashMap<>();
+        User user;
+        Like like = new Like();
+        try{
+            user = (User)session.getAttribute("user");
+            like.setCommentId(commentId);
+            like.setUserId(user.getUserId());
+            likeService.createLike(like);
+            result.put("message","success");
+        }catch (Exception e) {
             result.put("message","error");
         }
         return result;

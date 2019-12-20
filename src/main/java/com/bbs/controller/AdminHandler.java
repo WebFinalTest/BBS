@@ -18,7 +18,9 @@ public class AdminHandler {
     }
 
     @PostMapping("/deleteCommentByCommentId")
-    public Map deleteCommentByCommentId(Long CommentId) {
+    public Map deleteCommentByCommentId(Long commentId) {
         return new HashMap();
     }
+
+
 }
