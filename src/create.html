@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title> - 发帖</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="/favicon.ico"> <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<body class="gray-bg">
+
+<div class="mail-box-header">
+    <h1>发帖</h1>
+</div>
+<div class="mail-box">
+    <div class="mail-body">
+        <form class="form-horizontal" method="get">
+            <div class="form-group">
+                <label class="col-sm-1" >主题：</label>
+                <div class="col-sm-11">
+                    <input type="text" id="postTitle" class="form-control" required>
+                </div>
+                <br><br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="postType" value="0" onclick="hiddenpostPoints()" checked>普通帖
+                &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="postType" value="1" onclick="viewpostPoints()" >提问帖
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="p_points"></span><input id="postPoints" type="hidden" name ="postPoints" required>
+            </div>
+        </form>
+    </div>
+    <div class="mail-text h-200">
+        <div class="summernote" text-center>
+            <textarea cols="140" rows="10" id="postContent" required placeholder="帖子正文"></textarea>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="mail-body text-center tooltip-demo">
+        <a onclick="submitPost()"  class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> 提交</a>
+        <!--<a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times">重写</i> </a>-->
+    </div>
+    <div class="clearfix"></div>
+    </div>
+    <div class="mail-body text-right tooltip-demo">
+        <a onclick="submitPost()"  class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> 提交</a>
+        <!--<a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times">重写</i> </a>-->
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<!--自定义button-->
+<script>
+    function submitPost() {
+
+        $.ajax({
+            url:"/Post/create",
+            data:{
+                "postTitle":$("#postTitle").val(),
+                "postContent":document.getElementById("postContent").value,
+                // "postContent":$("#postContent").val(),
+                "postType":$("input:radio[name='postType']:checked").val(),
+                "postPoints":$("#postPoints").val()
+            },
+            type:"POST",
+            dataType:"json",
+            timeout:3000,
+            async:true,
+            success:function (result) {
+                if(result.message === "success")
+                    alert("创建成功！");
+                else
+                    alert("创建失败！");
+            },
+            error:function () {
+                alert("创建错误！");
+            }
+        });
+    }
+
+    function hiddenpostPoints() {
+        var Id = document.getElementById("postPoints");
+        var p = document.getElementById("p_points");
+        Id.value = "";
+        p.innerHTML = "";
+        Id.type = "hidden";
+    }
+
+    function  viewpostPoints() {
+        var Id = document.getElementById("postPoints");
+        var p = document.getElementById("p_points");
+        p.innerHTML = "提供积分:";
+        Id.type = "text";
+    }
+</script>
+
+
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+
+
+
+<!-- 自定义js -->
+<script src="/js/content.js?v=1.0.0"></script>
+
+
+<!-- iCheck -->
+<script src="/js/plugins/iCheck/icheck.min.js"></script>
+
+<!-- SUMMERNOTE -->
+<script src="/js/plugins/summernote/summernote.min.js"></script>
+<script src="/js/plugins/summernote/summernote-zh-CN.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+
+        $('.summernote').summernote({
+            lang: 'zh-CN'
+        });
+
+    });
+    var edit = function () {
+        $('.click2edit').summernote({
+            focus: true
+        });
+    };
+    var save = function () {
+        var aHTML = $('.click2edit').code(); //save HTML If you need(aHTML: array).
+        $('.click2edit').destroy();
+    };
+</script>
+    </body>
+</html>
