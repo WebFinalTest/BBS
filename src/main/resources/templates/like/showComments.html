@@ -1,10 +1,77 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <title>查看我喜欢的帖子</title>
 
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!-- [if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <! [endif]-->
+
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <link rel="stylesheet" href="/BBs/static/css/bootstrap.min.css?v=3.3.6">
+    <link rel="stylesheet" href="/BBs/static/css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/BBs/static/css/animate.css">
+    <link rel="stylesheet" href="/BBs/static/css/style.css?v=4.1.0">
+    <link rel="stylesheet" href="/BBs/static/css/custom/custom.css">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css?v=3.3.6">
+    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+</head>
+<body class="gray-bg">
+<script>
+    var page = 1;
+</script>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="ibox-content m-b-sm border-bottom">
+                    <div class="p-xs">
+                        <h1 class="text-center">我喜欢的帖子</h1>
+                    </div>
+                </div>
+                <div class="ibox-content forum-container">
+                    <div class="forum-item" th:each="comment,indexInc:${comments}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div th:switch="${indexInc%12}" class="forum-icon">
+                                    <i th:case="0" class="fa fa-hand-spock-o"></i>
+                                    <i th:case="1" class="fa fa-hand-lizard-o"></i>
+                                    <i th:case="2" class="fa fa-hand-o-down"></i>
+                                    <i th:case="3" class="fa fa-hand-o-left"></i>
+                                    <i th:case="4" class="fa fa-hand-o-right"></i>
+                                    <i th:case="5" class="fa fa-hand-o-up"></i>
+                                    <i th:case="6" class="fa fa-hand-paper-o"></i>
+                                    <i th:case="7" class="fa fa-hand-peace-o"></i>
+                                    <i th:case="8" class="fa fa-hand-pointer-o"></i>
+                                    <i th:case="9" class="fa fa-hand-rock-o"></i>
+                                    <i th:case="10" class="fa fa-hand-scissors-o"></i>
+                                    <i th:case="*" class="fa fa-hand-stop-o"></i>
+                                </div>
+                                <a th:href="@{/Comment/goCommentByCommentId/{commentId}(commentId=${comment.getCommentId()})}"
+                                   th:text="${comment.getCommentTitle()}"></a>
+                                <div class="forum-sub-title" th:text="${comment.getCommentContent()}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>
