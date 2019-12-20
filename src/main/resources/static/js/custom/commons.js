@@ -14,7 +14,8 @@ function loginin() {
         success:function (result) {
             if(result.message === "success"){
                 alert("登陆成功！");
-                window.location.herf="/Index/index";
+                window.location.href="/Index/index";
+
             }
             else
                 alert("登陆失败！");

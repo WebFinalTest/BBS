@@ -81,6 +81,12 @@ public class CommentServiceImpl implements ICommentService {
             commentId = Utils.randomId(12);
         }while (commentRepository.findByCommentId(commentId) != null);
 
+        //设置评论层级
+        if(comment.getReplyId() != null) {
+            Comment replyComment = commentRepository.findByCommentId(comment.getReplyId());
+            comment.setFloorId(replyComment.getFloorId() == null ? replyComment.getCommentId() : replyComment.getFloorId());
+        }
+
         //增加10积分
         userRepository.increasePointsByUserId(10L,comment.getUserId());
 

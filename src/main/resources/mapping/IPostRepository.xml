@@ -12,6 +12,12 @@
         insert into post(postId, userId, postTitle, postContent, postType)
         values (#{postId}, #{userId}, #{postTitle}, #{postContent}, #{postType})
     </insert>
+    
+    <update id="likeByPostId">
+        update post
+        set likes = likes + 1
+        where postId = #{postId}
+    </update>
 
     <!-- 删除方法 -->
     <delete id="deleteById">

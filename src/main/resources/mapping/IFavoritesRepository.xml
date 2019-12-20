@@ -11,7 +11,7 @@
         update favorites set favoritesName=#{favoritesName} where favoritesId=#{favoritesId}
     </update>
 
-    <select id="findAllFavoritesByUserId" resultType="Long">
+    <select id="findAllFavoritesByUserId" resultType="Favorites">
         select * from favorites where userId =#{userId}
     </select>
 

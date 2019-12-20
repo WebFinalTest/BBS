@@ -44,11 +44,9 @@ public class IPostServiceTest {
     @Test
     public void createPostTest() {
         Post post = new Post();
-        post.setPostId(1111L);
-        post.setUserId(123321L);
+        post.setUserId(358160797L);
         post.setPostTitle("yzh");
         post.setPostContent("zzzz");
-        post.setPostType(false);
         postService.createPost(post);
     }
     /* 新建方法End */

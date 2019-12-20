@@ -37,17 +37,21 @@ public class UserHandler {
 
     //注销
     @GetMapping("/down")
-    public Map down(HttpSession session) {
-        Map map = new HashMap();
+    public String down(HttpSession session) {
         try {
             session.removeAttribute("user");
-            map.put("message","success");
         }catch (Exception e) {
-            map.put("message","error");
+            System.out.println("ERROR:down");
         }
-        return map;
+        return "redirect:/Index/login";
     }
 
+
+    //修改用户信息页面
+    @GetMapping("/updateUserInfo")
+    public String toUpdateUserInfo() {
+        return "user/updateUserInfo";
+    }
 
     //修改用户信息提交
     @PostMapping("/updateUserInfo/do")
@@ -58,6 +62,9 @@ public class UserHandler {
             User user1 = (User)session.getAttribute("user");
             user.setUserId(user1.getUserId());
             userService.update(user);
+            session.removeAttribute("user");
+            user1 = userService.findByUserId(user.getUserId());
+            session.setAttribute("user",user1);
             map.put("message","success");
         }catch (Exception e) {
             map.put("message","error");
@@ -67,6 +74,7 @@ public class UserHandler {
 
     //修改用户密码
     @PostMapping("/updatePassword")
+    @ResponseBody
     public Map<String,String> updatePassword(HttpSession session,String originalPassword,String newPassword) {
         Map map = new HashMap();
         try {
@@ -79,6 +87,23 @@ public class UserHandler {
             map.put("message","error");
         }
         return map;
+    }
+
+    //检查用户名是否被使用
+    @PostMapping("/checkUserName")
+    @ResponseBody
+    public Map checkUserName(String userName,HttpSession session) {
+        Map<String,String> result = new HashMap<>();
+        try{
+            User user = (User) session.getAttribute("user");
+            if(userService.isUsedByUserName(userName) && !userName.equals(user.getUserName()))
+                result.put("message","isUsed");
+            else
+                result.put("message","isNotUsed");
+        } catch (Exception e) {
+            result.put("message","error");
+        }
+        return result;
     }
 
     //    //修改用户信息界面

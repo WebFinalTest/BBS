@@ -28,6 +28,7 @@ public class UserServiceImplTest {
         User user = userService.login("1367112248@qq.com","12312");
         System.out.println(user);
 
+
         //注册方法
         System.out.println("注册方法：");
         user.setEmail(Utils.randomId(10).toString());

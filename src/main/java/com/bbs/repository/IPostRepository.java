@@ -65,6 +65,9 @@ public interface IPostRepository {
     // 计算某个用户所建帖子总数
     public Long countPostsByUserId(@Param("userId") Long userId);
 
+    //点赞帖子
+    public void likeByPostId(@Param("postId") Long postId);
+
     //收藏数+1
     public Long collectByPostId(@Param("postId") Long postId);
 

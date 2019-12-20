@@ -20,6 +20,8 @@ public class UserRepositoryTest {
 
     @Test
     public void test(){
+
+        System.out.println(userRepository.findPointsByUserId(123226946L));
         //增加积分
         userRepository.increasePointsByUserId(100L,123226946L);
         System.out.println("增加积分");

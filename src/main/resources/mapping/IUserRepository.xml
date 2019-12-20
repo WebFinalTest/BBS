@@ -23,7 +23,6 @@
     <update id="update" parameterType="User">
         update user set
         userName = #{userName},
-        email = #{email},
         qq = #{qq},
         phone = #{phone},
         workplace = #{workplace},

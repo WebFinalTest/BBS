@@ -4,6 +4,7 @@ import com.bbs.entity.Post;
 import com.bbs.entity.User;
 import com.bbs.service.ICommentService;
 import com.bbs.service.IPostService;
+import com.bbs.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,12 @@ import java.util.Map;
 public class PostHandler {
     private IPostService postService;
     private ICommentService commentService;
+    private IUserService userService;
+
+    @Autowired
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public void setCommentService(ICommentService commentService) {
@@ -30,6 +37,7 @@ public class PostHandler {
     public void setPostService(IPostService postService) {
         this.postService = postService;
     }
+
 
     //跳转到帖子页面
     @GetMapping("/view")
@@ -52,7 +60,20 @@ public class PostHandler {
         model.addAttribute("posts",posts);
         model.addAttribute("topPosts",topPosts);
         model.addAttribute("countComments",countComments);
-        return "user/showPosts";
+        return "post/showPosts";
+    }
+
+    //查看置顶帖子
+    @PostMapping("/viewTopPosts")
+    @ResponseBody
+    public List<Post> viewTopPosts(Long page) {
+        List<Post> topPosts = new ArrayList<>();
+        try {
+            topPosts = postService.findTopPostsByPage(page);
+        }catch (Exception e) {
+
+        }
+        return topPosts;
     }
 
     //传到修改帖子页面
@@ -67,14 +88,17 @@ public class PostHandler {
         return "post/change";
     }
 
-    //提交修改
-
-
     //根据页码查看帖子
     @GetMapping("view/{page}")
     @ResponseBody
     public List<Post> viewByPage(@PathVariable("page") Long page) {
         return postService.findPostsByPage(page);
+    }
+
+    //跳到创建帖子界面
+    @GetMapping("/createPost")
+    public String toCreate(){
+        return "post/create";
     }
 
     //创建帖子
@@ -85,8 +109,12 @@ public class PostHandler {
         try {
             User user = (User) session.getAttribute("user");
             post.setUserId(user.getUserId());
-            if (postService.createPost(post))
+            if (postService.createPost(post)){
+                user = userService.findByUserId(user.getUserId());
+                user.setPassword("");
+                session.setAttribute("user",user);
                 result.put("message","success");
+            }
             else
                 result.put("message","failed");
         }catch (Exception e) {
@@ -193,6 +221,20 @@ public class PostHandler {
             result.put("message","error");
         }
         return result;
+    }
+
+    //查看我创建的帖子
+    @GetMapping("/myPosts")
+    public String showMyPosts(HttpSession session,Model model){
+        List<Post> posts = new ArrayList<>();
+        try{
+            User user = (User)session.getAttribute("user");
+            posts = postService.findPostsByPageUserId(user.getUserId(),1L);
+        }catch (Exception e) {
+
+        }
+        model.addAttribute("posts",posts);
+        return "/user/showPosts";
     }
 
 }

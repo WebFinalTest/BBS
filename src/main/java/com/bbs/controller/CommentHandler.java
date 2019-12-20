@@ -2,16 +2,16 @@ package com.bbs.controller;
 
 import com.bbs.entity.Comment;
 import com.bbs.entity.Post;
+import com.bbs.entity.User;
 import com.bbs.service.ICommentService;
 import com.bbs.service.IPostService;
 import com.bbs.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,5 +79,24 @@ public class CommentHandler {
         }
         model.addAttribute("comments",comments);
         return "comment/showComment";
+    }
+
+    //创建评论
+    @PostMapping("/create")
+    @ResponseBody
+    public Map createComment (HttpSession session,Comment comment) {
+        Map<String,String> result = new HashMap<>();
+        try {
+            User user = (User) session.getAttribute("user");
+            comment.setUserId(user.getUserId());
+            commentService.createComment(comment);
+            user = userService.findByUserId(user.getUserId());
+            user.setPassword("");
+            session.setAttribute("user",user);
+            result.put("message","success");
+        }catch (Exception e) {
+            result.put("message","error");
+        }
+        return result;
     }
 }

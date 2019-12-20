@@ -3,7 +3,9 @@ package com.bbs.service.impl;
 import com.bbs.entity.Like;
 import com.bbs.repository.ICommentRepository;
 import com.bbs.repository.ILikeRepository;
+import com.bbs.repository.IPostRepository;
 import com.bbs.service.ILikeService;
+import com.bbs.service.IPostService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,12 @@ import java.util.List;
 public class LikeServiceImpl implements ILikeService {
     private ILikeRepository iLikeRepository;
     private ICommentRepository iCommentRepository;
+    private IPostRepository postRepository;
+
+    @Autowired
+    public void setPostRepository(IPostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Autowired
     public void setiCommentRepository(ICommentRepository iCommentRepository) {
@@ -34,9 +42,11 @@ public class LikeServiceImpl implements ILikeService {
         if(like.getCommentId()!=null){
             returnLike = iLikeRepository.findByCommentIdAndUserId(like.getCommentId(),like.getUserId());
             iCommentRepository.likeByCommentId(like.getCommentId());
+            iCommentRepository.likeByCommentId(like.getCommentId());
         }
         else{
             returnLike = iLikeRepository.findByPostIdAndUserId(like.getPostId(), like.getUserId());
+            postRepository.likeByPostId(like.getPostId());
         }
         if(returnLike!=null){
             return true;

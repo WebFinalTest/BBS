@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 public class PostServiceImpl implements IPostService {
     private final Long pageSize = 30L;
+    private final Long pageSize2 = 3L;
     private IPostRepository postRepository;
     private IUserRepository userRepository;
     private ICommentRepository commentRepository;
@@ -62,16 +63,18 @@ public class PostServiceImpl implements IPostService {
             postId = Utils.randomId(10);
         }while (postRepository.findByPostId(postId) != null);
         post.setPostId(postId);
-        // 如果该帖子是需求贴
-        if (post.isPostType())
-            postRepository.saveWithPostPoints(post);
+        // 如果该帖子不是需求贴
+        if (!post.isPostType())
+            postRepository.saveWithOutPostPoints(post);
         else {
             Long points = userRepository.findPointsByUserId(post.getUserId());
-            if (points > post.getPostPoints())
-                postRepository.saveWithOutPostPoints(post);
-            else
+            if (points >= post.getPostPoints() && post.getPostPoints() >= 0){
+                postRepository.saveWithPostPoints(post);
+                userRepository.reducePointsByUserId(post.getPostPoints(),post.getUserId());
+            }else
                 return false;
         }
+        userRepository.increasePointsByUserId(20L,post.getUserId());
         return true;
     }
 
@@ -208,11 +211,11 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public List<Post> findQualityPostsByPage(Long page) {
-        return postRepository.findQualityPostsByPage(page,pageSize);
+        return postRepository.findQualityPostsByPage(page,pageSize2);
     }
 
     @Override
     public List<Post> findTopPostsByPage(Long page) {
-        return postRepository.findTopPostsByPage(page,pageSize);
+        return postRepository.findTopPostsByPage(page,pageSize2);
     }
 }

@@ -8,10 +8,11 @@ public class User {
     private String userName;
     private String password;
     private String email;
-    private Long userType;
+    private boolean userType;
     private Long points;
     private Long qq;
     private Long phone;
     private String workplace;
     private String habitation;
+
 }
