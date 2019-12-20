@@ -218,4 +218,16 @@ public class PostServiceImpl implements IPostService {
     public List<Post> findTopPostsByPage(Long page) {
         return postRepository.findTopPostsByPage(page,pageSize2);
     }
+
+    @Override
+    public Long countTopPostsPage() {
+        Long postsNum = postRepository.countTopPosts();
+        return postsNum / pageSize2 + (postsNum % pageSize2 == 0 ? 0 : 1);
+    }
+
+    @Override
+    public Long countQualityPostsPage() {
+        Long postsNum = postRepository.countQualityPosts();
+        return postsNum / pageSize2 + (postsNum % pageSize2 == 0 ? 0 : 1);
+    }
 }

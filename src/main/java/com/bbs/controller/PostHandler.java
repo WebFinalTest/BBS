@@ -43,11 +43,14 @@ public class PostHandler {
     @GetMapping("/view")
     public String view(Model model) {
         List<Post> posts = new ArrayList<>();
+        Long postPages = 0L,topPostPages = 0L;
         List<Post> topPosts = new ArrayList<>();
         Map<Long,Long> countComments = new HashMap<>();
         try{
             posts = postService.findPostsByPage(1L);
             topPosts = postService.findTopPostsByPage(1L);
+            postPages = postService.countPostsPage();
+            topPostPages = postService.countTopPostsPage();
             for (Post post: posts) {
                 countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
             }
@@ -57,6 +60,8 @@ public class PostHandler {
         }catch (Exception e) {
             System.out.println("Error:view");
         }
+        model.addAttribute("postPages",postPages);
+        model.addAttribute("topPostPages",topPostPages);
         model.addAttribute("posts",posts);
         model.addAttribute("topPosts",topPosts);
         model.addAttribute("countComments",countComments);

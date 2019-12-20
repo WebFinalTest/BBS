@@ -62,6 +62,12 @@ public interface IPostRepository {
     // 计算帖子总数
     public Long countPosts();
 
+    // 计算置顶帖子总数
+    public Long countTopPosts();
+
+    // 计算精品帖子总数
+    public Long countQualityPosts();
+
     // 计算某个用户所建帖子总数
     public Long countPostsByUserId(@Param("userId") Long userId);
 

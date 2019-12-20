@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,11 @@ public class FavoritesHandler {
     //创建一个新的收藏夹
     @PostMapping("/createFavorites")
     @ResponseBody
-    public Map createFavorites(HttpSession session,String name){
+    public Map createFavorites(HttpSession session,String favoritesName){
         User user = (User) session.getAttribute("user");
         Map<String,String> result = new HashMap<String, String>();
         try{
-            favoritesService.createFavorites(user.getUserId(),name);
+            favoritesService.createFavorites(user.getUserId(),favoritesName);
             result.put("message","success");
         }
         catch (Exception e) {
@@ -41,12 +42,12 @@ public class FavoritesHandler {
         return result;
     }
 
-    //根据userId查看收藏夹,返回该Id的全部收藏夹,错则返回null
+    //根据userId查看收藏夹,返回该Id的全部收藏夹,错则返回空
     @PostMapping("/viewFavorites")
     @ResponseBody
     public List<Favorites> viewFavorites(HttpSession session){
         User user = (User)session.getAttribute("user");
-        List<Favorites> list;
+        List<Favorites> list = new ArrayList<>();
         try{
              list = favoritesService.findAllFavoritesByUserId(user.getUserId());
         }
@@ -68,7 +69,7 @@ public class FavoritesHandler {
         catch (Exception e) {
             result.put("message","error");
         }
-            return result;
+        return result;
     }
 
     //传入favorites对象删除此favorites对象

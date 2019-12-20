@@ -112,6 +112,19 @@
 
     <select id="countPosts" resultType="Long">
         select count(*)
+        where top = 0 and quality = 0
+        from post
+    </select>
+
+    <select id="countTopPosts" resultType="Long">
+        select count(*)
+        where top = 1
+        from post
+    </select>
+
+    <select id="countQualityPosts" resultType="Long">
+        select count(*)
+        where quality = 1
         from post
     </select>
 
@@ -130,5 +143,6 @@
         update post set collects = collects - 1
         where postId = #{postId}
     </update>
+
 
 </mapper>

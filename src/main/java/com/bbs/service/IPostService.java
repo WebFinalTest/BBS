@@ -64,8 +64,14 @@ public interface IPostService {
     // 查找某个帖子
     public Post findPostByPostId(Long postId);
 
-    // 计算所有帖子页数
+    // 计算普通帖子页数
     public Long countPostsPage();
+
+    // 计算置顶帖子页数
+    public Long countTopPostsPage();
+
+    // 计算精品帖子页数
+    public Long countQualityPostsPage();
 
     // 计算某个用户所有帖子页数
     public Long countPostsPageByUserId(Long userId);

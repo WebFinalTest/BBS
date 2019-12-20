@@ -75,13 +75,15 @@
             timeout:3000,
             async:true,
             success:function (result) {
-                if(result.message === "success")
-                    alert("创建成功！");
+                if(result.message === "success"){
+                    toastr.success("创建帖子成功", "个人积分+20");
+                    window.location.href = "/Post/view";
+                }
                 else
-                    alert("创建失败！");
+                    toastr.error("创建帖子失败", "请检查您的输入是否有误");
             },
             error:function () {
-                alert("创建错误！");
+                toastr.error("系统繁忙", "请稍后再试");
             }
         });
     }

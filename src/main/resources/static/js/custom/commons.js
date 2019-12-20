@@ -13,15 +13,15 @@ function loginin() {
         async:true,
         success:function (result) {
             if(result.message === "success"){
-                alert("登陆成功！");
+                toastr.success("登陆成功!","正在跳转至主页");
                 window.location.href="/Index/index";
 
             }
             else
-                alert("登陆失败！");
+                toastr.error("登陆失败！","请检查您的邮箱和密码是否正确");
         },
         error:function () {
-            alert("登陆失败！");
+            toastr.error("系统繁忙！","请稍后再试");
         }
     });
 }
@@ -43,76 +43,91 @@ function register(){
             async: true,
             success: function (result) {
                 if (result.message === "success") {
-                    alert("注册成功！");
+                    toastr.success("注册成功!","正在跳转至登陆");
                     window.location.href = "/Index/login";
                 }
                 else {
-                    alert("注册失败！");
+                    toastr.error("注册失败！","请检查您信息是否正确");
                 }
             },
             error: function () {
-                alert("注册失败！");
+                toastr.error("系统繁忙！","请稍后再试");
             }
         });
     }
 }
 
 function checkUserName() {
-    $.ajax({
-        url:"/Index/register/checkUserName",
-        data:{
-            "userName":$("input[name='userName']").val(),
-        },
-        type:"POST",
-        dataType:"json",
-        timeout:3000,
-        async:true,
-        success:function (result) {
-            if(result.message === "isNotUsed") {
-                $("#userNameNotice").text("");
-                checkEmailValue = true;
+    if ($("input[name='userName']").val() === "") {
+        $("#userNameNotice").text("用户名不能为空！");
+        checkUserNameValue = false;
+    }
+    else {
+        $.ajax({
+            url: "/Index/register/checkUserName",
+            data: {
+                "userName": $("input[name='userName']").val(),
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            async: true,
+            success: function (result) {
+                if (result.message === "isNotUsed") {
+                    $("#userNameNotice").text("");
+                    checkUserNameValue = true;
+                }
+                else {
+                    $("#userNameNotice").text("该用户名已经被占用！");
+                    checkUserNameValue = false;
+                }
+            },
+            error: function () {
+                $("#userNameNotice").text("服务器出错！");
+                checkUserNameValue = false;
             }
-            else{
-                $("#userNameNotice").text("该用户名已经被占用！");
-                checkEmailValue = false;
-            }
-        },
-        error:function () {
-            $("#userNameNotice").text("服务器出错！");
-            checkEmailValue = false;
-        }
-    });
+        });
+    }
 }
 
 function checkEmail() {
-    $.ajax({
-        url:"/Index/register/checkEmail",
-        data:{
-            "email":$("input[name='email']").val(),
-        },
-        type:"POST",
-        dataType:"json",
-        timeout:3000,
-        async:true,
-        success:function (result) {
-            if(result.message === "isNotUsed"){
-                $("#emailNotice").text("");
-                checkUserNameValue = true;
+    if($("input[name='email']").val() === ""){
+        $("#emailNotice").text("邮箱不能为空！");
+        checkEmailValue = false;
+    }
+    else {
+        $.ajax({
+            url: "/Index/register/checkEmail",
+            data: {
+                "email": $("input[name='email']").val(),
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            async: true,
+            success: function (result) {
+                if (result.message === "isNotUsed") {
+                    $("#emailNotice").text("");
+                    checkEmailValue = true;
+                }
+                else {
+                    $("#emailNotice").text("该邮箱已经被占用！");
+                    checkEmailValue = false;
+                }
+            },
+            error: function () {
+                $("#emailNotice").text("服务器出错！");
+                checkEmailValue = false;
             }
-            else{
-                $("#emailNotice").text("该邮箱已经被占用");
-                checkUserNameValue = false;
-            }
-        },
-        error:function () {
-            $("#emailNotice").text("服务器出错！");
-            checkUserNameValue = false;
-        }
-    });
+        });
+    }
 }
 
 function checkPassword() {
-    if($("input[name='password']").val() == $("input[name='password2']").val()){
+    if($("input[name='password']").val() === ""){
+        checkPasswordValue = false;
+        $("#passwordNotice").text("密码不能为空！");
+    }else if($("input[name='password']").val() === $("input[name='password2']").val()){
         checkPasswordValue = true;
         $("#passwordNotice").text("");
     }
