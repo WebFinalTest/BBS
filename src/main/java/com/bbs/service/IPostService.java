@@ -17,16 +17,16 @@ public interface IPostService {
 
     /* 修改方法Start */
     // 加精帖子
-    public void qualityPost(Long postId);
+    public boolean qualityPost(Long postId);
 
     // 取消加精
-    public void unQualityPost(Long postId);
+    public boolean unQualityPost(Long postId);
 
     // 置顶帖子
-    public void topPost(Long postId);
+    public boolean topPost(Long postId);
 
     // 取消置顶
-    public void unTopPost(Long postId);
+    public boolean unTopPost(Long postId);
 
     // 采纳评论
     public void adoptComment(Long postId, Long commentId);
@@ -54,6 +54,11 @@ public interface IPostService {
     //  分页查找置顶帖子
     public List<Post> findTopPostsByPage(Long page);
 
+    //返回点赞过的帖子
+    public List<Post> findLikePostsByUserId(Long userId);
+
+    //返回收藏夹里的帖子
+    public List<Post> findCollectPostsByUserId(Long favoritesId);
 
     // 查找某个用户的所有帖子
     public List<Post> findPostsByUserId(Long userId);

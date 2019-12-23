@@ -12,11 +12,20 @@
     <meta name="description" content="">
 
     <link rel="shortcut icon" href="/favicon.ico">
-    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-    <link href="/css/animate.css" rel="stylesheet">
-    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
 
+    <link rel="stylesheet" href="/BBs/static/css/bootstrap.min.css?v=3.3.6">
+    <link rel="stylesheet" href="/BBs/static/css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/BBs/static/css/animate.css">
+    <link rel="stylesheet" href="/BBs/static/css/style.css?v=4.1.0">
+    <link rel="stylesheet" href="/BBs/static/css/custom/custom.css">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css?v=3.3.6">
+    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
+    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+    <link rel="stylesheet" href="/css/custom/custom.css">
 </head>
 
 <body class="gray-bg">
@@ -31,9 +40,11 @@
                             <i class="fa fa-wrench"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li><a onclick="changeUserMessage1()">修改个人信息</a>
+                            <li>
+                                <a onclick="changeUserMessage1()">修改个人信息</a>
                             </li>
-                            <li><a onclick="changeUserMessage2()">修改密码</a>
+                            <li>
+                                <a onclick="changeUserMessage2()">修改密码</a>
                             </li>
                         </ul>
                     </div>
@@ -103,8 +114,8 @@
                                 用户名：
                             </div>
                             <div class="col-sm-9">
-                                <input type="text" id="userName"
-                                       th:value="${#session.getAttribute('user').getUserName()}" onblur="checkUsername()"/>
+                                <input th:value="${#session.getAttribute('user').getUserName()}"
+                                       onblur="checkUsername()" type="text" id="userName"/>
                                 <sapn id="i_userName"></sapn>
                             </div>
                         </div>
@@ -113,7 +124,7 @@
                                 QQ：
                             </div>
                             <div class="col-sm-9">
-                                <input type="text" id="qq" th:value="${#session.getAttribute('user').getQq()}" />
+                                <input type="text" id="qq" th:value="${#session.getAttribute('user').getQq()}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -121,7 +132,7 @@
                                 手机号码：
                             </div>
                             <div class="col-sm-9">
-                                <input type="text" id="phone" th:value="${#session.getAttribute('user').getPhone()}" />
+                                <input type="text" id="phone" th:value="${#session.getAttribute('user').getPhone()}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -129,7 +140,8 @@
                                 工作地点：
                             </div>
                             <div class="col-sm-9">
-                                <input type="text" id="workplace" th:value="${#session.getAttribute('user').getWorkplace()}" />
+                                <input type="text" id="workplace"
+                                       th:value="${#session.getAttribute('user').getWorkplace()}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -137,7 +149,8 @@
                                 居住地：
                             </div>
                             <div class="col-sm-9">
-                                <input type="email" id="habitation" th:value="${#session.getAttribute('user').getHabitation()}" />
+                                <input type="email" id="habitation"
+                                       th:value="${#session.getAttribute('user').getHabitation()}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -152,7 +165,7 @@
                                 输入原密码：
                             </div>
                             <div class="col-sm-9">
-                                <input type="text" id="password1" />
+                                <input type="text" id="password1"/>
                                 <sapn id="i_password1"></sapn>
                             </div>
                         </div>
@@ -161,7 +174,7 @@
                                 输入新密码：
                             </div>
                             <div class="col-sm-9">
-                                <input type="password" id="password2" />
+                                <input type="password" id="password2"/>
                                 <sapn id="i_password2"></sapn>
                             </div>
                         </div>
@@ -170,7 +183,7 @@
                                 再次输入新密码：
                             </div>
                             <div class="col-sm-9">
-                                <input type="password" id="password3"  required()/>
+                                <input type="password" id="password3" required()/>
                                 <sapn id="i_password3"></sapn>
                             </div>
                         </div>
@@ -182,218 +195,240 @@
                     </div>
                 </div>
             </div>
-            <script>
-                var checkUserNameValue = false;
-
-                function changeUserMessage1() {
-                    var table1 = document.getElementById('table1');
-                    table1.className = 'form-horizontal m-t hidden';
-                    var table2 = document.getElementById('table2');
-                    table2.className = 'form-horizontal m-t';
-                    var table3 = document.getElementById('table3');
-                    table3.className = 'form-horizontal m-t hidden';
-                }
-                function changeUserMessage2() {
-                    var table1 = document.getElementById('table1');
-                    table1.className = 'form-horizontal m-t hidden';
-                    var table2 = document.getElementById('table2');
-                    table2.className = 'form-horizontal m-t hidden';
-                    var table3 = document.getElementById('table3');
-                    table3.className = 'form-horizontal m-t';
-                }
-                function submitUserInfo() {
-                    $.ajax({
-                        url: "/User/updateUserInfo/do",
-                        data: {
-                            "userName": $("input[id='userName']").val(),
-                            "qq": $("input[id='qq']").val(),
-                            "phone": $("input[id='phone']").val(),
-                            "workplace": $("input[id='workplace']").val(),
-                            "habitation": $("input[id='habitation']").val(),
-                        },
-                        type: "POST",
-                        dataType: "json",
-                        async: true,
-                        success: function (result) {
-                            if(result.message === "success"){
-                                alert("个人信息更新成功！");
-                                window.location.href = "/User/view";
-                            }
-                            else
-                                alert("个人信息更新失败！");
-                        },
-                        error: function () {
-                            alert("个人信息更新失败！");
-                        }
-                    });
-                }
-                function checkUsername() {
-                    var blank=$("input[id='userName']").val();
-                    var span=$("#i_userName");
-                    if(blank===""){
-                        span.css("color","red");
-                        span.html("用户名不能为空！")
-                    }
-                    else{
-                        $.ajax({
-                            url:"/User/checkUserName",
-                            data:{
-                                "userName":$("input[id='userName']").val(),
-                            },
-                            type:"POST",
-                            dataType:"json",
-                            timeout:3000,
-                            async:true,
-                            success:function (result) {
-                                if(result.message === "isNotUsed") {
-                                    checkUserNameValue = true;
-                                    span.html("")
-                                }
-                                else{
-                                    span.css("color","red");
-                                    span.html("该用户名已经被占用！")
-                                    checkUserNameValue = false;
-                                }
-                            },
-                            error:function () {
-                                span.css("color","red");
-                                span.html("服务器出错！")
-                                checkUserNameValue = false;
-                            }
-                        });
-                    }
-                }
-                // function checkPassword1() {
-                //     var blank=$("input[id='password1']").val();
-                //     var span=$("#i_password1");
-                //     if(blank===""){
-                //         span.css("color","red");
-                //         span.html("密码不能为空！")
-                //     }
-                //     else{
-                //         $.ajax({
-                //             url:"/User/checkPassword",
-                //             data:{
-                //                 "password":$("input[id='password1']").val(),
-                //             },
-                //             type:"POST",
-                //             dataType:"json",
-                //             timeout:3000,
-                //             async:true,
-                //             success:function (result) {
-                //                 if(result.message === "isNotUsed") {
-                //                     checkUserNameValue = true;
-                //                     span.html("密码正确")
-                //                 }
-                //                 else{
-                //                     span.css("color","red");
-                //                     span.html("输入的原密码错误！")
-                //                     checkUserNameValue = false;
-                //                 }
-                //             },
-                //             error:function () {
-                //                 span.css("color","red");
-                //                 span.html("服务器出错！")
-                //                 checkUserNameValue = false;
-                //             }
-                //         });
-                //     }
-                // }
-                // function checkPassword2() {
-                //     var blank = document.getElementById('password2');
-                //     var span=document.getElementById('i_password2');
-                //     if(blank===""){
-                //         span.css("color","red");
-                //         span.html("密码不能为空！")
-                //     }
-                // }
-                // function checkPassword3() {
-                //     var password2=document.getElementById('password2');
-                //     var password3=document.getElementById('password3');
-                //     var span=document.getElementById('i_password3');
-                //     var span1=document.getElementById('i_password1');
-                //     if(password2!==password3){
-                //         span.css("color","red");
-                //         span.html("两次密码不一致！")
-                //         password3.value="";
-                //     }
-                //     if(span1.value !== "密码正确"){
-                //         span.css("color","red");
-                //         span.html("原密码错误")
-                //         password3.value="";
-                //     }
-                // }
-                function submitNewPassword() {
-                    var password2=document.getElementById('password2').value;
-                    var password3=document.getElementById('password3').value;
-                    if(password2 === password3 && password2 !==""){
-                        $.ajax({
-                            url: "/User/updatePassword",
-                            data: {
-                                "originalPassword": $("input[id='password1']").val(),
-                                "newPassword": $("input[id='password3']").val(),
-                            },
-                            type: "POST",
-                            dataType: "json",
-                            async: true,
-                            success: function (result) {
-                                if(result.message === "success"){
-                                    toastr.success("密码更新成功!");
-                                    window.location.href = "/User/view";
-                                }
-                                else
-                                    toastr.error("密码更新失败!","请检查您的密码是否输入正确");
-                            },
-                            error: function () {
-                                toastr.error("系统繁忙!","请稍后再试");
-                            }
-                        });
-                    }
-                    else{
-                        alert("密码为空或两次密码不一致")
-                    }
-                }
-
-                // function submitNewPassword() {
-                //     $.ajax({
-                //         url: "/User/updateUserInfo/do",
-                //         data: {
-                //             "password": $("input[id='password3']").val(),
-                //         },
-                //         type: "POST",
-                //         dataType: "json",
-                //         async: true,
-                //         success: function (result) {
-                //             if(result.message === "success"){
-                //                 alert("个人信息更新成功！");
-                //                 window.location.href = "/User/view";
-                //             }
-                //             else
-                //                 alert("个人信息更新失败，密码错误！");
-                //         },
-                //         error: function () {
-                //             alert("个人信息更新失败，系统错误！");
-                //         }
-                //     });
-                // }
-            </script>
         </div>
     </div>
 </div>
-</div>
+
+<!-- 全局js -->
+<script src="/BBs/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/BBs/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="/BBs/static/js/hAdmin.js?v=4.1.0"></script>
+<script src="/BBs/static/js/index.js"></script>
+<script src="/BBs/static/js/custom/commons.js"></script>
+<script src="/BBs/static/js/custom/custom.js"></script>
+
+<!-- 第三方插件 -->
+<script src="/BBs/static/js/plugins/pace/pace.min.js"></script>
+<script src="/BBs/static/js/plugins/toastr/toastr.min.js"></script>
+<script src="/BBs/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/BBs/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/BBs/static/js/plugins/layer/layer.min.js"></script>
+
 <!-- 全局js -->
 <script src="/js/jquery.min.js?v=2.1.4"></script>
 <script src="/js/bootstrap.min.js?v=3.3.6"></script>
 
 <!-- 自定义js -->
-<script src="/js/content.js?v=1.0.0"></script>
+<script src="/js/hAdmin.js?v=4.1.0"></script>
+<script src="/js/index.js"></script>
+<script src="/js/custom/commons.js"></script>
+<script src="/js/custom/custom.js"></script>
+<!--<script src="/js/content.js?v=1.0.0"></script>-->
 
-<!-- Peity -->
-<script src="/js/plugins/peity/jquery.peity.min.js"></script>
+<!-- 第三方插件 -->
+<script src="/js/plugins/pace/pace.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+<!--<script src="/js/plugins/peity/jquery.peity.min.js"></script>-->
+<!--<script src="/js/demo/peity-demo.js"></script>-->
+<script>
+    var checkUserNameValue = false;
 
-<!-- Peity -->
-<script src="/js/demo/peity-demo.js"></script>
+    function changeUserMessage1() {
+        var table1 = document.getElementById('table1');
+        table1.className = 'form-horizontal m-t hidden';
+        var table2 = document.getElementById('table2');
+        table2.className = 'form-horizontal m-t';
+        var table3 = document.getElementById('table3');
+        table3.className = 'form-horizontal m-t hidden';
+    }
 
+    function changeUserMessage2() {
+        var table1 = document.getElementById('table1');
+        table1.className = 'form-horizontal m-t hidden';
+        var table2 = document.getElementById('table2');
+        table2.className = 'form-horizontal m-t hidden';
+        var table3 = document.getElementById('table3');
+        table3.className = 'form-horizontal m-t';
+    }
+
+    function submitUserInfo() {
+        $.ajax({
+            url: "/User/updateUserInfo/do",
+            data: {
+                "userName": $("input[id='userName']").val(),
+                "qq": $("input[id='qq']").val(),
+                "phone": $("input[id='phone']").val(),
+                "workplace": $("input[id='workplace']").val(),
+                "habitation": $("input[id='habitation']").val(),
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    alert("个人信息更新成功！");
+                    window.location.href = "/User/view";
+                } else
+                    alert("个人信息更新失败！");
+            },
+            error: function () {
+                alert("个人信息更新失败！");
+            }
+        });
+    }
+
+    function checkUsername() {
+        var blank = $("input[id='userName']").val();
+        var span = $("#i_userName");
+        if (blank === "") {
+            span.css("color", "red");
+            span.html("用户名不能为空！")
+        } else {
+            $.ajax({
+                url: "/User/checkUserName",
+                data: {
+                    "userName": $("input[id='userName']").val(),
+                },
+                type: "POST",
+                dataType: "json",
+                timeout: 3000,
+                async: true,
+                success: function (result) {
+                    if (result.message === "isNotUsed") {
+                        checkUserNameValue = true;
+                        span.html("")
+                    } else {
+                        span.css("color", "red");
+                        span.html("该用户名已经被占用！")
+                        checkUserNameValue = false;
+                    }
+                },
+                error: function () {
+                    span.css("color", "red");
+                    span.html("服务器出错！")
+                    checkUserNameValue = false;
+                }
+            });
+        }
+    }
+
+    // function checkPassword1() {
+    //     var blank=$("input[id='password1']").val();
+    //     var span=$("#i_password1");
+    //     if(blank===""){
+    //         span.css("color","red");
+    //         span.html("密码不能为空！")
+    //     }
+    //     else{
+    //         $.ajax({
+    //             url:"/User/checkPassword",
+    //             data:{
+    //                 "password":$("input[id='password1']").val(),
+    //             },
+    //             type:"POST",
+    //             dataType:"json",
+    //             timeout:3000,
+    //             async:true,
+    //             success:function (result) {
+    //                 if(result.message === "isNotUsed") {
+    //                     checkUserNameValue = true;
+    //                     span.html("密码正确")
+    //                 }
+    //                 else{
+    //                     span.css("color","red");
+    //                     span.html("输入的原密码错误！")
+    //                     checkUserNameValue = false;
+    //                 }
+    //             },
+    //             error:function () {
+    //                 span.css("color","red");
+    //                 span.html("服务器出错！")
+    //                 checkUserNameValue = false;
+    //             }
+    //         });
+    //     }
+    // }
+    // function checkPassword2() {
+    //     var blank = document.getElementById('password2');
+    //     var span=document.getElementById('i_password2');
+    //     if(blank===""){
+    //         span.css("color","red");
+    //         span.html("密码不能为空！")
+    //     }
+    // }
+    // function checkPassword3() {
+    //     var password2=document.getElementById('password2');
+    //     var password3=document.getElementById('password3');
+    //     var span=document.getElementById('i_password3');
+    //     var span1=document.getElementById('i_password1');
+    //     if(password2!==password3){
+    //         span.css("color","red");
+    //         span.html("两次密码不一致！")
+    //         password3.value="";
+    //     }
+    //     if(span1.value !== "密码正确"){
+    //         span.css("color","red");
+    //         span.html("原密码错误")
+    //         password3.value="";
+    //     }
+    // }
+    function submitNewPassword() {
+        var password2 = document.getElementById('password2').value;
+        var password3 = document.getElementById('password3').value;
+        if (password2 === password3 && password2 !== "") {
+            $.ajax({
+                url: "/User/updatePassword",
+                data: {
+                    "originalPassword": $("input[id='password1']").val(),
+                    "newPassword": $("input[id='password3']").val()
+                },
+                type: "POST",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result.message === "success") {
+                        toastr.success("密码更新成功!", "修改成功");
+                        window.location.href = "/User/view";
+                    } else
+                        toastr.error("请检查您的密码是否输入正确", "修改失败!");
+                },
+                error: function () {
+                    toastr.error("系统繁忙!", "修改失败");
+                }
+            });
+        } else {
+            alert("密码为空或两次密码不一致")
+        }
+    }
+
+    // function submitNewPassword() {
+    //     $.ajax({
+    //         url: "/User/updateUserInfo/do",
+    //         data: {
+    //             "password": $("input[id='password3']").val(),
+    //         },
+    //         type: "POST",
+    //         dataType: "json",
+    //         async: true,
+    //         success: function (result) {
+    //             if(result.message === "success"){
+    //                 alert("个人信息更新成功！");
+    //                 window.location.href = "/User/view";
+    //             }
+    //             else
+    //                 alert("个人信息更新失败，密码错误！");
+    //         },
+    //         error: function () {
+    //             alert("个人信息更新失败，系统错误！");
+    //         }
+    //     });
+    // }
+</script>
 </body>
 
 </html>

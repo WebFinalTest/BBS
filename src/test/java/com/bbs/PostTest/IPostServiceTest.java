@@ -180,6 +180,7 @@ public class IPostServiceTest {
     @Test
     public void countPostsPage() {
         System.out.println(postService.countPostsPage());
+        System.out.println(postService.countTopPostsPage());
     }
 
     // 已测试计算某个用户所有帖子页数

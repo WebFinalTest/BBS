@@ -100,10 +100,10 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="/Like/viewPosts" class="J_menuItem">帖子</a>
+                            <a href="/Like/showPosts" class="J_menuItem">帖子</a>
                         </li>
                         <li>
-                            <a href="/Like/viewComments" class="J_menuItem">评论</a>
+                            <a href="/Like/showComments" class="J_menuItem">评论</a>
                         </li>
                     </ul>
                 </li>
@@ -123,15 +123,11 @@
                     <!-- <form action="post" class="navbar-form-custom"></form>-->
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <li th:if="${#session.getAttribute('user') != null}">
-                        <a th:text="'欢迎你!'+${#session.getAttribute('user').getUserName()}"></a>
-                    </li>
                     <li th:if="${#session.getAttribute('user') != null}" class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle count-info">
-                            <i class="fa fa-2x fa-user-circle-o"></i>
-                        </a>
+                        <a data-toggle="dropdown" class="dropdown-toggle count-info"
+                           th:text="'欢迎你!'+${#session.getAttribute('user').getUserName()}"></a>
                         <ul class="dropdown-menu dropdown-user dropdown-menu-right">
-                            <li><a href="#" onclick="logOut();">退出系统</a></li>
+                            <li><a href="/User/down">退出系统</a></li>
                         </ul>
                     </li>
                     <li th:if="${#session.getAttribute('user') == null}">
@@ -183,42 +179,18 @@
 <script src="/js/plugins/toastr/toastr.min.js"></script>
 
 <script>
-    function logOut() {
-        $.ajax({
-            url: "/User/down",
-            type: "POST",
-            dataType: "json",
-            timeout: 3000,
-            async: true,
-            error: function () {
-                toastr.error("系统异常，稍后重试", "注销失败");
-            }
-        });
-    }
+    // function logOut() {
+    //     $.ajax({
+    //         url: "/User/down",
+    //         type: "POST",
+    //         dataType: "json",
+    //         timeout: 3000,
+    //         async: true,
+    //         error: function () {
+    //             toastr.error("系统异常，稍后重试", "注销失败");
+    //         }
+    //     });
+    // }
 </script>
 </body>
 </html>
-<!--    <h1>这是一个测试</h1>-->
-<!--    <table>-->
-<!--        <tr>-->
-<!--            <th>用户名</th>-->
-<!--            <th>用户ID</th>-->
-<!--            <th>电子邮箱</th>-->
-<!--            <th>密码</th>-->
-<!--            <th>用户类型</th>-->
-<!--        </tr>-->
-<!--        <tr th:each="user:${users}">-->
-<!--            <td th:text="${user.getUserName()}"></td>-->
-<!--            <td th:text="${user.getUserId()}"></td>-->
-<!--            <td th:text="${user.getEmail()}"></td>-->
-<!--            <td th:text="${user.getPassword()}"></td>-->
-<!--            <td th:text="${user.getUserType()}"></td>-->
-<!--            <td><a th:href="@{/User/deleteById/{id}(id=${user.getUserId()})}">删除</a></td>-->
-<!--            <td><a th:href="@{/User/findById/{id}(id=${user.getUserId()})}">修改</a></td>-->
-<!--        </tr>-->
-<!--        <tr th:each="collect:${comments}">-->
-<!--            <td th:text="${collect.getCreateDate()}"></td>-->
-<!--        </tr>-->
-<!--    </table>-->
-<!--    <a href="/Admin/create">添加</a><br>-->
-<!--    <iframe style="width: 1000px;height: 2000px" src="/Admin/create">添加</iframe>-->

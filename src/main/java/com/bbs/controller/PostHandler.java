@@ -93,6 +93,24 @@ public class PostHandler {
         return "post/change";
     }
 
+    //提交修改
+    @PostMapping("/update/do")
+    @ResponseBody
+    public Map updatePost(Post post) {
+        Map<String,String> result = new HashMap();
+        try {
+            if(postService.updatePost(post))
+                result.put("message","success");
+            else
+                result.put("message","fail");
+        }catch (Exception e) {
+            result.put("message","error");
+        }
+        return result;
+    }
+
+
+
     //根据页码查看帖子
     @GetMapping("view/{page}")
     @ResponseBody
@@ -148,8 +166,10 @@ public class PostHandler {
     public Map qualityPost(Long postId) {
         Map<String,String> result = new HashMap<>();
         try {
-            postService.qualityPost(postId);
-            result.put("message","success");
+            if(postService.qualityPost(postId))
+                result.put("message","success");
+            else
+                result.put("message","fail");
         }catch (Exception e) {
             result.put("message","error");
         }
@@ -162,8 +182,10 @@ public class PostHandler {
     public Map unQualityPost(Long postId) {
         Map<String,String> result = new HashMap<>();
         try {
-            postService.unQualityPost(postId);
-            result.put("message","success");
+            if(postService.unQualityPost(postId))
+                result.put("message","success");
+            else
+                result.put("message","fail");
         }catch (Exception e) {
             result.put("message","error");
         }
@@ -176,8 +198,10 @@ public class PostHandler {
     public Map topPost(Long postId) {
         Map<String,String> result = new HashMap<>();
         try {
-            postService.topPost(postId);
-            result.put("message","success");
+            if(postService.topPost(postId))
+                result.put("message","success");
+            else
+                result.put("message","fail");
         }catch (Exception e) {
             result.put("message","error");
         }
@@ -190,8 +214,10 @@ public class PostHandler {
     public Map unTopPost(Long postId) {
         Map<String,String> result = new HashMap<>();
         try {
-            postService.unTopPost(postId);
-            result.put("message","success");
+            if(postService.unTopPost(postId))
+                result.put("message","success");
+            else
+                result.put("message","fail");
         }catch (Exception e) {
             result.put("message","error");
         }
@@ -212,33 +238,38 @@ public class PostHandler {
         return result;
     }
 
-    //更新帖子
-    @PostMapping("/updatePost")
-    @ResponseBody
-    public Map updatePost (Post post){
-        Map<String,String> result = new HashMap<>();
-        try {
-            if(postService.updatePost(post))
-                result.put("message","success");
-            else
-                result.put("message","fail");
-        }catch (Exception e) {
-            result.put("message","error");
-        }
-        return result;
-    }
+//    //更新帖子
+//    @PostMapping("/updatePost")
+//    @ResponseBody
+//    public Map updatePost (Post post){
+//        Map<String,String> result = new HashMap<>();
+//        try {
+//            if(postService.updatePost(post))
+//                result.put("message","success");
+//            else
+//                result.put("message","fail");
+//        }catch (Exception e) {
+//            result.put("message","error");
+//        }
+//        return result;
+//    }
 
     //查看我创建的帖子
     @GetMapping("/myPosts")
     public String showMyPosts(HttpSession session,Model model){
         List<Post> posts = new ArrayList<>();
+        Map<Long,Long> countComments = new HashMap<>();
         try{
             User user = (User)session.getAttribute("user");
             posts = postService.findPostsByPageUserId(user.getUserId(),1L);
+            for (Post post: posts) {
+                countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
+            }
         }catch (Exception e) {
 
         }
         model.addAttribute("posts",posts);
+        model.addAttribute("countComments",countComments);
         return "/user/showPosts";
     }
 

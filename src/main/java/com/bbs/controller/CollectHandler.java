@@ -6,13 +6,11 @@ import com.bbs.entity.Post;
 import com.bbs.entity.User;
 import com.bbs.service.ICollectService;
 import com.bbs.service.IFavoritesService;
+import com.bbs.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -24,6 +22,12 @@ import java.util.Map;
 public class CollectHandler {
     private ICollectService collectService;
     private IFavoritesService favoritesService;
+    private IPostService postService;
+
+    @Autowired
+    public void setPostService(IPostService postService) {
+        this.postService = postService;
+    }
 
     @Autowired
     public void setCollectService(ICollectService collectService) {
@@ -74,11 +78,11 @@ public class CollectHandler {
 
 
     //查看收藏夹的全部内容
-    @GetMapping("/viewCollect")
-    public String viewCollect(Long favoritesId, Model model){
-        List<Collect> list;
+    @GetMapping("/viewCollect/{favoritesId}")
+    public String viewCollect(@PathVariable("favoritesId") Long favoritesId, Model model){
+        List<Post> list;
         try{
-            list = collectService.findAllCollectsByFavoritesId(favoritesId);
+            list = postService.findCollectPostsByUserId(favoritesId);
         }
         catch (Exception e){
             list = null;

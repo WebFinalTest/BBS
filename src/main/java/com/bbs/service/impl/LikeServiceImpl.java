@@ -42,7 +42,6 @@ public class LikeServiceImpl implements ILikeService {
         if(like.getCommentId()!=null){
             returnLike = iLikeRepository.findByCommentIdAndUserId(like.getCommentId(),like.getUserId());
             iCommentRepository.likeByCommentId(like.getCommentId());
-            iCommentRepository.likeByCommentId(like.getCommentId());
         }
         else{
             returnLike = iLikeRepository.findByPostIdAndUserId(like.getPostId(), like.getUserId());

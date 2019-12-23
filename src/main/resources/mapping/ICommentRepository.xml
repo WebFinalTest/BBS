@@ -5,6 +5,7 @@
     <select id="findByPostId" resultType="Comment">
         select * from comment
         where postId = #{postId} and isnull(floorId)
+        order by createDate ASC
         limit ${(page - 1) * pageSize},#{pageSize}
     </select>
 
@@ -21,6 +22,7 @@
     <select id="findByFloorId" resultType="Comment">
         select * from comment
         where floorId = #{floorId}
+        order by createDate ASC
         limit ${(page - 1) * pageSize},#{pageSize}
     </select>
 
@@ -32,6 +34,7 @@
     <select id="findByUserId" resultType="Comment">
         select * from comment
         where userId= #{userId}
+        order by createDate DESC
         limit ${(page - 1) * pageSize},#{pageSize}
     </select>
 

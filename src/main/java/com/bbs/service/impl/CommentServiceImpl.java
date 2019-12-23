@@ -1,7 +1,9 @@
 package com.bbs.service.impl;
 
 import com.bbs.entity.Comment;
+import com.bbs.entity.Like;
 import com.bbs.repository.ICommentRepository;
+import com.bbs.repository.ILikeRepository;
 import com.bbs.repository.IPostRepository;
 import com.bbs.repository.IUserRepository;
 import com.bbs.service.ICommentService;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +21,13 @@ public class CommentServiceImpl implements ICommentService {
     private ICommentRepository commentRepository;
     private IUserRepository userRepository;
     private IPostRepository postRepository;
+    private ILikeRepository likeRepository;
     private final Long pageSize = 20L;
+
+    @Autowired
+    public void setLikeRepository(ILikeRepository likeRepository) {
+        this.likeRepository = likeRepository;
+    }
 
     @Autowired
     public void setPostRepository(IPostRepository postRepository) {
@@ -43,7 +52,7 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public Comment findByCommentId(Long commentId) {
-        return findByCommentId(commentId);
+        return commentRepository.findByCommentId(commentId);
     }
 
     @Override
@@ -85,6 +94,7 @@ public class CommentServiceImpl implements ICommentService {
         if(comment.getReplyId() != null) {
             Comment replyComment = commentRepository.findByCommentId(comment.getReplyId());
             comment.setFloorId(replyComment.getFloorId() == null ? replyComment.getCommentId() : replyComment.getFloorId());
+            comment.setPostId(replyComment.getPostId());
         }
 
         //增加10积分
@@ -110,5 +120,16 @@ public class CommentServiceImpl implements ICommentService {
     @Override
     public Long countCommentsByFloorId(Long floorId) {
         return commentRepository.countCommentByFloorId(floorId);
+    }
+
+    @Override
+    public List<Comment> findLikeCommentsByUserId(Long userId) {
+        List<Comment> comments = new ArrayList<>();
+        List<Like> likes;
+        likes = likeRepository.findCommentsByUserId(userId);
+        for (Like like:likes) {
+            comments.add(commentRepository.findByCommentId(like.getCommentId()));
+        }
+        return comments;
     }
 }

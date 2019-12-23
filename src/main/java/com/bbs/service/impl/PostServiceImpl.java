@@ -1,6 +1,7 @@
 package com.bbs.service.impl;
 
 import com.bbs.entity.Collect;
+import com.bbs.entity.Comment;
 import com.bbs.entity.Like;
 import com.bbs.entity.Post;
 import com.bbs.repository.*;
@@ -81,10 +82,11 @@ public class PostServiceImpl implements IPostService {
     @Override
     @Transactional
     public void deletePost(Long postId) {
-        Post post = postRepository.findByPostId(postId);
-        if(post.isPostType() && post.getAdoptCommentId() == null) {
-            userRepository.increasePointsByUserId(post.getPostPoints(),post.getUserId());
-        }
+//        Post post = postRepository.findByPostId(postId);
+//        if(post.isPostType() && post.getAdoptCommentId() != null) {
+//            userRepository.increasePointsByUserId(post.getPostPoints(),post.getUserId());
+//        }else
+
         postRepository.deleteById(postId);
     }
 
@@ -108,23 +110,43 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public void qualityPost(Long postId) {
-        postRepository.changeQuality(postId, true);
+    public boolean qualityPost(Long postId) {
+        Post post = postRepository.findByPostId(postId);
+        if(post.isQuality())
+            return false;
+        else
+            postRepository.changeQuality(postId, true);
+        return true;
     }
 
     @Override
-    public void unQualityPost(Long postId) {
-        postRepository.changeQuality(postId, false);
+    public boolean unQualityPost(Long postId) {
+        Post post = postRepository.findByPostId(postId);
+        if(!post.isQuality())
+            return false;
+        else
+            postRepository.changeQuality(postId, false);
+        return true;
     }
 
     @Override
-    public void topPost(Long postId) {
-        postRepository.changeTop(postId, true);
+    public boolean topPost(Long postId) {
+        Post post = postRepository.findByPostId(postId);
+        if(post.isTop())
+            return false;
+        else
+            postRepository.changeTop(postId, true);
+        return true;
     }
 
     @Override
-    public void unTopPost(Long postId) {
-        postRepository.changeTop(postId, false);
+    public boolean unTopPost(Long postId) {
+        Post post = postRepository.findByPostId(postId);
+        if(!post.isTop())
+            return false;
+        else
+            postRepository.changeTop(postId, false);
+        return true;
     }
 
     @Override
@@ -229,5 +251,27 @@ public class PostServiceImpl implements IPostService {
     public Long countQualityPostsPage() {
         Long postsNum = postRepository.countQualityPosts();
         return postsNum / pageSize2 + (postsNum % pageSize2 == 0 ? 0 : 1);
+    }
+
+    @Override
+    public List<Post> findLikePostsByUserId(Long userId) {
+        List<Post> posts = new ArrayList<>();
+        List<Like> likes;
+        likes = likeRepository.findPostsByUserId(userId);
+        for (Like like:likes) {
+            posts.add(postRepository.findByPostId(like.getPostId()));
+        }
+        return posts;
+    }
+
+    @Override
+    public List<Post> findCollectPostsByUserId(Long favoritesId) {
+        List<Post> posts = new ArrayList<>();
+        List<Collect> collects;
+        collects = collectRepository.findAllCollectsByFavoritesId(favoritesId);
+        for (Collect collect:collects) {
+            posts.add(postRepository.findByPostId(collect.getPostId()));
+        }
+        return posts;
     }
 }

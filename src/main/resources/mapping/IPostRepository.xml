@@ -50,8 +50,7 @@
         set postTitle      = #{postTitle},
             postContent    = #{postContent},
             updateDate     = #{updateDate},
-            renewDate      = #{updateDate},
-            postPoints     = #{postPoints}
+            renewDate      = #{updateDate}
         where postId = #{postId}
     </update>
 
@@ -112,20 +111,20 @@
 
     <select id="countPosts" resultType="Long">
         select count(*)
-        where top = 0 and quality = 0
         from post
+        where top = 0 and quality = 0
     </select>
 
     <select id="countTopPosts" resultType="Long">
         select count(*)
-        where top = 1
         from post
+        where top = 1
     </select>
 
     <select id="countQualityPosts" resultType="Long">
         select count(*)
-        where quality = 1
         from post
+        where quality = 1
     </select>
 
     <select id="countPostsByUserId" resultType="Long">

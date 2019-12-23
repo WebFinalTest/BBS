@@ -9,6 +9,9 @@ public interface ICommentService{
     //返回一个帖子的某页的评论
     public List<Comment> findByPostId(Long postId,Long page);
 
+    //返回喜欢的评论
+    public List<Comment> findLikeCommentsByUserId(Long userId);
+
     //返回一个帖子的评论数
     public Long countAllCommentsByPostId(Long postId);
 

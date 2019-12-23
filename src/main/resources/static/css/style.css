@@ -2860,7 +2860,7 @@ label.error {
 }
 
 .forum-item {
-    margin: 10px 0;
+    margin: 0 0 10px 0;
     padding: 10px 0 20px;
     border-bottom: 1px solid #f1f1f1;
 }
@@ -7713,7 +7713,7 @@ body.skin-3 {
 }
 
 .article .social-feed-box p {
-    font-size: 13px;
+    font-size: 20px;
     line-height: 18px;
 }
 
@@ -7736,7 +7736,7 @@ body.skin-3 {
 }
 
 .social-avatar .media-body a {
-    font-size: 14px;
+    font-size: 19px;
     display: block;
 }
 
@@ -7768,7 +7768,7 @@ body.skin-3 {
 }
 
 .social-comment textarea {
-    font-size: 12px;
+    font-size: 18px;
 }
 
 .checkbox input[type=checkbox],

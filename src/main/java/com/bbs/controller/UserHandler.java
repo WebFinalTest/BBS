@@ -43,7 +43,7 @@ public class UserHandler {
         }catch (Exception e) {
             System.out.println("ERROR:down");
         }
-        return "redirect:/Index/login";
+        return "login";
     }
 
 
