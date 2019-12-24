@@ -111,10 +111,10 @@
                                 th:onclick="'javascript:showFooter('+${indexInc.index}+')'">
                             <i class="fa fa-comment"></i>评论
                         </button>
-                        <!--                        <a th:href="@{/Collect/goFloorComment/{commentId}(commentId=${comment.getCommentId()})}"-->
-                        <!--                           class="btn btn-primary btn-xs">-->
-                        <!--                            <i class="fa fa-ellipsis-h"></i>查看回复-->
-                        <!--                        </a>-->
+                                                <!--<a th:href="@{/Collect/goFloorComment/{commentId}(commentId=${comment.getCommentId()})}"-->
+                                                   <!--class="btn btn-primary btn-xs">-->
+                                                    <!--<i class="fa fa-ellipsis-h"></i>采纳评论-->
+                                                <!--</a>-->
                         <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
                                 th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
                             <i class="fa fa-trash"></i>删除

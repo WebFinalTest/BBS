@@ -69,7 +69,7 @@ public class UserServiceImpl implements IUserService {
         favorites.setUserId(userId);
         favorites.setFavoritesName("默认收藏夹");
         favoritesRepository.createFavorites(favorites);
-        return user;
+        return userRepository.findByUserId(userId);
     }
 
     @Override

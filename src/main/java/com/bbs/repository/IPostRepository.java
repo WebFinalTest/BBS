@@ -41,11 +41,14 @@ public interface IPostRepository {
     // 查找所有帖子
     public List<Post> findPosts();
 
-    // 查找某一页所有帖子
+    // 查找某一页普通帖子
     public List<Post> findPostsByPage(@Param("page") Long page, @Param("pageSize") Long pageSize);
 
     // 分页查找精品帖子
     public List<Post> findQualityPostsByPage(@Param("page") Long page, @Param("pageSize") Long pageSize);
+
+    //查找非置顶帖子
+    public List<Post> findUnTopPostsByPage(@Param("page") Long page, @Param("pageSize") Long pageSize);
 
     //  分页查找置顶帖子
     public List<Post> findTopPostsByPage(@Param("page") Long page, @Param("pageSize") Long pageSize);
@@ -59,7 +62,7 @@ public interface IPostRepository {
     // 查找单条帖子
     public Post findByPostId(@Param("postId") Long postId);
 
-    // 计算帖子总数
+    // 计算帖子总数和精品帖子总数
     public Long countPosts();
 
     // 计算置顶帖子总数

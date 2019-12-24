@@ -46,11 +46,14 @@ public class PostHandler {
         Long postPages = 0L,topPostPages = 0L;
         List<Post> topPosts = new ArrayList<>();
         Map<Long,Long> countComments = new HashMap<>();
+        Long postSize = 0L,topPostSize = 0L;
         try{
-            posts = postService.findPostsByPage(1L);
+            posts = postService.findUnTopPostsByPage(1L);
             topPosts = postService.findTopPostsByPage(1L);
-            postPages = postService.countPostsPage();
+            postPages = postService.countUnTopPostsPage();
             topPostPages = postService.countTopPostsPage();
+            postSize = postService.countUnTopPosts();
+            topPostSize = postService.countTopPosts();
             for (Post post: posts) {
                 countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
             }
@@ -60,6 +63,8 @@ public class PostHandler {
         }catch (Exception e) {
             System.out.println("Error:view");
         }
+        model.addAttribute("postSize",postSize);
+        model.addAttribute("topPostSize",topPostSize);
         model.addAttribute("postPages",postPages);
         model.addAttribute("topPostPages",topPostPages);
         model.addAttribute("posts",posts);
@@ -76,7 +81,7 @@ public class PostHandler {
         try {
             topPosts = postService.findTopPostsByPage(page);
         }catch (Exception e) {
-
+            System.out.println("ERROR:viewTopPosts");
         }
         return topPosts;
     }
@@ -112,11 +117,19 @@ public class PostHandler {
 
 
     //根据页码查看帖子
-    @GetMapping("view/{page}")
+    @PostMapping("/view")
     @ResponseBody
-    public List<Post> viewByPage(@PathVariable("page") Long page) {
-        return postService.findPostsByPage(page);
+    public List<Post> viewByPage(Long page) {
+        List<Post> unTopPosts = new ArrayList<>();
+        try {
+            unTopPosts = postService.findUnTopPostsByPage(page);
+        }catch (Exception e) {
+            System.out.println("ERROR:viewByPage");
+        }
+        return unTopPosts;
     }
+
+
 
     //跳到创建帖子界面
     @GetMapping("/createPost")

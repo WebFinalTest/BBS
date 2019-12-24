@@ -25,7 +25,7 @@ public class UserServiceImplTest {
     public void test(){
         //登陆方法
         System.out.println("登陆方法：");
-        User user = userService.login("1367112248@qq.com","12312");
+        User user = userService.login("1367112248@qq.com","2");
         System.out.println(user);
 
 
@@ -43,10 +43,10 @@ public class UserServiceImplTest {
 
         //更新
         System.out.println("更新：");
-        user = userService.login("1367112248@qq.com","12312");
+        user = userService.login("1367112248@qq.com","2");
         user.setHabitation("湖南省");
         userService.update(user);
-        user = userService.login("1367112248@qq.com","12312");
+        user = userService.login("1367112248@qq.com","2");
         System.out.println(user);
 
         //查看邮箱是否被使用
@@ -56,7 +56,6 @@ public class UserServiceImplTest {
         //查看用户名是否被使用
         System.out.println("查看用户名是否被使用：");
         System.out.println(userService.isUsedByEmail("2"));
-
 
     }
 }

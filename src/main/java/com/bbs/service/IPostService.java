@@ -51,6 +51,9 @@ public interface IPostService {
     // 分页查找精品帖子
     public List<Post> findQualityPostsByPage(Long page);
 
+    //分页查找非置顶帖子
+    public List<Post> findUnTopPostsByPage(Long page);
+
     //  分页查找置顶帖子
     public List<Post> findTopPostsByPage(Long page);
 
@@ -72,6 +75,9 @@ public interface IPostService {
     // 计算普通帖子页数
     public Long countPostsPage();
 
+    // 计算非置顶帖子页数
+    public Long countUnTopPostsPage();
+
     // 计算置顶帖子页数
     public Long countTopPostsPage();
 
@@ -87,6 +93,11 @@ public interface IPostService {
     //根据某个用户Id得到所有的点赞过的帖子
     public List<Post> findLikePostsByUserId(Long userId,Long Page);
 
+    //计算非置顶帖子总数
+    public Long countUnTopPosts();
+
+    //计算置顶帖子总数
+    public Long countTopPosts();
 
 //    // 查看帖子的点赞数
 //    public Long getLikesByPostId(Long postId);

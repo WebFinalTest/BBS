@@ -74,6 +74,14 @@
         limit ${(page-1)*pageSize}, #{pageSize}
     </select>
 
+    <select id="findUnTopPostsByPage" resultType="Post">
+        select *
+        from post
+        where top = 0
+        order by renewDate DESC
+        limit ${(page-1)*pageSize}, #{pageSize}
+    </select>
+
     <select id="findQualityPostsByPage" resultType="Post">
         select *
         from post
@@ -112,7 +120,7 @@
     <select id="countPosts" resultType="Long">
         select count(*)
         from post
-        where top = 0 and quality = 0
+        where top = 0 and top = 0
     </select>
 
     <select id="countTopPosts" resultType="Long">

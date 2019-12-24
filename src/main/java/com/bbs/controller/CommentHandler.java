@@ -70,9 +70,19 @@ public class CommentHandler {
     @GetMapping("/goFloorComments/{floorId}")
     public String goFloorComments(@PathVariable("floorId") Long floorId,Model model) {
         List<Comment> comments = new ArrayList<>();
+        Map<Long,String> replyComments = new HashMap<>();
         try {
+            Comment floorComment = commentService.findByCommentId(floorId);
+            Comment replyComment;
             comments = commentService.findByFloorId(floorId,1L);
-            comments.add(0,commentService.findByCommentId(floorId));
+            for (Comment comment : comments) {
+                if(comment.getReplyId() != floorComment.getCommentId()
+                        && replyComments.get(comment.getReplyId()) == null) {
+                    replyComment = commentService.findByCommentId(comment.getReplyId());
+                    replyComments.put(comment.getReplyId(),replyComment.getCommentContent());
+                }
+            }
+            comments.add(0,floorComment);
         }
         catch (Exception e) {
             System.out.println("Error:goFloorComments");

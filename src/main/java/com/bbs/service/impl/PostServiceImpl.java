@@ -202,6 +202,11 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public List<Post> findUnTopPostsByPage(Long page) {
+        return postRepository.findUnTopPostsByPage(page,pageSize);
+    }
+
+    @Override
     public Long countPostsPageByUserId(Long userId) {
         Long postsNum = postRepository.countPostsByUserId(userId);
         return postsNum / pageSize + (postsNum % pageSize == 0 ? 0 : 1);
@@ -248,6 +253,12 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    public Long countUnTopPostsPage() {
+        Long postsNum = postRepository.countPosts() + postRepository.countQualityPosts();
+        return postsNum / pageSize2 + (postsNum % pageSize2 == 0 ? 0 : 1);
+    }
+
+    @Override
     public Long countQualityPostsPage() {
         Long postsNum = postRepository.countQualityPosts();
         return postsNum / pageSize2 + (postsNum % pageSize2 == 0 ? 0 : 1);
@@ -274,4 +285,16 @@ public class PostServiceImpl implements IPostService {
         }
         return posts;
     }
+
+    @Override
+    public Long countUnTopPosts() {
+        return postRepository.countPosts() + postRepository.countQualityPosts();
+    }
+
+    @Override
+    public Long countTopPosts() {
+        return postRepository.countTopPosts();
+    }
+
+
 }
