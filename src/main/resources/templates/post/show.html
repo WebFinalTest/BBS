@@ -17,19 +17,15 @@
 
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <link href="/BBs/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link rel="stylesheet" href="/BBs/static/css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
-    <link href="/BBs/static/css/animate.css" rel="stylesheet">
-    <link href="/BBs/static/css/style.css?v=4.1.0" rel="stylesheet">
-    <link href="/BBs/static/css/custom/custom.css" rel="stylesheet">
-
-    <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
-    <link href="/css/animate.css" rel="stylesheet">
-    <link href="/css/style.css?v=4.1.0" rel="stylesheet">
-    <link href="/css/custom/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.css?v=4.4.0">
+    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+    <link rel="stylesheet" href="/css/plugins/summernote/summernote.css">
+    <link rel="stylesheet" href="/css/plugins/summernote/summernote-bs3.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+    <link rel="stylesheet" href="/css/custom/custom.css">
+    <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
 </head>
 
 <body class="gray-bg">
@@ -57,13 +53,28 @@
                                 th:onclick="'javascript:collectPost('+${post.getPostId()}+')'">
                             <i class="fa fa-star"></i>收藏
                         </button>
-                        <button class="btn btn-white btn-xs" onclick="showPostComment('showFooter')">
-                            <i class="fa fa-comment"></i>评论
-                        </button>
-                        <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
-                                th:onclick="'javascript:deletePost('+${post.getPostId()}+')'">
-                            <i class="fa fa-trash"></i>删除
-                        </button>
+                        <span th:if="${#session.getAttribute('user').isUserType()}">
+                            <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
+                                    th:onclick="'javascript:topPost('+${post.getPostId()}+')'">
+                                <i class="fa fa-hand-o-left"></i>置顶
+                            </button>
+                            <button th:if="${!post.isQuality()}" class="btn btn-white btn-xs"
+                                    th:onclick="'javascript:qualityPost('+${post.getPostId()}+')'">
+                                <i class="fa fa-hand-o-up"></i>加精
+                            </button>
+                            <button th:if="${post.isTop()}" class="btn btn-white btn-xs"
+                                    th:onclick="'javascript:unTopPost('+${post.getPostId()}+')'">
+                                <i class="fa fa-hand-o-right"></i>取消置顶
+                            </button>
+                            <button th:if="${post.isQuality()}" class="btn btn-white btn-xs"
+                                    th:onclick="'javascript:unQualityPost('+${post.getPostId()}+')'">
+                                <i class="fa fa-hand-o-down"></i>取消加精
+                            </button>
+                            <button class="btn btn-danger btn-xs"
+                                    th:onclick="'javascript:deletePost('+${post.getPostId()}+')'">
+                                <i class="fa fa-trash"></i>删除
+                            </button>
+                        </span>
                     </div>
                 </div>
                 <div class="social-footer hidden" id="showFooter">
@@ -73,7 +84,7 @@
                                 <textarea id="postContent" placeholder="填写评论" class="textarea"></textarea>
                             </div>
                             <div class="col-sm-1">
-                                <button th:onclick="'javascript:postComment('+${post.getPostId()}+')'"
+                                <button th:onclick="'javascript:commentPost('+${post.getPostId()}+')'"
                                         class="btn btn-primary">评论
                                 </button>
                             </div>
@@ -97,13 +108,13 @@
                             <i class="fa fa-thumbs-up"></i>赞
                         </button>
                         <button class="btn btn-white btn-xs"
-                                th:onclick="'javascript:showFooter(\'showFooter'+${indexInc.index}+'\')">
+                                th:onclick="'javascript:showFooter('+${indexInc.index}+')'">
                             <i class="fa fa-comment"></i>评论
                         </button>
-                        <a th:href="@{/Collect/goFloorComment/{commentId}(commentId=${comment.getCommentId()})}"
-                           class="btn btn-primary btn-xs">
-                            <i class="fa fa-ellipsis-h"></i>查看回复
-                        </a>
+                        <!--                        <a th:href="@{/Collect/goFloorComment/{commentId}(commentId=${comment.getCommentId()})}"-->
+                        <!--                           class="btn btn-primary btn-xs">-->
+                        <!--                            <i class="fa fa-ellipsis-h"></i>查看回复-->
+                        <!--                        </a>-->
                         <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
                                 th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
                             <i class="fa fa-trash"></i>删除
@@ -118,7 +129,7 @@
                                           class="textarea"></textarea>
                             </div>
                             <div class="col-sm-1">
-                                <button th:onclick="'javascript:createComment('+${comment.getCommentId()}+','+${indexInc.index}+')'"
+                                <button th:onclick="'javascript:commentComment('+${comment.getCommentId()}+','+${indexInc.index}+')'"
                                         class="btn btn-primary">
                                     评论
                                 </button>
@@ -163,6 +174,7 @@
     <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/js/plugins/layer/layer.min.js"></script>
+    <script src="/js/plugins/toastr/toastr.min.js"></script>
     <script>
         // Post
         var showPost = 0;
@@ -216,8 +228,8 @@
         var ani = ["fadeInLeftBig", "fadeInRightBig", "rollIn"];
 
         // 展示帖子评论框
-        function showPostComment(footerId) {
-            var footerPost = document.getElementById(footerId);
+        function showFooter(footerId) {
+            var footerPost = document.getElementById("showFooter" + footerId);
             var className = "social-footer";
             if (showPost % 2 === 0) {
                 footerPost.className = className + " " + "animated" + " " + ani[showPost % 3];
@@ -252,23 +264,116 @@
         // 提交帖子的评论
         function commentPost(postId) {
             $.ajax({
-                url: "/Comment/createComment",
+                url: "/Comment/create",
                 data: {
                     "postId": postId,
-                    "commentContent": $("postContent").val()
+                    "commentContent": $("#postContent").val()
                 },
                 type: "POST",
                 dataType: "json",
                 async: true,
                 success: function (result) {
                     if (result.message === "success") {
-                        window.location.reload();
                         toastr.success("评论成功", "评论成功");
+                        window.location.reload();
                     } else
                         toastr.error("评论失败", "评论失败");
                 },
                 error: function () {
                     toastr.error("系统异常，请重试", "评论失败");
+                }
+            });
+        }
+
+
+        // 加精帖子
+        function qualityPost(postId) {
+            $.ajax({
+                url: "/Post/qualityPost",
+                data: {
+                    "postId": postId
+                },
+                type: "POST",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result.message === "success") {
+                        toastr.success("加精成功", "加精成功");
+                        window.location.reload();
+                    } else
+                        toastr.error("加精失败", "加精失败");
+                },
+                error: function () {
+                    toastr.error("系统繁忙，请重试", "加精失败");
+                }
+            });
+        }
+
+        // 取消加精
+        function unQualityPost(postId) {
+            $.ajax({
+                url: "/Post/unQualityPost",
+                data: {
+                    "postId": postId
+                },
+                type: "POST",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result.message === "success") {
+                        toastr.success("取消加精成功", "取消加精成功");
+                        window.location.reload();
+                    } else
+                        toastr.error("取消加精失败", "取消加精失败");
+                },
+                error: function () {
+                    toastr.error("系统繁忙，请重试", "取消加精失败");
+                }
+            });
+        }
+
+        // 置顶帖子
+        function topPost(postId) {
+            $.ajax({
+                url: "/Post/topPost",
+                data: {
+                    "postId": postId
+                },
+                type: "POST",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result.message === "success") {
+                        toastr.success("置顶成功", "置顶成功");
+                        window.location.reload();
+                    } else
+                        toastr.error("置顶失败", "置顶失败");
+                },
+                error: function () {
+                    toastr.error("系统繁忙，请重试", "置顶失败");
+                }
+            });
+        }
+
+        // 取消置顶
+        function unTopPost(postId) {
+            $.ajax({
+                url: "/Post/unTopPost",
+                data: {
+                    "postId": postId
+                },
+                type: "POST",
+                dataType: "json",
+                async: true,
+                success: function (result) {
+                    if (result.message === "success") {
+                        toastr.success("取消置顶成功", "取消置顶成功");
+                        window.location.reload();
+                    } else
+                        toastr.error("取消置顶失败", "取消置顶失败");
+                },
+                error: function () {
+                    toastr.error("系统繁忙，请重试", "取消置顶失败");
                 }
             });
         }
@@ -325,15 +430,16 @@
                 url: "/Comment/create",
                 data: {
                     "replyId": commentId,
-                    "commentContent": $('commentContent' + indexId).val()
+                    "commentContent": $('#commentContent' + indexId).val()
                 },
                 type: "POST",
                 dataType: "json",
                 async: true,
                 success: function (result) {
-                    if (result.message === "success")
+                    if (result.message === "success") {
                         toastr.success("评论成功", "评论成功");
-                    else
+                        window.location.reload();
+                    } else
                         toastr.error("评论失败", "评论失败");
                 },
                 error: function () {

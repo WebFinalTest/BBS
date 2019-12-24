@@ -63,6 +63,12 @@
                                 </div>
                                 <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}"
                                    th:text="${post.getPostTitle()}"></a>
+                                <a th:href="@{/Post/update/{postId}(postId=${post.getPostId()})}"
+                                   class="btn btn-xs btn-info">修改
+                                </a>
+                                <button th:onclick="'javascript:deletePost('+${post.getPostId()}+')'"
+                                        class="btn btn-xs btn-danger">删除
+                                </button>
                                 <div class="forum-sub-title" th:text="${post.getPostContent()}"></div>
                             </div>
                             <div class="col-sm-1 forum-info">
@@ -91,5 +97,62 @@
 
     </div>
 </div>
+
+<!-- 全局js -->
+<script src="/BBs/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/BBs/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="/BBs/static/js/hAdmin.js?v=4.1.0"></script>
+<script src="/BBs/static/js/index.js"></script>
+<script src="/BBs/static/js/custom/commons.js"></script>
+<script src="/BBs/static/js/custom/custom.js"></script>
+
+<!-- 第三方插件 -->
+<script src="/BBs/static/js/plugins/pace/pace.min.js"></script>
+<script src="/BBs/static/js/plugins/toastr/toastr.min.js"></script>
+<script src="/BBs/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/BBs/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/BBs/static/js/plugins/layer/layer.min.js"></script>
+
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="/js/hAdmin.js?v=4.1.0"></script>
+<script src="/js/index.js"></script>
+<script src="/js/custom/commons.js"></script>
+<script src="/js/custom/custom.js"></script>
+
+<!-- 第三方插件 -->
+<script src="/js/plugins/pace/pace.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+<script>
+    function deletePost(postId) {
+        $.ajax({
+            url: "/Post/deletePost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("删除成功", "删除成功");
+                else
+                    toastr.error("删除失败", "删除失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "删除失败");
+            }
+        });
+    }
+</script>
 </body>
-</html>
+< /html>

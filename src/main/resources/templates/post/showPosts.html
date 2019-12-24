@@ -16,14 +16,6 @@
     <![endif]-->
 
     <link rel="shortcut icon" href="/img/favicon.ico">
-
-    <link href="/BBs/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="/BBs/static/css/font-awesome.min.css?v=4.7.0" rel="stylesheet">
-    <link href="/BBs/static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
-    <link href="/BBs/static/css/animate.css" rel="stylesheet">
-    <link href="/BBs/static/css/style.css?v=4.1.0" rel="stylesheet">
-    <link href="/BBs/static/css/custom/custom.css" rel="stylesheet">
-
     <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="/css/font-awesome.min.css?v=4.7.0" rel="stylesheet">
     <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
@@ -72,6 +64,24 @@
                                     <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${topPost.getPostId()})}"
                                        th:text="${topPost.getPostTitle()}"></a>
                                     <div class="forum-sub-title" th:text="${topPost.getPostContent()}"></div>
+                                    <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
+                                        <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:topPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-left"></i>置顶
+                                        </button>
+                                        <button th:if="${!post.isQuality()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:qualityPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-up"></i>加精
+                                        </button>
+                                        <button th:if="${post.isTop()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:unTopPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-right"></i>取消置顶
+                                        </button>
+                                        <button th:if="${post.isQuality()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:unQualityPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-down"></i>取消加精
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="col-sm-1">
 
@@ -118,7 +128,27 @@
                                     </div>
                                     <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}"
                                        th:text="${post.getPostTitle()}"></a>
-                                    <div class="forum-sub-title" th:text="${post.getPostContent()}"></div>
+                                    <div class="forum-sub-title">
+                                        <p th:text="${post.getPostContent()}"></p>
+                                    </div>
+                                    <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
+                                        <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:topPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-left"></i>置顶
+                                        </button>
+                                        <button th:if="${!post.isQuality()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:qualityPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-up"></i>加精
+                                        </button>
+                                        <button th:if="${post.isTop()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:unTopPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-right"></i>取消置顶
+                                        </button>
+                                        <button th:if="${post.isQuality()}" class="btn btn-white btn-xs"
+                                                th:onclick="'javascript:unQualityPost('+${post.getPostId()}+')'">
+                                            <i class="fa fa-hand-o-down"></i>取消加精
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="col-sm-1 forum-info">
                                     <span class="views-number" th:text="${post.getLikes()}"></span>
@@ -153,24 +183,6 @@
 </div>
 
 <!-- 全局js -->
-<script src="/BBs/static/js/jquery.min.js?v=2.1.4"></script>
-<script src="/BBs/static/js/bootstrap.min.js?v=3.3.6"></script>
-
-<!-- 自定义js -->
-<script src="/BBs/static/js/hAdmin.js?v=4.1.0"></script>
-<script src="/BBs/static/js/index.js"></script>
-<script src="/BBs/static/js/custom/commons.js"></script>
-<script src="/BBs/static/js/custom/custom.js"></script>
-
-<!-- 第三方插件 -->
-<script src="/BBs/static/js/plugins/pace/pace.min.js"></script>
-<script src="/BBs/static/js/plugins/toastr/toastr.min.js"></script>
-<script src="/BBs/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="/BBs/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="/BBs/static/js/plugins/layer/layer.min.js"></script>
-<script src="/BBs/staticjs/plugins/peity/jquery.peity.min.js"></script>
-
-<!-- 全局js -->
 <script src="/js/jquery.min.js?v=2.1.4"></script>
 <script src="/js/bootstrap.min.js?v=3.3.6"></script>
 
@@ -188,6 +200,99 @@
 <script src="/js/plugins/layer/layer.min.js"></script>
 <script src="/js/plugins/peity/jquery.peity.min.js"></script>
 <script>
+
+    // 加精帖子
+    function qualityPost(postId) {
+        $.ajax({
+            url: "/Post/qualityPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("加精成功", "加精成功");
+                    window.location.reload();
+                } else
+                    toastr.error("加精失败", "加精失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "加精失败");
+            }
+        });
+    }
+
+    // 取消加精
+    function unQualityPost(postId) {
+        $.ajax({
+            url: "/Post/unQualityPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("加精成功", "加精成功");
+                    window.location.reload();
+                } else
+                    toastr.error("加精失败", "加精失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "加精失败");
+            }
+        });
+    }
+
+    // 置顶帖子
+    function topPost(postId) {
+        $.ajax({
+            url: "/Post/topPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("置顶成功", "置顶成功");
+                    window.location.reload();
+                } else
+                    toastr.error("置顶失败", "置顶失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "置顶失败");
+            }
+        });
+    }
+
+    // 取消置顶
+    function unTopPost(postId) {
+        $.ajax({
+            url: "/Post/unTopPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("加精成功", "加精成功");
+                    window.location.reload();
+                } else
+                    toastr.error("加精失败", "加精失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "加精失败");
+            }
+        });
+    }
+
     function topPageChange(pageId) {
         var tops = document.getElementById("tops");
         var btnGroup = document.getElementById('btnGroup');
