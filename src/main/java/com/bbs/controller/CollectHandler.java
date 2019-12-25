@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class CollectHandler {
     @PostMapping("/createCollect")
     @ResponseBody
     public Map createCollect(HttpSession session ,Long postId){
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         User user = (User) session.getAttribute("user");
         Collect collect = new Collect();
         collect.setUserId(user.getUserId());
@@ -65,7 +66,7 @@ public class CollectHandler {
     @PostMapping("/replaceCollect")
     @ResponseBody
     public Map replaceCollect(Collect collect){
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             collectService.updateCollect(collect.getPostId(),collect.getUserId(),collect.getFavoritesId());
             result.put("message","success");
@@ -80,12 +81,13 @@ public class CollectHandler {
     //查看收藏夹的全部内容
     @GetMapping("/viewCollect/{favoritesId}")
     public String viewCollect(@PathVariable("favoritesId") Long favoritesId, Model model){
-        List<Post> list;
+        List<Post> list = new ArrayList<>();
+
         try{
             list = postService.findCollectPostsByUserId(favoritesId);
         }
         catch (Exception e){
-            list = null;
+            System.out.println("ERROR:viewCollect");
         }
         model.addAttribute("collects",list);
         return "collect/showPosts";
@@ -95,7 +97,7 @@ public class CollectHandler {
     @PostMapping("/deleteCollect")
     @ResponseBody
     public Map deleteCollect(HttpSession session,Long postId){
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         User user = (User) session.getAttribute("user");
         try{
             collectService.deleteCollect(postId,user.getUserId());

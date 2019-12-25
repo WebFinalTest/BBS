@@ -2,452 +2,486 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="renderer" content="webkit">
-    <title th:text="${post.getPostTitle()}"></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <title th:text="${post.getPostTitle()}"></title>
 
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
 
-    <!--[if lt IE 9]>
-    <meta http-equiv="refresh" content="0;ie.html"/>
-    <![endif]-->
+  <!--[if lt IE 9]>
+  <meta http-equiv="refresh" content="0;ie.html"/>
+  <![endif]-->
 
-    <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/font-awesome.css?v=4.4.0">
-    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
-    <link rel="stylesheet" href="/css/plugins/summernote/summernote.css">
-    <link rel="stylesheet" href="/css/plugins/summernote/summernote-bs3.css">
-    <link rel="stylesheet" href="/css/animate.css">
-    <link rel="stylesheet" href="/css/style.css?v=4.1.0">
-    <link rel="stylesheet" href="/css/custom/custom.css">
-    <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/BBs/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/BBs/static/css/font-awesome.css?v=4.4.0">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/iCheck/custom.css">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/summernote/summernote.css">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/summernote/summernote-bs3.css">
+  <link rel="stylesheet" href="/BBs/static/css/animate.css">
+  <link rel="stylesheet" href="/BBs/static/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/BBs/static/css/custom/custom.css">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font-awesome.css?v=4.4.0">
+  <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+  <link rel="stylesheet" href="/css/plugins/summernote/summernote.css">
+  <link rel="stylesheet" href="/css/plugins/summernote/summernote-bs3.css">
+  <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/css/custom/custom.css">
+  <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
 </head>
 
 <body class="gray-bg">
-
 <div class="wrapper wrapper-content  animated fadeInRight">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox">
-                <div class="ibox-title text-center" th:text="${post.getPostTitle()}"></div>
-                <div class="social-avatar">
-                    <div class="media-body">
-                        <a href="#" th:text="${postUserName}"></a>
-                        <small th:text="${#dates.format(post.getCreateDate(), 'yyyy-MM-dd HH:mm')}"
-                               class="text-muted"></small>
-                    </div>
-                </div>
-                <div class="social-body">
-                    <p th:text="${post.getPostContent()}"></p>
-                    <div class="btn-group">
-                        <button class="btn btn-white btn-xs"
-                                th:onclick="'javascript:likePost('+${post.getPostId()}+')'">
-                            <i class="fa fa-thumbs-up"></i>赞
-                        </button>
-                        <button class="btn btn-white btn-xs"
-                                th:onclick="'javascript:collectPost('+${post.getPostId()}+')'">
-                            <i class="fa fa-star"></i>收藏
-                        </button>
-                        <span th:if="${#session.getAttribute('user').isUserType()}">
-                            <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
-                                    th:onclick="'javascript:topPost('+${post.getPostId()}+')'">
-                                <i class="fa fa-hand-o-left"></i>置顶
-                            </button>
-                            <button th:if="${!post.isQuality()}" class="btn btn-white btn-xs"
-                                    th:onclick="'javascript:qualityPost('+${post.getPostId()}+')'">
-                                <i class="fa fa-hand-o-up"></i>加精
-                            </button>
-                            <button th:if="${post.isTop()}" class="btn btn-white btn-xs"
-                                    th:onclick="'javascript:unTopPost('+${post.getPostId()}+')'">
-                                <i class="fa fa-hand-o-right"></i>取消置顶
-                            </button>
-                            <button th:if="${post.isQuality()}" class="btn btn-white btn-xs"
-                                    th:onclick="'javascript:unQualityPost('+${post.getPostId()}+')'">
-                                <i class="fa fa-hand-o-down"></i>取消加精
-                            </button>
-                            <button class="btn btn-danger btn-xs"
-                                    th:onclick="'javascript:deletePost('+${post.getPostId()}+')'">
-                                <i class="fa fa-trash"></i>删除
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                <div class="social-footer hidden" id="showFooter">
-                    <div class="social-comment">
-                        <div class="media-body">
-                            <div class="col-sm-12">
-                                <textarea id="postContent" placeholder="填写评论" class="textarea"></textarea>
-                            </div>
-                            <div class="col-sm-1">
-                                <button th:onclick="'javascript:commentPost('+${post.getPostId()}+')'"
-                                        class="btn btn-primary">评论
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div th:each="comment,indexInc:${comments}" class="social-feed-box">
-                <div class="social-avatar">
-                    <div class="media-body">
-                        <a href="#" th:text="${commentUserNames.get(comment.getUserId())}"></a>
-                        <small th:text="${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
-                               class="text-muted"></small>
-                    </div>
-                </div>
-                <div class="social-body">
-                    <p th:text="${comment.getCommentContent()}"></p>
-                    <div class="btn-group">
-                        <button class="btn btn-white btn-xs"
-                                th:onclick="'javascript:likeComment('+${comment.getCommentId()}+')'">
-                            <i class="fa fa-thumbs-up"></i>赞
-                        </button>
-                        <button class="btn btn-white btn-xs"
-                                th:onclick="'javascript:showFooter('+${indexInc.index}+')'">
-                            <i class="fa fa-comment"></i>评论
-                        </button>
-                                                <!--<a th:href="@{/Collect/goFloorComment/{commentId}(commentId=${comment.getCommentId()})}"-->
-                                                   <!--class="btn btn-primary btn-xs">-->
-                                                    <!--<i class="fa fa-ellipsis-h"></i>采纳评论-->
-                                                <!--</a>-->
-                        <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
-                                th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
-                            <i class="fa fa-trash"></i>删除
-                        </button>
-                    </div>
-                </div>
-                <div class="social-footer hidden" th:id="|showFooter${indexInc.index}|">
-                    <div class="social-comment">
-                        <div class="media-body">
-                            <div class="col-sm-12">
-                                <textarea th:id="|commentContent${indexInc.index}|" placeholder="填写评论"
-                                          class="textarea"></textarea>
-                            </div>
-                            <div class="col-sm-1">
-                                <button th:onclick="'javascript:commentComment('+${comment.getCommentId()}+','+${indexInc.index}+')'"
-                                        class="btn btn-primary">
-                                    评论
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox">
+        <div class="ibox-title text-center" th:text="${post.getPostTitle()}"></div>
+        <div class="social-avatar">
+          <div class="media-body">
+            <a href="#" th:text="${postUserName}"></a>
+            <small th:text="${#dates.format(post.getCreateDate(), 'yyyy-MM-dd HH:mm')}"
+                   class="text-muted"></small>
+          </div>
         </div>
+        <div class="social-body">
+          <p th:text="${post.getPostContent()}"></p>
+          <div class="btn-group">
+            <button class="btn btn-white btn-xs"
+                    th:onclick="'javascript:likePost('+${post.getPostId()}+')'">
+              <i class="fa fa-thumbs-up"></i>赞
+            </button>
+            <button class="btn btn-white btn-xs" th:onclick="'javscript:showFooter(\'\')'">
+              <i class="fa fa-comment"></i>评论
+            </button>
+            <button class="btn btn-white btn-xs"
+                    th:onclick="'javascript:collectPost('+${post.getPostId()}+')'">
+              <i class="fa fa-star"></i>收藏
+            </button>
+            <span th:if="${#session.getAttribute('user').isUserType()}">
+              <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
+                      th:onclick="'javascript:topPost('+${post.getPostId()}+')'">
+                  <i class="fa fa-hand-o-left"></i>置顶
+              </button>
+              <button th:if="${!post.isQuality()}" class="btn btn-white btn-xs"
+                      th:onclick="'javascript:qualityPost('+${post.getPostId()}+')'">
+                  <i class="fa fa-hand-o-up"></i>加精
+              </button>
+              <button th:if="${post.isTop()}" class="btn btn-white btn-xs"
+                      th:onclick="'javascript:unTopPost('+${post.getPostId()}+')'">
+                  <i class="fa fa-hand-o-right"></i>取消置顶
+              </button>
+              <button th:if="${post.isQuality()}" class="btn btn-white btn-xs"
+                      th:onclick="'javascript:unQualityPost('+${post.getPostId()}+')'">
+                  <i class="fa fa-hand-o-down"></i>取消加精
+              </button>
+              <button class="btn btn-danger btn-xs"
+                      th:onclick="'javascript:deletePost('+${post.getPostId()}+')'">
+                  <i class="fa fa-trash"></i>删除
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="social-footer hidden" id="showFooter">
+          <div class="social-comment">
+            <div class="media-body">
+              <div class="col-sm-12">
+                <textarea id="postContent" placeholder="填写评论" class="textarea"></textarea>
+              </div>
+              <div class="col-sm-1">
+                <button th:onclick="'javascript:commentPost('+${post.getPostId()}+')'"
+                        class="btn btn-primary">评论
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div th:each="comment,indexInc:${comments}" class="social-feed-box">
+        <div class="social-avatar">
+          <div class="media-body">
+            <a href="#" th:text="${commentUserNames.get(comment.getUserId())}"></a>
+            <small th:text="${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
+                   class="text-muted"></small>
+          </div>
+        </div>
+        <div class="social-body">
+          <p th:text="${comment.getCommentContent()}"></p>
+          <div class="btn-group">
+            <button class="btn btn-white btn-xs"
+                    th:onclick="'javascript:likeComment('+${comment.getCommentId()}+')'">
+              <i class="fa fa-thumbs-up"></i>赞
+            </button>
+            <button th:onclick="'javascript:showFooter('+${indexInc.index}+')'" class="btn btn-white btn-xs">
+              <i class="fa fa-comment"></i>评论
+            </button>
+            <button
+                th:if="${post.isPostType() && post.getAdoptCommentId() == null && post.getUserId() == #session.getAttribute('user').getUserId()}"
+                th:onclick="'javascript:adoptComment('+${comment.getCommentId()}+','+${post.getPostId()}+')'">
+              <i class="fa fa-check-square-o"></i>采纳评论
+            </button>
+            <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
+                    th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
+              <i class="fa fa-trash"></i>删除
+            </button>
+          </div>
+        </div>
+        <div class="social-footer hidden" th:id="|showFooter${indexInc.index}|">
+          <div class="social-comment">
+            <div class="media-body">
+              <div class="col-sm-12">
+                <textarea th:id="|commentContent${indexInc.index}|" placeholder="填写评论"
+                          class="textarea"></textarea>
+              </div>
+              <div class="col-sm-1">
+                <button th:onclick="'javascript:commentComment('+${comment.getCommentId()}+','+${indexInc.index}+')'"
+                        class="btn btn-primary">评论
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- 全局js -->
-    <script src="/BBs/static/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/BBs/static/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 全局js -->
+<script src="/BBs/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/BBs/static/js/bootstrap.min.js?v=3.3.6"></script>
 
-    <!-- 自定义js -->
-    <script src="/BBs/static/js/hAdmin.js?v=4.1.0"></script>
-    <script src="/BBs/static/js/index.js"></script>
-    <script src="/BBs/static/js/custom/commons.js"></script>
-    <script src="/BBs/static/js/custom/custom.js"></script>
+<!-- 自定义js -->
+<script src="/BBs/static/js/hAdmin.js?v=4.1.0"></script>
+<script src="/BBs/static/js/index.js"></script>
+<script src="/BBs/static/js/custom/commons.js"></script>
+<script src="/BBs/static/js/custom/custom.js"></script>
 
-    <!-- 第三方插件 -->
-    <script src="/BBs/static/js/plugins/pace/pace.min.js"></script>
-    <script src="/BBs/static/js/plugins/toastr/toastr.min.js"></script>
-    <script src="/BBs/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/BBs/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/BBs/static/js/plugins/layer/layer.min.js"></script>
+<!-- 第三方插件 -->
+<script src="/BBs/static/js/plugins/pace/pace.min.js"></script>
+<script src="/BBs/static/js/plugins/toastr/toastr.min.js"></script>
+<script src="/BBs/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/BBs/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/BBs/static/js/plugins/layer/layer.min.js"></script>
 
-    <!-- 全局js -->
-    <script src="/js/jquery.min.js?v=2.1.4"></script>
-    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
 
-    <!-- 自定义js -->
-    <script src="/js/hAdmin.js?v=4.1.0"></script>
-    <script src="/js/index.js"></script>
-    <script src="/js/custom/commons.js"></script>
-    <script src="/js/custom/custom.js"></script>
+<!-- 自定义js -->
+<script src="/js/hAdmin.js?v=4.1.0"></script>
+<script src="/js/index.js"></script>
+<script src="/js/custom/commons.js"></script>
+<script src="/js/custom/custom.js"></script>
 
-    <!-- 第三方插件 -->
-    <script src="/js/plugins/pace/pace.min.js"></script>
-    <script src="/js/plugins/toastr/toastr.min.js"></script>
-    <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/js/plugins/layer/layer.min.js"></script>
-    <script src="/js/plugins/toastr/toastr.min.js"></script>
-    <script>
-        // Post
-        var showPost = 0;
+<!-- 第三方插件 -->
+<script src="/js/plugins/pace/pace.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
+<script>
+    // Post
+    var showPost = 0;
 
-        // 给帖子点赞
-        function likePost(postId) {
-            $.ajax({
-                url: "/Like/likePost",
-                data: {
-                    "postId": postId
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success")
-                        toastr.success("点赞成功", "点赞成功");
-                    else
-                        toastr.error("你已经点赞过了", "点赞失败");
-                },
-                error: function () {
+    // 给帖子点赞
+    function likePost(postId) {
+        $.ajax({
+            url: "/Like/likePost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("点赞成功", "点赞成功");
+                else
                     toastr.error("你已经点赞过了", "点赞失败");
-                }
-            });
-        }
+            },
+            error: function () {
+                toastr.error("你已经点赞过了", "点赞失败");
+            }
+        });
+    }
 
-        // 收藏帖子
-        function collectPost(postId, favoritesId) {
-            $.ajax({
-                url: "/Collect/createCollect",
-                data: {
-                    "postId": postId
-                    // "favorites": favoritesId
-                },
-                type: "POST",
-                dataType: "json",
-                timeout: 3000,
-                async: true,
-                success: function (result) {
-                    if (result.message === "success")
-                        toastr.success("收藏成功", "收藏成功");
-                    else
-                        toastr.error("你已经收藏过了", "收藏失败");
-                },
-                error: function () {
-                    toastr.error("收藏失败，系统异常", "收藏失败");
-                }
-            });
-        }
+    // 收藏帖子
+    function collectPost(postId, favoritesId) {
+        $.ajax({
+            url: "/Collect/createCollect",
+            data: {
+                "postId": postId
+                // "favorites": favoritesId
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("收藏成功", "收藏成功");
+                else
+                    toastr.error("你已经收藏过了", "收藏失败");
+            },
+            error: function () {
+                toastr.error("收藏失败，系统异常", "收藏失败");
+            }
+        });
+    }
 
-        var ani = ["fadeInLeftBig", "fadeInRightBig", "rollIn"];
+    var ani = ["fadeInLeftBig", "fadeInRightBig", "rollIn"];
 
-        // 展示帖子评论框
-        function showFooter(footerId) {
-            var footerPost = document.getElementById("showFooter" + footerId);
-            var className = "social-footer";
-            if (showPost % 2 === 0) {
-                footerPost.className = className + " " + "animated" + " " + ani[showPost % 3];
-            } else
-                footerPost.className = className + " " + "hidden";
-            showPost++;
-        }
+    // 展示帖子评论框
+    function showFooter(footerId) {
+        var footerPost = document.getElementById("showFooter" + footerId);
+        var className = "social-footer";
+        if (showPost % 2 === 0) {
+            footerPost.className = className + " " + "animated" + " " + ani[showPost % 3];
+        } else
+            footerPost.className = className + " " + "hidden";
+        showPost++;
+    }
 
-        // 删除帖子
-        function deletePost(postId) {
-            $.ajax({
-                url: "/Post/deletePost",
-                data: {
-                    "postId": postId
-                },
-                type: "POST",
-                dataType: "json",
-                timeout: 3000,
-                async: true,
-                success: function (result) {
-                    if (result.message === "success")
-                        toastr.success("删除成功", "删除成功");
-                    else
-                        toastr.error("删除失败", "删除失败");
-                },
-                error: function () {
-                    toastr.error("系统异常，请重试", "删除失败");
-                }
-            });
-        }
+    // 删除帖子
+    function deletePost(postId) {
+        $.ajax({
+            url: "/Post/deletePost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("删除成功", "删除成功");
+                else
+                    toastr.error("删除失败", "删除失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "删除失败");
+            }
+        });
+    }
 
-        // 提交帖子的评论
-        function commentPost(postId) {
-            $.ajax({
-                url: "/Comment/create",
-                data: {
-                    "postId": postId,
-                    "commentContent": $("#postContent").val()
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success") {
-                        toastr.success("评论成功", "评论成功");
-                        window.location.reload();
-                    } else
-                        toastr.error("评论失败", "评论失败");
-                },
-                error: function () {
-                    toastr.error("系统异常，请重试", "评论失败");
-                }
-            });
-        }
+    // 提交帖子的评论
+    function commentPost(postId) {
+        $.ajax({
+            url: "/Comment/create",
+            data: {
+                "postId": postId,
+                "commentContent": $("#postContent").val()
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("评论成功", "评论成功");
+                    window.location.reload();
+                } else
+                    toastr.error("评论失败", "评论失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "评论失败");
+            }
+        });
+    }
 
+    // 加精帖子
+    function qualityPost(postId) {
+        $.ajax({
+            url: "/Post/qualityPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("加精成功", "加精成功");
+                    window.location.reload();
+                } else
+                    toastr.error("加精失败", "加精失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "加精失败");
+            }
+        });
+    }
 
-        // 加精帖子
-        function qualityPost(postId) {
-            $.ajax({
-                url: "/Post/qualityPost",
-                data: {
-                    "postId": postId
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success") {
-                        toastr.success("加精成功", "加精成功");
-                        window.location.reload();
-                    } else
-                        toastr.error("加精失败", "加精失败");
-                },
-                error: function () {
-                    toastr.error("系统繁忙，请重试", "加精失败");
-                }
-            });
-        }
+    // 取消加精
+    function unQualityPost(postId) {
+        $.ajax({
+            url: "/Post/unQualityPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("取消加精成功", "取消加精成功");
+                    window.location.reload();
+                } else
+                    toastr.error("取消加精失败", "取消加精失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "取消加精失败");
+            }
+        });
+    }
 
-        // 取消加精
-        function unQualityPost(postId) {
-            $.ajax({
-                url: "/Post/unQualityPost",
-                data: {
-                    "postId": postId
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success") {
-                        toastr.success("取消加精成功", "取消加精成功");
-                        window.location.reload();
-                    } else
-                        toastr.error("取消加精失败", "取消加精失败");
-                },
-                error: function () {
-                    toastr.error("系统繁忙，请重试", "取消加精失败");
-                }
-            });
-        }
+    // 置顶帖子
+    function topPost(postId) {
+        $.ajax({
+            url: "/Post/topPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("置顶成功", "置顶成功");
+                    window.location.reload();
+                } else
+                    toastr.error("置顶失败", "置顶失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "置顶失败");
+            }
+        });
+    }
 
-        // 置顶帖子
-        function topPost(postId) {
-            $.ajax({
-                url: "/Post/topPost",
-                data: {
-                    "postId": postId
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success") {
-                        toastr.success("置顶成功", "置顶成功");
-                        window.location.reload();
-                    } else
-                        toastr.error("置顶失败", "置顶失败");
-                },
-                error: function () {
-                    toastr.error("系统繁忙，请重试", "置顶失败");
-                }
-            });
-        }
+    // 取消置顶
+    function unTopPost(postId) {
+        $.ajax({
+            url: "/Post/unTopPost",
+            data: {
+                "postId": postId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("取消置顶成功", "取消置顶成功");
+                    window.location.reload();
+                } else
+                    toastr.error("取消置顶失败", "取消置顶失败");
+            },
+            error: function () {
+                toastr.error("系统繁忙，请重试", "取消置顶失败");
+            }
+        });
+    }
 
-        // 取消置顶
-        function unTopPost(postId) {
-            $.ajax({
-                url: "/Post/unTopPost",
-                data: {
-                    "postId": postId
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success") {
-                        toastr.success("取消置顶成功", "取消置顶成功");
-                        window.location.reload();
-                    } else
-                        toastr.error("取消置顶失败", "取消置顶失败");
-                },
-                error: function () {
-                    toastr.error("系统繁忙，请重试", "取消置顶失败");
-                }
-            });
-        }
+    // Comment
+    // 给评论点赞
+    function likeComment(commentId) {
+        $.ajax({
+            url: "/Like/likeComment",
+            data: {
+                "commentId": commentId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("点赞成功", "点赞成功");
+                else
+                    toastr.error("你已经点赞过了", "点赞失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "点赞失败");
+            }
+        });
+    }
 
-        // Comment
-        // 给评论点赞
-        function likeComment(commentId) {
-            $.ajax({
-                url: "/Like/likeComment",
-                data: {
-                    "commentId": commentId
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success")
-                        toastr.success("点赞成功", "点赞成功");
-                    else
-                        toastr.error("你已经点赞过了", "点赞失败");
-                },
-                error: function () {
-                    toastr.error("系统异常，请重试", "点赞失败");
-                }
-            });
-        }
+    // 删除评论
+    function deleteComment(commentId) {
+        $.ajax({
+            url: "/Comment/deleteComment",
+            data: {
+                "commentId": commentId
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("删除成功", "删除成功");
+                else
+                    toastr.error("删除失败", "删除失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "删除失败");
+            }
+        });
+    }
 
-        // 删除评论
-        function deleteComment(commentId) {
-            $.ajax({
-                url: "/Comment/deleteComment",
-                data: {
-                    "commentId": commentId
-                },
-                type: "POST",
-                dataType: "json",
-                timeout: 3000,
-                async: true,
-                success: function (result) {
-                    if (result.message === "success")
-                        toastr.success("删除成功", "删除成功");
-                    else
-                        toastr.error("删除失败", "删除失败");
-                },
-                error: function () {
-                    toastr.error("系统异常，请重试", "删除失败");
-                }
-            });
-        }
+    // 提交评论的评论
+    function commentComment(commentId, indexId) {
+        $.ajax({
+            url: "/Comment/create",
+            data: {
+                "replyId": commentId,
+                "commentContent": $('#commentContent' + indexId).val()
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("评论成功", "评论成功");
+                    window.location.reload();
+                } else
+                    toastr.error("评论失败", "评论失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "评论失败");
+            }
+        });
+    }
 
-        // 提交评论的评论
-        function commentComment(commentId, indexId) {
-            $.ajax({
-                url: "/Comment/create",
-                data: {
-                    "replyId": commentId,
-                    "commentContent": $('#commentContent' + indexId).val()
-                },
-                type: "POST",
-                dataType: "json",
-                async: true,
-                success: function (result) {
-                    if (result.message === "success") {
-                        toastr.success("评论成功", "评论成功");
-                        window.location.reload();
-                    } else
-                        toastr.error("评论失败", "评论失败");
-                },
-                error: function () {
-                    toastr.error("系统异常，请重试", "评论失败");
-                }
-            });
-        }
-    </script>
+    function adoptComment(commentId, postId) {
+        $.ajax({
+            url: "/Post/adoptComment",
+            data: {
+                "postId": postId,
+                "commentId": commentId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("采纳成功", "采纳成功");
+                    window.location.reload();
+                } else
+                    toastr.error("评论失败", "评论失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "评论失败");
+            }
+        });
+    }
+</script>
 </div>
 </body>
 </html>

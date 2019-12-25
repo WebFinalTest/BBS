@@ -37,7 +37,7 @@ public interface ICommentService{
     public void createComment(Comment comment);
 
     //删除一个评论
-    public void deleteByCommentId(Long commentId);
+    public boolean deleteByCommentId(Long commentId);
 
     //按评论ID返回一个评论
     public Comment findByCommentId(Long commentId);

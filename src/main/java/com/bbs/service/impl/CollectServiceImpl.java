@@ -50,4 +50,9 @@ public class CollectServiceImpl implements ICollectService {
         postRepository.uncollectByPostId(postId);
         collectRepository.deleteCollect(postId,userId);
     }
+
+    @Override
+    public Boolean isCollectPostByUserId(Long postId, Long userId) {
+        return collectRepository.isCollectPostByUserId(postId, userId);
+    }
 }

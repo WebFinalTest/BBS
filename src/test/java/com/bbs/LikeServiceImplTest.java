@@ -95,5 +95,11 @@ public class LikeServiceImplTest{
         likeService.deleteLikeByCommentId(l3.getCommentId(),l3.getUserId());
         likeService.deleteLikeByPostId(l2.getPostId(),l2.getUserId());
     }
+
+    @Test
+    public void isLikeTest(){
+        System.out.println(likeService.isLikeCommentByUserId(515195165586L,194915045L));
+        System.out.println(likeService.isLikePostByUserId(123L,194915045L));
+    }
 }
 

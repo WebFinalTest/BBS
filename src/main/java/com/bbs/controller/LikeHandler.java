@@ -8,6 +8,7 @@ import com.bbs.entity.User;
 import com.bbs.service.ICommentService;
 import com.bbs.service.ILikeService;
 import com.bbs.service.IPostService;
+import com.bbs.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +23,15 @@ import java.util.Map;
 @RequestMapping("/Like")
 @Controller
 public class LikeHandler {
-    public ILikeService likeService;
+    private ILikeService likeService;
     private IPostService postService;
     private ICommentService commentService;
+    private IUserService userService;
+
+    @Autowired
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public void setPostService(IPostService postService) {
@@ -81,12 +88,22 @@ public class LikeHandler {
     @GetMapping("/showPosts")
     public String findLikePosts (Model model,HttpSession session) {
         List<Post> posts = new ArrayList<>();
+        Map<Long,String> userNames = new HashMap<>();
+        Long postPages= 0L;
         try{
             User user = (User) session.getAttribute("user");
+            postPages = (long)likeService.findPostLikes(user.getUserId()).size();
             posts = postService.findLikePostsByUserId(user.getUserId(),1L);
+            for (Post post:posts) {
+                if(userNames.get(post.getUserId()) == null) {
+                    userNames.put(post.getUserId(),userService.findByUserId(post.getUserId()).getUserName());
+                }
+            }
         }catch (Exception e) {
             System.out.println("ERROR:showPosts");
         }
+        model.addAttribute("userNames",userNames);
+        model.addAttribute("postPages",postPages);
         model.addAttribute("posts",posts);
         return "like/showPosts";
     }
@@ -95,12 +112,22 @@ public class LikeHandler {
     @GetMapping("/showComments")
     public String findLikeComments(Model model,HttpSession session){
         List<Comment> comments = new ArrayList<>();
+        Map<Long,String> userNames = new HashMap<>();
+        Long commentPages= 0L;
         try{
             User user = (User) session.getAttribute("user");
+            commentPages = (long)likeService.findCommentLikes(user.getUserId()).size();
             comments = commentService.findLikeCommentsByUserId(user.getUserId());
+            for (Comment comment:comments) {
+                if(userNames.get(comment.getUserId()) == null) {
+                    userNames.put(comment.getUserId(),userService.findByUserId(comment.getUserId()).getUserName());
+                }
+            }
         }catch (Exception e) {
             System.out.println("ERROR:showComments");
         }
+        model.addAttribute("userNames",userNames);
+        model.addAttribute("commentPages",commentPages);
         model.addAttribute("comments",comments);
         return "like/showComments";
     }

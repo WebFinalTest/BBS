@@ -25,4 +25,11 @@ public interface ILikeService {
     public void deleteLikeByPostId(Long postId,Long userId);
     //根据评论ID删除点赞
     public void deleteLikeByCommentId(Long commentId,Long userId);
+
+    //查看某人是否赞过某评论
+    public Boolean isLikeCommentByUserId(Long commentId,Long userId);
+
+    //查看某人是否赞过某帖子
+    public Boolean isLikePostByUserId(Long postId,Long userId);
+
 }

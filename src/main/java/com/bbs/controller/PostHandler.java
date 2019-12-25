@@ -47,6 +47,7 @@ public class PostHandler {
         List<Post> topPosts = new ArrayList<>();
         Map<Long,Long> countComments = new HashMap<>();
         Long postSize = 0L,topPostSize = 0L;
+        Map<Long,String> userNames = new HashMap<>();
         try{
             posts = postService.findUnTopPostsByPage(1L);
             topPosts = postService.findTopPostsByPage(1L);
@@ -56,13 +57,20 @@ public class PostHandler {
             topPostSize = postService.countTopPosts();
             for (Post post: posts) {
                 countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
+                if(userNames.get(post.getUserId()) == null) {
+                    userNames.put(post.getUserId(),userService.findByUserId(post.getUserId()).getUserName());
+                }
             }
             for (Post post: topPosts) {
                 countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
+                if(userNames.get(post.getUserId()) == null) {
+                    userNames.put(post.getUserId(),userService.findByUserId(post.getUserId()).getUserName());
+                }
             }
         }catch (Exception e) {
             System.out.println("Error:view");
         }
+        model.addAttribute("userNames",userNames);
         model.addAttribute("postSize",postSize);
         model.addAttribute("topPostSize",topPostSize);
         model.addAttribute("postPages",postPages);
@@ -76,14 +84,21 @@ public class PostHandler {
     //查看置顶帖子
     @PostMapping("/viewTopPosts")
     @ResponseBody
-    public List<Post> viewTopPosts(Long page) {
-        List<Post> topPosts = new ArrayList<>();
+    public List viewTopPosts(Long page) {
+        List<Post> topPosts;
+        List<PostInfo> postInfos = new ArrayList<>();
         try {
             topPosts = postService.findTopPostsByPage(page);
+            for (Post post:topPosts) {
+                PostInfo postInfo = new PostInfo();
+                postInfo.post = post;
+                postInfo.userName = userService.findByUserId(post.getUserId()).getUserName();
+                postInfos.add(postInfo);
+            }
         }catch (Exception e) {
             System.out.println("ERROR:viewTopPosts");
         }
-        return topPosts;
+        return postInfos;
     }
 
     //传到修改帖子页面
@@ -102,7 +117,7 @@ public class PostHandler {
     @PostMapping("/update/do")
     @ResponseBody
     public Map updatePost(Post post) {
-        Map<String,String> result = new HashMap();
+        Map<String,String> result = new HashMap<>();
         try {
             if(postService.updatePost(post))
                 result.put("message","success");
@@ -115,20 +130,25 @@ public class PostHandler {
     }
 
 
-
     //根据页码查看帖子
     @PostMapping("/view")
     @ResponseBody
-    public List<Post> viewByPage(Long page) {
-        List<Post> unTopPosts = new ArrayList<>();
+    public List viewByPage(Long page) {
+        List<Post> unTopPosts;
+        List<PostInfo> postInfos = new ArrayList<>();
         try {
             unTopPosts = postService.findUnTopPostsByPage(page);
+            for (Post post:unTopPosts) {
+                PostInfo postInfo = new PostInfo();
+                postInfo.post = post;
+                postInfo.userName = userService.findByUserId(post.getUserId()).getUserName();
+                postInfos.add(postInfo);
+            }
         }catch (Exception e) {
             System.out.println("ERROR:viewByPage");
         }
-        return unTopPosts;
+        return postInfos;
     }
-
 
 
     //跳到创建帖子界面
@@ -279,11 +299,25 @@ public class PostHandler {
                 countComments.put(post.getPostId(),commentService.countAllCommentsByPostId(post.getPostId()));
             }
         }catch (Exception e) {
-
+            System.out.println("ERROR:showMyPosts");
         }
         model.addAttribute("posts",posts);
         model.addAttribute("countComments",countComments);
         return "/user/showPosts";
+    }
+
+    //传回帖子和评论数的包装类
+    class PostInfo{
+        Post post;
+        String userName;
+
+        public Post getPost() {
+            return post;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
     }
 
 }

@@ -19,4 +19,10 @@ public interface ILikeRepository {
     public void update(Like like);
     public void deleteByPostId(@Param("postId") Long postId,@Param("userId") Long userId);
     public void deleteByCommentId(@Param("commentId") Long commentId,@Param("userId") Long userId);
+
+    //查看某人是否赞过某评论
+    public Boolean isLikeCommentByUserId(@Param("commentId") Long commentId,@Param("userId") Long userId);
+
+    //查看某人是否赞过某帖子
+    public Boolean isLikePostByUserId(@Param("postId") Long postId,@Param("userId") Long userId);
 }

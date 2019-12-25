@@ -24,6 +24,16 @@
         select * from `like` where commentId = #{commentId}
     </select>
 
+    <select id="isLikeCommentByUserId" resultType="boolean">
+        select count(*) from `like`
+        where userId = #{userId} and commentId = #{commentId}
+    </select>
+
+    <select id="isLikePostByUserId" resultType="boolean">
+        select count(*) from `like`
+        where userId = #{userId} and postId = #{postId}
+    </select>
+
     <select id="findByPostIdAndUserId" resultType="Like">
         select * from `like` where postId = #{postId} and userId = #{userId}
     </select>
@@ -47,4 +57,5 @@
     <delete id="deleteByCommentId">
         delete from `like` where commentId = #{commentId} and userId = #{userId}
     </delete>
+
 </mapper>

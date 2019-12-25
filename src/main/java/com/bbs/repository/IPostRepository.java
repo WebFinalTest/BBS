@@ -62,8 +62,11 @@ public interface IPostRepository {
     // 查找单条帖子
     public Post findByPostId(@Param("postId") Long postId);
 
-    // 计算帖子总数和精品帖子总数
+    // 计算普通帖子总数
     public Long countPosts();
+
+    // 计算非置顶帖子总数
+    public Long countUnTopPosts();
 
     // 计算置顶帖子总数
     public Long countTopPosts();

@@ -2,7 +2,6 @@ package com.bbs.controller;
 
 import com.bbs.entity.Favorites;
 import com.bbs.entity.User;
-import com.bbs.service.ICommentService;
 import com.bbs.service.IFavoritesService;
 import com.bbs.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ import java.util.Map;
 @Controller
 public class IndexHandler {
     private IUserService userService;
-    private ICommentService commentService;
+//    private ICommentService commentService;
     private IFavoritesService favoritesService;
 
     @Autowired
@@ -31,10 +30,10 @@ public class IndexHandler {
         this.favoritesService = favoritesService;
     }
 
-    @Autowired
-    public void setCommentService(ICommentService commentService) {
-        this.commentService = commentService;
-    }
+//    @Autowired
+//    public void setCommentService(ICommentService commentService) {
+//        this.commentService = commentService;
+//    }
 
     @Autowired
     public void setUserService(IUserService userService) {
@@ -48,7 +47,7 @@ public class IndexHandler {
             User user = (User) session.getAttribute("user");
             favoritesList = favoritesService.findAllFavoritesByUserId(user.getUserId());
         }catch (Exception e) {
-
+            System.out.println("ERROR:index");
         }
         model.addAttribute("favoritess",favoritesList);
         return "index";
@@ -67,7 +66,7 @@ public class IndexHandler {
     @PostMapping("/login/do")
     @ResponseBody
     public Map doLogin(User user, HttpSession session) {
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             user = userService.login(user.getEmail(),user.getPassword());
             if(user != null){
@@ -86,7 +85,7 @@ public class IndexHandler {
     @PostMapping("/register/do")
     @ResponseBody
     public Map doRegister(User user) {
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             user = userService.register(user);
             if(user != null){
@@ -104,7 +103,7 @@ public class IndexHandler {
     @PostMapping("/register/checkEmail")
     @ResponseBody
     public Map checkEmail(String email) {
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             if(userService.isUsedByEmail(email))
                 result.put("message","isUsed");
@@ -120,7 +119,7 @@ public class IndexHandler {
     @PostMapping("/register/checkUserName")
     @ResponseBody
     public Map checkUserName(String userName) {
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             if(userService.isUsedByUserName(userName))
                 result.put("message","isUsed");

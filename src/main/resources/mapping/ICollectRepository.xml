@@ -14,8 +14,14 @@
     <select id="findAllCollectsByFavoritesId" resultType="collect">
         select * from collect where favoritesId=#{favoritesId}
     </select>
+    
+    <select id="isCollectPostByUserId" resultType="boolean">
+        select count(*) from collect
+        where postId = #{postId} and userId = #{userId}
+    </select>
 
     <delete id="deleteCollect">
-        delete from collect where postId=#{postId} and userId=#{userId}
+        delete from collect
+        where postId = #{postId} and userId = #{userId}
     </delete>
 </mapper>

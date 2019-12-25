@@ -108,8 +108,11 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public void deleteByCommentId(Long commentId) {
+    public boolean deleteByCommentId(Long commentId) {
+        if(commentRepository.findByCommentId(commentId) == null)
+            return false;
         commentRepository.deleteByCommentId(commentId);
+        return commentRepository.findByCommentId(commentId) == null;
     }
 
     @Override

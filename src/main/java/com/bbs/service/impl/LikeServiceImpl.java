@@ -5,7 +5,6 @@ import com.bbs.repository.ICommentRepository;
 import com.bbs.repository.ILikeRepository;
 import com.bbs.repository.IPostRepository;
 import com.bbs.service.ILikeService;
-import com.bbs.service.IPostService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,12 +46,13 @@ public class LikeServiceImpl implements ILikeService {
             returnLike = iLikeRepository.findByPostIdAndUserId(like.getPostId(), like.getUserId());
             postRepository.likeByPostId(like.getPostId());
         }
-        if(returnLike!=null){
-            return true;
-        }
-        else {
-            return false;
-        }
+//        if(returnLike!=null){
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+        return returnLike != null;
     }
 
     @Override
@@ -63,18 +63,19 @@ public class LikeServiceImpl implements ILikeService {
     @Override
     public Long countPostLikes(@Param("postId") Long postId) {
         List<Like> postLikes=iLikeRepository.findByPostId(postId);
-        return new Long((long)postLikes.size());
+        return (long)postLikes.size();
     }
 
     @Override
     public boolean isPostLike(@Param("postId") Long postId) {
         List<Like> postLikes=iLikeRepository.findByPostId(postId);
-        if(postLikes.size()>0){
-            return true;
-        }
-        else{
-            return false;
-        }
+//        if(postLikes.size()>0){
+//            return true;
+//        }
+//        else{
+//            return false;
+//        }
+        return postLikes.size() > 0;
     }
 
     @Override
@@ -85,18 +86,19 @@ public class LikeServiceImpl implements ILikeService {
     @Override
     public Long countCommentLike(@Param("commentId") Long commentId) {
         List<Like> commentLike=iLikeRepository.findByCommentId(commentId);
-        return new Long((long)commentLike.size());
+        return (long) commentLike.size();
     }
 
     @Override
     public boolean isCommentLike(@Param("commentId") Long commentId) {
         List<Like> commentLike=iLikeRepository.findByCommentId(commentId);
-        if(commentLike.size()>0){
-            return true;
-        }
-        else{
-            return false;
-        }
+//        if(commentLike.size()>0){
+//            return true;
+//        }
+//        else{
+//            return false;
+//        }
+        return commentLike.size()>0;
     }
 
     @Override
@@ -111,5 +113,14 @@ public class LikeServiceImpl implements ILikeService {
         iCommentRepository.unlikeByCommentId(commentId);
     }
 
+    @Override
+    public Boolean isLikeCommentByUserId(Long commentId, Long userId) {
+        return iLikeRepository.isLikeCommentByUserId(commentId, userId);
+    }
+
+    @Override
+    public Boolean isLikePostByUserId(Long postId, Long userId) {
+        return iLikeRepository.isLikePostByUserId(postId,userId);
+    }
 }
 

@@ -23,12 +23,16 @@
     <link href="/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="/css/custom/custom.css" rel="stylesheet">
     <style>
-        .more-btn:hover {
+        .disabled {
+            box-shadow: none;
         }
     </style>
 </head>
 <body class="gray-bg">
-<script>
+<script th:inline="javascript">
+    var isAdmin = [[${#session.getAttribute('user').isUserType()}]];
+    var topPages = [[${topPostPages}]] || 1;
+    var pages = [[${postPages}]] || 1;
     var topPage = 1;
     var page = 1;
 </script>
@@ -48,22 +52,26 @@
                 <div class="ibox-content m-b-sm border-bottom forum-container">
                     <div th:if="${topPosts.size()>0}" class="forum-title">
                         <div class="pull-right forum-desc">
-                            <small th:text="|总帖子数是${topPosts.size()}|"></small>
+                            <small th:text="|总帖子数是${topPostSize}|"></small>
                         </div>
                         <h3>主版</h3>
                     </div>
                     <div id="tops">
                         <div th:each="topPost,indexInc:${topPosts}" class="forum-item">
                             <div class="row">
-                                <div class="col-sm-9">
+                                <div class="col-sm-10">
                                     <div th:switch="${indexInc.index % 3} " class="forum-icon">
-                                        <i th:case="0" class="fa fa-map"></i>
-                                        <i th:case="1" class="fa fa-graduation-cap"></i>
-                                        <i th:case="*" class="fa fa-bed"></i>
+                                        <i th:case="0" class="fa fa-cubes"></i>
+                                        <i th:case="1" class="fa fa-bed"></i>
+                                        <i th:case="*" class="fa fa-shield"></i>
                                     </div>
+                                    <i class="fa fa-vine" style="color: red;" th:if="${topPost.isQuality()}"></i>
                                     <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${topPost.getPostId()})}"
                                        th:text="${topPost.getPostTitle()}"></a>
-                                    <div class="forum-sub-title" th:text="${topPost.getPostContent()}"></div>
+                                    <div class="forum-sub-title">
+                                        <p th:text="${#strings.abbreviate(topPost.getPostContent(),20)}"></p>
+                                        <small th:text="${#dates.format(topPost.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
+                                    </div>
                                     <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
                                         <button th:if="${!topPost.isTop()}" class="btn btn-white btn-xs"
                                                 th:onclick="'javascript:topPost('+${topPost.getPostId()}+')'">
@@ -83,36 +91,41 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-sm-1">
-
+                                <div class="col-sm-1 forum-info">
+                                    <span class="views-number" th:text="${topPost.getLikes()}"></span>
+                                    <div>
+                                        <small>点赞</small>
+                                    </div>
                                 </div>
-                                <div class="col-sm-1">
-
+                                <div class="col-sm-1 forum-info">
+                                    <span class="views-number" th:text="${topPost.getCollects()}"></span>
+                                    <div>
+                                        <small>收藏</small>
+                                    </div>
                                 </div>
+                                <!--<div class="col-sm-1 forum-info">-->
+                                <!--<span class="views-number"-->
+                                <!--th:text="${countComments.get(topPost.getPostId())}"></span>-->
+                                <!--<div>-->
+                                <!--<small>评论</small>-->
+                                <!--</div>-->
+                                <!--</div>-->
                             </div>
-                        </div>
-                        <div class="text-right">
-                            <ul id="btnGroup" class="btn-group">
-                                <button onclick="topPageChange(1)" class="btn btn-white">«</button>
-                                <button class="btn btn-white">‹</button>
-                                <button class="btn btn-white disabled">›</button>
-                                <button onclick="topPageChange()" class="btn btn-white disabled">»</button>
-                            </ul>
                         </div>
                     </div>
                 </div>
                 <div class="ibox-content forum-container" id="content">
                     <div th:if="${posts.size()>0}" class="forum-title">
                         <div class="pull-right forum-desc">
-                            <small th:text="|总帖子数是${posts.size()}|"></small>
+                            <small th:text="|总帖子数是${postSize}|"></small>
                         </div>
                         <h3>副板</h3>
                     </div>
-                    <div id="upPost">
+                    <div id="upPosts">
                         <div th:each="post,indexInc:${posts}" class="forum-item">
                             <div class="row">
-                                <div class="col-sm-9">
-                                    <div th:switch="${indexInc.index%13}" class="forum-icon">
+                                <div class="col-sm-10">
+                                    <div th:switch="${indexInc.index%12}" class="forum-icon">
                                         <i th:case="0" class="fa fa-hand-spock-o"></i>
                                         <i th:case="1" class="fa fa-hand-lizard-o"></i>
                                         <i th:case="2" class="fa fa-hand-o-down"></i>
@@ -126,10 +139,12 @@
                                         <i th:case="10" class="fa fa-hand-scissors-o"></i>
                                         <i th:case="*" class="fa fa-hand-stop-o"></i>
                                     </div>
+                                    <i class="fa fa-vine" style="color: red;" th:if="${post.isQuality()}"></i>
                                     <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}"
                                        th:text="${post.getPostTitle()}"></a>
                                     <div class="forum-sub-title">
-                                        <p th:text="${post.getPostContent()}"></p>
+                                        <p th:text="${#strings.abbreviate(post.getPostContent(),20)}"></p>
+                                        <small th:text="${#dates.format(post.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
                                     </div>
                                     <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
                                         <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
@@ -162,19 +177,16 @@
                                         <small>收藏</small>
                                     </div>
                                 </div>
-                                <div class="col-sm-1 forum-info">
-                                    <span class="views-number" th:text="${countComments.get(post.getPostId())}"></span>
-                                    <div>
-                                        <small>评论</small>
-                                    </div>
-                                </div>
+                                <!--<div class="col-sm-1 forum-info">-->
+                                <!--<span class="views-number" th:text="${countComments.get(post.getPostId())}"></span>-->
+                                <!--<div>-->
+                                <!--<small>评论</small>-->
+                                <!--</div>-->
+                                <!--</div>-->
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12">
-                        <button onclick="newPage()" class="text-center more-btn btn btn-link col-sm-12">
-                            <i class="fa fa-arrow-down"></i> 查看更多
-                        </button>
+                    <div class="col-sm-12" id="morePost">
                     </div>
                 </div>
             </div>
@@ -200,7 +212,79 @@
 <script src="/js/plugins/layer/layer.min.js"></script>
 <script src="/js/plugins/peity/jquery.peity.min.js"></script>
 <script>
+    var fa = [
+        "fa fa-hand-spock-o",
+        "fa fa-hand-lizard-o",
+        "fa fa-hand-o-down",
+        "fa fa-hand-o-left",
+        "fa fa-hand-o-right",
+        "fa fa-hand-o-up",
+        "fa fa-hand-paper-o",
+        "fa fa-hand-peace-o",
+        "fa fa-hand-pointer-o",
+        "fa fa-hand-rock-o",
+        "fa fa-hand-scissors-o",
+        "fa fa-hand-stop-o"
+    ];
 
+    function creatButton() {
+        var newButton = document.createElement('button');
+        return newButton;
+    }
+
+    function showTopPage() {
+        var button1 = creatButton();
+        button1.textContent = '上一页';
+        button1.className = "btn btn-white";
+        if (topPage <= 1) {
+            button1.className = button1.className + " disabled";
+        } else {
+            button1.onclick = function (ev) {
+                moreTops(topPage - 1);
+            };
+        }
+        var button2 = creatButton();
+        button2.className = "btn btn-white";
+        button2.textContent = '下一页';
+        if (topPage >= topPages) {
+            button2.className = button2.className + " disabled";
+        } else {
+            button2.onclick = function (ev) {
+                moreTops(topPage + 1);
+            };
+        }
+        var ul = document.createElement('ul');
+        ul.className = "btn-group";
+        ul.append(button1, button2);
+        var btnTop = document.createElement('div');
+        btnTop.className = "text-right";
+        btnTop.appendChild(ul);
+        var tops = document.getElementById('tops');
+        tops.appendChild(btnTop);
+    }
+
+    showTopPage();
+
+    function showPostPage() {
+        var morePost = document.getElementById('morePost');
+        if (page >= pages) {
+            morePost.className = 'col-sm-12 hidden';
+        } else {
+            morePost.className = 'col-sm-12';
+            var button1 = creatButton();
+            button1.className = 'text-center more-btn btn btn-link col-sm-12';
+            button1.innerHTML = '<i class="fa fa-arrow-down"></i> 查看更多';
+            button1.onclick = function (ev) {
+                morePosts(page + 1);
+            };
+            morePost.innerHTML = "";
+            morePost.appendChild(button1);
+        }
+    }
+
+    showPostPage();
+</script>
+<script>
     // 加精帖子
     function qualityPost(postId) {
         $.ajax({
@@ -293,18 +377,12 @@
         });
     }
 
-    function topPageChange(pageId) {
-        var tops = document.getElementById("tops");
-        var btnGroup = document.getElementById('btnGroup');
-        var buttonActive = document.createElement("button");
-        buttonActive.className = "btn btn-white active";
-        buttonActive.onclick = "";
-        var button = document.createElement("button");
-        button.className = "btn btn-white";
-        button.onclick = "";
-        var buttonDisabled = document.createElement("button");
-        buttonDisabled.className = "btn btn-white disabled";
-        buttonDisabled.onclick = "";
+    // 分页查看置顶帖
+    function moreTops(pageId) {
+        if (pageId <= 1)
+            pageId = 1;
+        if (pageId > topPages)
+            pageId = topPages;
         $.ajax({
             url: "/Post/viewTopPosts",
             data: {
@@ -314,47 +392,166 @@
             dataType: "json",
             timeout: 3000,
             success: function (data) {
-                var topHtml = '';
-                if (data.list.length > 0) {
-                    data.list.Foreach(function (post) {
+                if (data.length > 0) {
+                    var topHtml = '';
+                    for (var i in data) {
+                        // console.log(data[i]);
                         topHtml += '<div class="forum-item">';
                         topHtml += '<div class="row">';
                         topHtml += '<div class="col-sm-10">';
                         topHtml += '<div class="forum-icon">';
-                        topHtml += '<i class="fafa-shield"></i>';
+                        switch (i % 3) {
+                            case 0:
+                                topHtml += '<i class="fa fa-cubes"></i>';
+                                break;
+                            case 1:
+                                topHtml += '<i class="fa fa-bed"></i>';
+                                break;
+                            default:
+                                topHtml += '<i class="fa fa-shield"></i>';
+                                break;
+                        }
                         topHtml += '</div>';
-                        topHtml += '<a href="/Comment/goPostByPostId/ + post.postId + ">' + post.postTitle + '</a>';
-                        topHtml += '<div class="forum-sub-title">' + post.postContent + '< /div>';
+                        if (data[i].quality) {
+                            topHtml += '<i class="fa fa-vine" style="color: red"></i>';
+                        }
+                        topHtml += '<a href="/Comment/goPostByPostId/' + data[i].postId + '">' + data[i].postTitle + '</a>';
+                        topHtml += '<div class="forum-sub-title">';
+                        topHtml += '<p>' + data[i].postContent.substring(0, 20) + '</p>';
+                        topHtml += '<small>' + data[i].renewDate + '</small>'
+                        topHtml += '</div>';
+                        if (isAdmin) {
+                            topHtml += '<div class="btn-group">';
+                            if (data[i].top) {
+                                topHtml += '<button class="btn btn-white btn-xs" onclick="unTopPost(' + data[i].postId + ')">';
+                                topHtml += '<i class="fa fa-hand-o-right"></i>取消置顶';
+                                topHtml += '</button>';
+                            } else {
+                                topHtml += '<button class="btn btn-white btn-xs" onclick="topPost(' + data[i].postId + ')">';
+                                topHtml += '<i class="fa fa-hand-o-left"></i>置顶';
+                                topHtml += '</button>';
+                            }
+                            if (data[i].quality) {
+                                topHtml += '<button class="btn btn-white btn-xs" onclick="unQualityPost(' + data[i].postId + ')">';
+                                topHtml += '<i class="fa fa-hand-o-down"></i>取消加精';
+                                topHtml += '</button>';
+                            } else {
+                                topHtml += '<button class="btn btn-white btn-xs" onclick="qualityPost(' + data[i].postId + ')">';
+                                topHtml += '<i class="fa fa-hand-o-up"></i>加精';
+                                topHtml += '</button>';
+                            }
+                            topHtml += '</div>';
+                        }
                         topHtml += '</div>';
                         topHtml += '<div class="col-sm-1 forum-info">';
-                        topHtml += '<span class="views-number">' + post.likes + '</span>';
+                        topHtml += '<span class="views-number">' + data[i].likes + '</span>';
                         topHtml += '<div>';
                         topHtml += '<small>点赞</small>';
                         topHtml += '</div>';
                         topHtml += '</div>';
                         topHtml += '<div class="col-sm-1 forum-info">';
-                        topHtml += '<span class="views-number">' + post.collects + '</span>';
+                        topHtml += '<span class="views-number">' + data[i].collects + '</span>';
                         topHtml += '<div>';
                         topHtml += '<small>收藏</small>';
                         topHtml += '</div>';
                         topHtml += '</div>';
-                        topHtml += '<div class="col-sm-1 forum-info">';
-                        topHtml += '<span class="views-number">123</span>';
-                        topHtml += '<div>';
-                        topHtml += '<small>评论</small>';
                         topHtml += '</div>';
                         topHtml += '</div>';
-                        topHtml += '</div>';
-                        topHtml += '</div>;'
-                    });
+                    }
+                    topPage = pageId;
+                    var tops = document.getElementById("tops");
+                    tops.innerHTML = topHtml;
+                    showTopPage();
                 }
-                tops.innerHTML = topHtml;
-            }
-            ,
+            },
             error: function () {
-                toastr.error("系统异常", "操作失败")
+                toastr.error("系统异常", "操作失败");
             }
         });
+    }
+
+    // 查看更多帖子
+    function morePosts(pageId) {
+        if (pageId > pages) {
+            page = pages;
+            showPostPage();
+            return;
+        }
+        $.ajax({
+            url: "/Post/view",
+            data: {
+                "page": pageId
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            success: function (data) {
+                if (data.length > 0) {
+                    var postHtml = '';
+                    for (var i in data) {
+                        // console.log(data[i]);
+                        postHtml += '<div class="forum-item">';
+                        postHtml += '<div class="row">';
+                        postHtml += '<div class="col-sm-10">';
+                        postHtml += '<div class="forum-icon">';
+                        postHtml += '<i class="fa ' + fa[i % 12] + '"></i>';
+                        postHtml += '</div>';
+                        if (data[i].quality) {
+                            postHtml += '<i class="fa fa-vine" style="color: red"></i>';
+                        }
+                        postHtml += '<a href="/Comment/goPostByPostId/' + data[i].postId + '">' + data[i].postTitle + '</a>';
+                        postHtml += '<div class="forum-sub-title">';
+                        postHtml += '<p>' + data[i].postContent.substring(0, 20) + '</p>';
+                        postHtml += '<small>' + data[i].renewDate + '</small>'
+                        postHtml += '</div>';
+                        if (isAdmin) {
+                            postHtml += '<div class="btn-group">';
+                            if (data[i].top) {
+                                postHtml += '<button class="btn btn-white btn-xs" onclick="unTopPost(' + data[i].postId + ')">';
+                                postHtml += '<i class="fa fa-hand-o-right"></i>取消置顶';
+                                postHtml += '</button>';
+                            } else {
+                                postHtml += '<button class="btn btn-white btn-xs" onclick="topPost(' + data[i].postId + ')">';
+                                postHtml += '<i class="fa fa-hand-o-left"></i>置顶';
+                                postHtml += '</button>';
+                            }
+                            if (data[i].quality) {
+                                postHtml += '<button class="btn btn-white btn-xs" onclick="unQualityPost(' + data[i].postId + ')">';
+                                postHtml += '<i class="fa fa-hand-o-down"></i>取消加精';
+                                postHtml += '</button>';
+                            } else {
+                                postHtml += '<button class="btn btn-white btn-xs" onclick="qualityPost(' + data[i].postId + ')">';
+                                postHtml += '<i class="fa fa-hand-o-up"></i>加精';
+                                postHtml += '</button>';
+                            }
+                            postHtml += '</div>';
+                        }
+                        postHtml += '</div>';
+                        postHtml += '<div class="col-sm-1 forum-info">';
+                        postHtml += '<span class="views-number">' + data[i].likes + '</span>';
+                        postHtml += '<div>';
+                        postHtml += '<small>点赞</small>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                        postHtml += '<div class="col-sm-1 forum-info">';
+                        postHtml += '<span class="views-number">' + data[i].collects + '</span>';
+                        postHtml += '<div>';
+                        postHtml += '<small>收藏</small>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                    }
+                    page = pageId;
+                    var upPosts = document.getElementById('upPosts');
+                    upPosts.innerHTML += postHtml;
+                    showPostPage();
+                }
+            },
+            error: function () {
+                toastr.error("系统异常", "操作失败");
+            }
+        })
     }
 </script>
 </body>

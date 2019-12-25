@@ -17,4 +17,7 @@ public interface ICollectService {
 
     //删除一个收藏postId,userId
     public void deleteCollect(Long postId,Long userId);
+
+    //查看是否收藏过
+    public Boolean isCollectPostByUserId(Long postId,Long userId);
 }

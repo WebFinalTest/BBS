@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+ok
+</div>
+<div id="testDiv">
+
+</div>
+<a href="javascript:test()">test</a>
+
+
+
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    function test() {
+        $.ajax({
+            url:"/Forum/modelTest",
+            data:{
+
+            },
+            type:"GET",
+            dataType:"json",
+            timeout:3000,
+            async:true,
+            success:function (result) {
+                alert("ok");
+                document.getElementById("testDiv").innerHTML += "<div th:text='${message}'>ok</div>";
+                // $("#testDiv").innerHTML += "ok";
+                // $("#testDiv").innerHTML += "<div th:text='${message}'>ok</div>";
+            }
+        });
+    }
+</script>
+</body>
+</html>

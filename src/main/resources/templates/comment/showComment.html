@@ -1,10 +1,209 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <title th:text="comments"></title>
 
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+
+  <!--[if lt IE 9]>
+  <meta http-equiv="refresh" content="0;ie.html"/>
+  <![endif]-->
+
+  <link rel="shortcut icon" href="/img/favicon.ico">
+
+  <link rel="stylesheet" href="/BBs/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/BBs/static/css/font-awesome.css?v=4.4.0">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/iCheck/custom.css">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/summernote/summernote.css">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/summernote/summernote-bs3.css">
+  <link rel="stylesheet" href="/BBs/static/css/animate.css">
+  <link rel="stylesheet" href="/BBs/static/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/BBs/static/css/custom/custom.css">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font-awesome.css?v=4.4.0">
+  <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+  <link rel="stylesheet" href="/css/plugins/summernote/summernote.css">
+  <link rel="stylesheet" href="/css/plugins/summernote/summernote-bs3.css">
+  <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/css/custom/custom.css">
+  <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="social-feed-box">
+        <div class="social-avatar">
+          <div class="media-body">
+            <a href="#" th:text="${commentUserNames.get(floorComment.getUserId())}"></a>
+            <small th:text="${#dates.format(floorComment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
+                   class="text-muted"></small>
+          </div>
+        </div>
+        <div class="social-body">
+          <p th:text="${floorComment.getCommentContent()}"></p>
+          <div class="btn-group">
+            <button class="btn btn-white btn-xs"
+                    th:onclick="'javascript:likeComment('+${floorComment.getCommentId()}+')'">
+              <i class="fa fa-thumbs-up"></i>赞
+            </button>
+            <button th:onclick="'javascript:showFooter(\'\')'" class="btn btn-white btn-xs">
+              <i class="fa fa-comment"></i>评论
+            </button>
+            <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
+                    th:onclick="'javascript:deleteComment('+${floorComment.getCommentId()}+')'">
+              <i class="fa fa-trash"></i>删除
+            </button>
+          </div>
+        </div>
+        <div class="social-footer hidden" id="showFooter">
+          <div class="social-comment">
+            <div class="media-body">
+              <div class="col-sm-12">
+                <textarea th:id="commentContent" placeholder="填写评论"
+                          class="textarea"></textarea>
+              </div>
+              <div class="col-sm-1">
+                <button th:onclick="'javascript:commentComment('+${floorComment.getCommentId()}+',\'\')'"
+                        class="btn btn-primary">评论
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <div class="social-feed-box" th:each="comment,indexInc:${comments}">
+        <div class="social-avatar">
+          <div class="media-body">
+            <a href="#" th:text="${commentUserNames.get(comment.getUserId())}"></a>
+            <small th:text="${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
+                   class="text-muted"></small>
+          </div>
+        </div>
+        <div class="social-body">
+          <p th:if="${comment.getReplyId() != floorComment.getCommentId()}" th:text="'回复：'+${replyComments[comment.getReplyId()]}"></p>
+          <p th:text="${comment.getCommentContent()}"></p>
+          <div class="btn-group">
+            <button class="btn btn-white btn-xs"
+                    th:onclick="'javascript:likeComment('+${comment.getCommentId()}+')'">
+              <i class="fa fa-thumbs-up"></i>赞
+            </button>
+            <button th:onclick="'javascript:showFooter('+${indexInc.index}+')'" class="btn btn-white btn-xs">
+              <i class="fa fa-comment"></i>评论
+            </button>
+            <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
+                    th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
+              <i class="fa fa-trash"></i>删除
+            </button>
+          </div>
+        </div>
+        <div class="social-footer hidden" th:id="|showFooter${indexInc.index}|">
+          <div class="social-comment">
+            <div class="media-body">
+              <div class="col-sm-12">
+                <textarea th:id="|commentContent${indexInc.index}|" placeholder="填写评论"
+                          class="textarea"></textarea>
+              </div>
+              <div class="col-sm-1">
+                <button th:onclick="'javascript:commentComment('+${comment.getCommentId()}+','+${indexInc.index}+')'"
+                        class="btn btn-primary">评论
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 全局js -->
+<script src="/BBs/static/js/jquery.min.js?v=2.1.4"></script>
+<script src="/BBs/static/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="/BBs/static/js/hAdmin.js?v=4.1.0"></script>
+<script src="/BBs/static/js/index.js"></script>
+<script src="/BBs/static/js/custom/commons.js"></script>
+<script src="/BBs/static/js/custom/custom.js"></script>
+
+<!-- 第三方插件 -->
+<script src="/BBs/static/js/plugins/pace/pace.min.js"></script>
+<script src="/BBs/static/js/plugins/toastr/toastr.min.js"></script>
+<script src="/BBs/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/BBs/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/BBs/static/js/plugins/layer/layer.min.js"></script>
+
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="/js/hAdmin.js?v=4.1.0"></script>
+<script src="/js/index.js"></script>
+<script src="/js/custom/commons.js"></script>
+<script src="/js/custom/custom.js"></script>
+
+<!-- 第三方插件 -->
+<script src="/js/plugins/pace/pace.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/js/plugins/layer/layer.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
+<script>
+    var ani = ["fadeInLeftBig", "fadeInRightBig", "rollIn"];
+
+    var showPost = 0;
+    var past = null;
+
+    // 展示帖子评论框
+    function showFooter(footerId) {
+        if (past !== null && showPost % 2 === 1)
+            showPost++;
+        past = footerId;
+        var footerPost = document.getElementById("showFooter" + footerId);
+        var className = "social-footer";
+        if (showPost % 2 === 0) {
+            footerPost.className = className + " " + "animated" + " " + ani[showPost % 3];
+        } else
+            footerPost.className = className + " " + "hidden";
+        showPost++;
+    }
+
+    // 提交评论的评论
+    function commentComment(commentId, indexId) {
+        $.ajax({
+            url: "/Comment/create",
+            data: {
+                "replyId": commentId,
+                "commentContent": $('#commentContent' + indexId).val()
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success") {
+                    toastr.success("评论成功", "评论成功");
+                    window.location.reload();
+                } else
+                    toastr.error("评论失败", "评论失败");
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "评论失败");
+            }
+        });
+    }
+</script>
 </body>
 </html>

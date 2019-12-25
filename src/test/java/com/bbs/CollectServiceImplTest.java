@@ -23,6 +23,9 @@ public class CollectServiceImplTest {
     @Test
     public void Test(){
 
+        System.out.println(collectService.isCollectPostByUserId(2L,194915045L));
+        System.out.println(collectService.isCollectPostByUserId(23L,194915045L));
+
         Collect collect = new Collect();
         collect.setPostId(1L);
         collect.setFavoritesId(3L);

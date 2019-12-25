@@ -31,7 +31,7 @@ public class FavoritesHandler {
     @ResponseBody
     public Map createFavorites(HttpSession session,String favoritesName){
         User user = (User) session.getAttribute("user");
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             favoritesService.createFavorites(user.getUserId(),favoritesName);
             result.put("message","success");
@@ -52,7 +52,7 @@ public class FavoritesHandler {
              list = favoritesService.findAllFavoritesByUserId(user.getUserId());
         }
         catch (Exception e) {
-             list = null;
+            System.out.println("ERROR:viewFavorites");
         }
         return  list;
     }
@@ -61,7 +61,7 @@ public class FavoritesHandler {
     @PostMapping("/renameFavorites")
     @ResponseBody
     public Map renameFavorites(Favorites favorites){
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             favoritesService.updateFavorites(favorites.getFavoritesId(),favorites.getFavoritesName());
             result.put("message","success");
@@ -76,7 +76,7 @@ public class FavoritesHandler {
     @PostMapping("/deleteFavorites")
     @ResponseBody
     public Map deleteFavorites(Long favoritesId){
-        Map<String,String> result = new HashMap<String, String>();
+        Map<String,String> result = new HashMap<>();
         try{
             favoritesService.deleteFavoritesByFavoritesId(favoritesId);
             result.put("message","success");

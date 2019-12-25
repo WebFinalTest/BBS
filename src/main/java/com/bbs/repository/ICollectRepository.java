@@ -20,4 +20,7 @@ public interface ICollectRepository {
 
     //删除一个收藏
     public void deleteCollect(@Param("postId") Long postId, @Param("userId") Long userId);
+
+    //查看是否收藏过
+    public Boolean isCollectPostByUserId(@Param("postId") Long postId, @Param("userId") Long userId);
 }

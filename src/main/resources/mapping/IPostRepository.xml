@@ -120,7 +120,13 @@
     <select id="countPosts" resultType="Long">
         select count(*)
         from post
-        where top = 0 and top = 0
+        where top = 0 and quality = 0
+    </select>
+
+    <select id="countUnTopPosts" resultType="Long">
+        select count(*)
+        from post
+        where top = 0
     </select>
 
     <select id="countTopPosts" resultType="Long">

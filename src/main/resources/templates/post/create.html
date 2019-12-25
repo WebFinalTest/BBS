@@ -64,7 +64,7 @@
                     </div>
                 </form>
                 <div class="mail-text h-200">
-                    <div class="summernote text-center" >
+                    <div class="summernote text-center">
                     <textarea style="resize: none; height: 200px;" class="col-sm-12" id="postContent" required
                               placeholder="帖子正文"></textarea>
                     </div>
@@ -76,6 +76,7 @@
                         <i class="fa fa-reply"></i> 提交
                     </a>
                 </div>
+                <button onclick="moreCreate()">创建更多</button>
             </div>
         </div>
     </div>
@@ -141,7 +142,7 @@
             success: function (result) {
                 if (result.message === "success") {
                     toastr.success("创建帖子成功", "个人积分+20");
-                    window.location.href = "/Post/view";
+                    // window.location.href = "/Post/view";
                 } else
                     toastr.error("创建帖子失败", "请检查您的输入是否有误");
             },
@@ -149,6 +150,11 @@
                 toastr.error("系统繁忙", "请稍后再试");
             }
         });
+    }
+
+    function moreCreate() {
+        for (var x = 1; x < 60; x++)
+            submitPost();
     }
 
     function changePointsStatus(flag) {

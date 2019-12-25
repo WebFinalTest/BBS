@@ -28,6 +28,8 @@ public class UserHandler {
     public String showUserInfo(Model model,HttpSession session) {
         try{
             User user = (User)session.getAttribute("user");
+            user = userService.findByUserId(user.getUserId());
+            session.setAttribute("user",user);
             model.addAttribute("uer",user);
         }catch (Exception e) {
             System.out.println("ERROR:View");
@@ -57,7 +59,7 @@ public class UserHandler {
     @PostMapping("/updateUserInfo/do")
     @ResponseBody
     public Map doUpdateUserInfo(HttpSession session,User user) {
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap<>();
         try {
             User user1 = (User)session.getAttribute("user");
             user.setUserId(user1.getUserId());
@@ -76,7 +78,7 @@ public class UserHandler {
     @PostMapping("/updatePassword")
     @ResponseBody
     public Map<String,String> updatePassword(HttpSession session,String originalPassword,String newPassword) {
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap<>();
         try {
             User user = (User) session.getAttribute("user");
             if(userService.updatePasswordByUserId(user.getUserId(),originalPassword,newPassword))

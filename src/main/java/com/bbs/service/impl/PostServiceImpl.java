@@ -1,7 +1,6 @@
 package com.bbs.service.impl;
 
 import com.bbs.entity.Collect;
-import com.bbs.entity.Comment;
 import com.bbs.entity.Like;
 import com.bbs.entity.Post;
 import com.bbs.repository.*;
@@ -24,12 +23,12 @@ public class PostServiceImpl implements IPostService {
     private ICommentRepository commentRepository;
     private ILikeRepository likeRepository;
     private ICollectRepository collectRepository;
-    private IFavoritesRepository favoritesRepository;
-
-    @Autowired
-    public void setFavoritesRepository(IFavoritesRepository favoritesRepository) {
-        this.favoritesRepository = favoritesRepository;
-    }
+//    private IFavoritesRepository favoritesRepository;
+//
+//    @Autowired
+//    public void setFavoritesRepository(IFavoritesRepository favoritesRepository) {
+//        this.favoritesRepository = favoritesRepository;
+//    }
 
     @Autowired
     public void setLikeRepository(ILikeRepository likeRepository) {
@@ -254,8 +253,8 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Long countUnTopPostsPage() {
-        Long postsNum = postRepository.countPosts() + postRepository.countQualityPosts();
-        return postsNum / pageSize2 + (postsNum % pageSize2 == 0 ? 0 : 1);
+        Long postsNum = postRepository.countUnTopPosts();
+        return postsNum / pageSize + (postsNum % pageSize == 0 ? 0 : 1);
     }
 
     @Override
@@ -288,7 +287,7 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Long countUnTopPosts() {
-        return postRepository.countPosts() + postRepository.countQualityPosts();
+        return postRepository.countUnTopPosts();
     }
 
     @Override
