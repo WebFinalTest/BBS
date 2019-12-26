@@ -49,12 +49,24 @@
                    class="text-muted"></small>
           </div>
         </div>
-        <div class="social-body">
-          <p th:text="${floorComment.getCommentContent()}"></p>
-          <div class="btn-group">
-            <button class="btn btn-white btn-xs"
+        <div class="row social-body">
+          <div class="col-sm-11">
+            <p th:text="${floorComment.getCommentContent()}"></p>
+          </div>
+          <div class="col-sm-1">
+            <span class="view-number" th:text="${floorComment.getLikes()}"></span>
+            <div>
+              <small>点赞</small>
+            </div>
+          </div>
+          <div class="col-sm-12 btn-group">
+            <button th:if="${!isLikeComment.get(floorComment.getCommentId())}" class="btn btn-white btn-xs"
                     th:onclick="'javascript:likeComment('+${floorComment.getCommentId()}+')'">
               <i class="fa fa-thumbs-up"></i>赞
+            </button>
+            <button th:if="${isLikeComment.get(floorComment.getCommentId())}" class="btn btn-white btn-xs"
+                    th:onclick="'javascript:unLikeComment('+${floorComment.getCommentId()}+')'">
+              <i class="fa fa-thumbs-up"></i>取消赞
             </button>
             <button th:onclick="'javascript:showFooter(\'\')'" class="btn btn-white btn-xs">
               <i class="fa fa-comment"></i>评论
@@ -87,17 +99,29 @@
         <div class="social-avatar">
           <div class="media-body">
             <a href="#" th:text="${commentUserNames.get(comment.getUserId())}"></a>
-            <small th:text="${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
-                   class="text-muted"></small>
+            <small th:text="${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}" class="text-muted"></small>
           </div>
         </div>
-        <div class="social-body">
-          <p th:if="${comment.getReplyId() != floorComment.getCommentId()}" th:text="'回复：'+${replyComments[comment.getReplyId()]}"></p>
-          <p th:text="${comment.getCommentContent()}"></p>
-          <div class="btn-group">
-            <button class="btn btn-white btn-xs"
+        <div class="social-body row">
+          <div class="col-sm-11">
+            <b th:if="${comment.getReplyId() != floorComment.getCommentId()}" style="color:rgb(200,200,200)"
+               th:text="'回复：'+${replyComments[comment.getReplyId()]}"></b>
+            <p th:text="${comment.getCommentContent()}" style="font-size: 24px;"></p>
+          </div>
+          <div class="col-sm-1">
+            <span class="view-number" th:text="${comment.getLikes()}"></span>
+            <div>
+              <small>点赞</small>
+            </div>
+          </div>
+          <div class="col-sm-12 btn-group">
+            <button th:if="${!isLikeComment.get(comment.getCommentId())}" class="btn btn-white btn-xs"
                     th:onclick="'javascript:likeComment('+${comment.getCommentId()}+')'">
               <i class="fa fa-thumbs-up"></i>赞
+            </button>
+            <button th:if="${isLikeComment.get(comment.getCommentId())}" class="btn btn-white btn-xs"
+                    th:onclick="'javascript:unLikeComment('+${comment.getCommentId()}+')'">
+              <i class="fa fa-thumbs-up"></i>取消赞
             </button>
             <button th:onclick="'javascript:showFooter('+${indexInc.index}+')'" class="btn btn-white btn-xs">
               <i class="fa fa-comment"></i>评论
@@ -201,6 +225,52 @@
             },
             error: function () {
                 toastr.error("系统异常，请重试", "评论失败");
+            }
+        });
+    }
+
+    // 给评论点赞
+    function likeComment(commentId) {
+        $.ajax({
+            url: "/Like/likeComment",
+            data: {
+                "commentId": commentId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("点赞成功", "点赞成功");
+                else
+                    toastr.error("你已经点赞过了", "点赞失败");
+                window.location.reload();
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "点赞失败");
+            }
+        });
+    }
+
+    // 取消评论点赞
+    function unLikeComment(commentId) {
+        $.ajax({
+            url: "/Like/unLikeComment",
+            data: {
+                "commentId": commentId
+            },
+            type: "POST",
+            dataType: "json",
+            async: true,
+            success: function (result) {
+                if (result.message === "success")
+                    toastr.success("取消点赞成功", "取消点赞成功");
+                else
+                    toastr.error("你没有点赞过", "取消点赞失败");
+                window.location.reload();
+            },
+            error: function () {
+                toastr.error("系统异常，请重试", "取消点赞失败");
             }
         });
     }

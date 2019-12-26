@@ -80,6 +80,9 @@ public interface IPostRepository {
     //点赞帖子
     public void likeByPostId(@Param("postId") Long postId);
 
+    //取消点赞帖子
+    public void unLikeByPostId(@Param("postId") Long postId);
+
     //收藏数+1
     public Long collectByPostId(@Param("postId") Long postId);
 

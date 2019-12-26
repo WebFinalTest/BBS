@@ -19,6 +19,12 @@
         where postId = #{postId}
     </update>
 
+    <update id="unLikeByPostId">
+        update post
+        set likes = likes - 1
+        where postId = #{postId}
+    </update>
+
     <!-- 删除方法 -->
     <delete id="deleteById">
         delete

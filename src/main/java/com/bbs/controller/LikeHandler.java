@@ -66,6 +66,21 @@ public class LikeHandler {
         return result;
     }
 
+    @PostMapping("/unLikePost")
+    @ResponseBody
+    public Map unLikePost(HttpSession session,Long postId) {
+        Map<String,String> result = new HashMap<>();
+        User user;
+        try{
+            user = (User)session.getAttribute("user");
+            likeService.deleteLikeByPostId(postId,user.getUserId());
+            result.put("message","success");
+        }catch (Exception e) {
+            result.put("message","error");
+        }
+        return result;
+    }
+
     @PostMapping("/likeComment")
     @ResponseBody
     public Map likeComment(HttpSession session, Long commentId) {
@@ -77,6 +92,21 @@ public class LikeHandler {
             like.setCommentId(commentId);
             like.setUserId(user.getUserId());
             likeService.createLike(like);
+            result.put("message","success");
+        }catch (Exception e) {
+            result.put("message","error");
+        }
+        return result;
+    }
+
+    @PostMapping("/unLikeComment")
+    @ResponseBody
+    public Map unLikeComment(HttpSession session, Long commentId) {
+        Map<String,String> result = new HashMap<>();
+        User user;
+        try{
+            user = (User)session.getAttribute("user");
+            likeService.deleteLikeByCommentId(commentId,user.getUserId());
             result.put("message","success");
         }catch (Exception e) {
             result.put("message","error");

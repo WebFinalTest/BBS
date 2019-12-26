@@ -180,7 +180,7 @@ public class PostHandler {
     }
 
     //删除帖子
-    @PostMapping("/deleteByPostId")
+    @PostMapping("/deletePost")
     @ResponseBody
     public Map deleteByPostId(Long postId) {
         Map<String,String> result = new HashMap<>();

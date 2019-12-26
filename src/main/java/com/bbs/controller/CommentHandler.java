@@ -116,7 +116,7 @@ public class CommentHandler {
     }
 
     //删除评论
-    @GetMapping("/deleteComment")
+    @PostMapping("/deleteComment")
     @ResponseBody
     public Map deleteComment(Long commentId) {
         Map<String,String> result = new HashMap<>();
@@ -155,7 +155,8 @@ public class CommentHandler {
                 }
                 isLikeComment.put(comment.getCommentId(),likeService.isLikeCommentByUserId(comment.getCommentId(),user.getUserId()));
             }
-            commentUserNames.put(floorId,userService.findByUserId(floorComment.getUserId()).getUserName());
+            isLikeComment.put(floorComment.getCommentId(),likeService.isLikeCommentByUserId(floorComment.getCommentId(),user.getUserId()));
+            commentUserNames.put(floorComment.getUserId(),userService.findByUserId(floorComment.getUserId()).getUserName());
         }
         catch (Exception e) {
             System.out.println("Error:goFloorComments");

@@ -102,8 +102,10 @@ public class LikeServiceImpl implements ILikeService {
     }
 
     @Override
+    @Transactional
     public void deleteLikeByPostId(@Param("postId") Long postId,@Param("userId") Long userId) {
         iLikeRepository.deleteByPostId(postId,userId);
+        postRepository.unLikeByPostId(postId);
     }
 
     @Override
