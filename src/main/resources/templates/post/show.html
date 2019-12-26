@@ -223,7 +223,7 @@
               <i class="fa fa-check-square-o"></i>采纳评论
             </button>
             <button
-                th:if="${#session.getAttribute('user').isUserType() || #session.getAttribute('user').getUserId() == post.getUserId()}"
+                th:if="${#session.getAttribute('user').isUserType() || #session.getAttribute('user').getUserId() == comment.getUserId()}"
                 class="btn btn-danger btn-xs"
                 th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
               <i class="fa fa-trash"></i>删除

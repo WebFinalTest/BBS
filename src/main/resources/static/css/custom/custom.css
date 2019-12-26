@@ -33,7 +33,7 @@
     height: 200px;
 }
 
-p{
+p, b{
     word-break: break-all;
 }
 

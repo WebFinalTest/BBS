@@ -121,7 +121,7 @@
             <button th:onclick="'javascript:showFooter('+${indexInc.index}+')'" class="btn btn-white btn-xs">
               <i class="fa fa-comment"></i>评论
             </button>
-            <button th:if="${#session.getAttribute('user').isUserType()}" class="btn btn-danger btn-xs"
+            <button th:if="${#session.getAttribute('user').isUserType() || #session.getAttribute('user').getUserId() == comment.getUserId()}" class="btn btn-danger btn-xs"
                     th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
               <i class="fa fa-trash"></i>删除
             </button>
