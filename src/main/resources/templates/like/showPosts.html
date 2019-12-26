@@ -2,94 +2,215 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="renderer" content="webkit">
-    <title>查看我喜欢的帖子</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <title>查看我喜欢的帖子</title>
 
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
 
-    <!-- [if lt IE 9]>
-    <meta http-equiv="refresh" content="0;ie.html"/>
-    <! [endif]-->
+  <!-- [if lt IE 9]>
+  <meta http-equiv="refresh" content="0;ie.html"/>
+  <! [endif]-->
 
-    <link rel="shortcut icon" href="/img/favicon.ico">
+  <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <link rel="stylesheet" href="/BBs/static/css/bootstrap.min.css?v=3.3.6">
-    <link rel="stylesheet" href="/BBs/static/css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="/BBs/static/css/animate.css">
-    <link rel="stylesheet" href="/BBs/static/css/style.css?v=4.1.0">
-    <link rel="stylesheet" href="/BBs/static/css/custom/custom.css">
+  <link rel="stylesheet" href="/BBs/static/css/bootstrap.min.css?v=3.3.6">
+  <link rel="stylesheet" href="/BBs/static/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="/BBs/static/css/animate.css">
+  <link rel="stylesheet" href="/BBs/static/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/BBs/static/css/custom/custom.css">
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css?v=3.3.6">
-    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="/css/animate.css">
-    <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/css/bootstrap.min.css?v=3.3.6">
+  <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/style.css?v=4.1.0">
 </head>
 <body class="gray-bg">
-<script>
+<script th:inline="javascript">
     var page = 1;
+    var pages = [[${postPages}]] || 1;
 </script>
 <div class="wrapper wrapper-content">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="ibox-content m-b-sm border-bottom">
-                    <div class="p-xs">
-                        <h1 class="text-center">我喜欢的帖子</h1>
-                    </div>
-                </div>
-                <div class="ibox-content forum-container">
-                    <div class="forum-item" th:each="post,indexInc:${posts}">
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <div th:switch="${indexInc.index%12}" class="forum-icon">
-                                    <i th:case="0" class="fa fa-hand-spock-o"></i>
-                                    <i th:case="1" class="fa fa-hand-lizard-o"></i>
-                                    <i th:case="2" class="fa fa-hand-o-down"></i>
-                                    <i th:case="3" class="fa fa-hand-o-left"></i>
-                                    <i th:case="4" class="fa fa-hand-o-right"></i>
-                                    <i th:case="5" class="fa fa-hand-o-up"></i>
-                                    <i th:case="6" class="fa fa-hand-paper-o"></i>
-                                    <i th:case="7" class="fa fa-hand-peace-o"></i>
-                                    <i th:case="8" class="fa fa-hand-pointer-o"></i>
-                                    <i th:case="9" class="fa fa-hand-rock-o"></i>
-                                    <i th:case="10" class="fa fa-hand-scissors-o"></i>
-                                    <i th:case="*" class="fa fa-hand-stop-o"></i>
-                                </div>
-                                <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}"
-                                   th:text="${post.getPostTitle()}"></a>
-                                <div class="forum-sub-title" th:text="${post.getPostContent()}"></div>
-                            </div>
-                            <div class="col-sm-1 forum-info">
-                                <span class="views-number" th:text="${post.getLikes()}"></span>
-                                <div>
-                                    <small>点赞</small>
-                                </div>
-                            </div>
-                            <div class="col-sm-1 forum-info">
-                                <span class="views-number" th:text="${post.getCollects()}"></span>
-                                <div>
-                                    <small>收藏</small>
-                                </div>
-                            </div>
-                            <!--<div class="col-sm-1 forum-info">-->
-                                <!--<span class="views-number" th:text="${countComments.get(post.getPostId())}"></span>-->
-                                <!--<div>-->
-                                    <!--<small>评论</small>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox-content m-b-sm border-bottom">
+          <div class="p-xs">
+            <h1 class="text-center">我喜欢的帖子</h1>
+          </div>
         </div>
-
+        <div class="ibox-content forum-container">
+          <div id="posts">
+            <div class="forum-item" th:each="post,indexInc:${posts}">
+              <div class="row">
+                <div class="col-sm-10">
+                  <div th:switch="${indexInc.index%12}" class="forum-icon">
+                    <i th:case="0" class="fa fa-hand-spock-o"></i>
+                    <i th:case="1" class="fa fa-hand-lizard-o"></i>
+                    <i th:case="2" class="fa fa-hand-o-down"></i>
+                    <i th:case="3" class="fa fa-hand-o-left"></i>
+                    <i th:case="4" class="fa fa-hand-o-right"></i>
+                    <i th:case="5" class="fa fa-hand-o-up"></i>
+                    <i th:case="6" class="fa fa-hand-paper-o"></i>
+                    <i th:case="7" class="fa fa-hand-peace-o"></i>
+                    <i th:case="8" class="fa fa-hand-pointer-o"></i>
+                    <i th:case="9" class="fa fa-hand-rock-o"></i>
+                    <i th:case="10" class="fa fa-hand-scissors-o"></i>
+                    <i th:case="*" class="fa fa-hand-stop-o"></i>
+                  </div>
+                  <i class="fa fa-vine" style="color: red;" th:if="${post.isQuality()}"></i>
+                  <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}"
+                     th:text="${post.getPostTitle()}"></a>
+                  <div class="forum-sub-title">
+                    <p th:text="${#strings.abbreviate(post.getPostContent(),20)}"></p>
+                    <small th:text="${#dates.format(post.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
+                  </div>
+                </div>
+                <div class="col-sm-1 forum-info">
+                  <span class="views-number" th:text="${post.getLikes()}"></span>
+                  <div>
+                    <small>点赞</small>
+                  </div>
+                </div>
+                <div class="col-sm-1 forum-info">
+                  <span class="views-number" th:text="${post.getCollects()}"></span>
+                  <div>
+                    <small>收藏</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12" id="morePost"></div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+<script>
+    var fa = [
+        "fa fa-hand-spock-o",
+        "fa fa-hand-lizard-o",
+        "fa fa-hand-o-down",
+        "fa fa-hand-o-left",
+        "fa fa-hand-o-right",
+        "fa fa-hand-o-up",
+        "fa fa-hand-paper-o",
+        "fa fa-hand-peace-o",
+        "fa fa-hand-pointer-o",
+        "fa fa-hand-rock-o",
+        "fa fa-hand-scissors-o",
+        "fa fa-hand-stop-o"
+    ];
+
+    function showPostPage() {
+        var morePost = document.getElementById('morePost');
+        morePost.innerHTML = "";
+        if (page >= pages) {
+            morePost.className = 'col-sm-12 hidden';
+        } else {
+            morePost.className = 'col-sm-12';
+            var button1 = creatButton();
+            button1.className = 'text-center more-btn btn btn-link col-sm-12';
+            button1.innerHTML = '<i class="fa fa-arrow-down"></i> 查看更多';
+            button1.onclick = function (ev) {
+                morePosts(page + 1);
+            };
+            morePost.appendChild(button1);
+        }
+    }
+
+    showPostPage();
+</script>
+<script>
+    // 查看更多帖子
+    function morePosts(pageId) {
+        if (pageId > pages) {
+            page = pages;
+            showPostPage();
+            return;
+        }
+        $.ajax({
+            url: "/Post/view",
+            data: {
+                "page": pageId
+            },
+            type: "POST",
+            dataType: "json",
+            timeout: 3000,
+            success: function (data) {
+                if (data.length > 0) {
+                    var postHtml = '';
+                    for (var i in data) {
+                        // console.log(data[i]);
+                        postHtml += '<div class="forum-item">';
+                        postHtml += '<div class="row">';
+                        postHtml += '<div class="col-sm-10">';
+                        postHtml += '<div class="forum-icon">';
+                        postHtml += '<i class="fa ' + fa[i % 12] + '"></i>';
+                        postHtml += '</div>';
+                        if (data[i].quality) {
+                            postHtml += '<i class="fa fa-vine" style="color: red"></i>';
+                        }
+                        postHtml += '<a href="/Comment/goPostByPostId/' + data[i].postId + '">' + data[i].postTitle + '</a>';
+                        postHtml += '<div class="forum-sub-title">';
+                        postHtml += '<p>' + data[i].postContent.substring(0, 20) + '</p>';
+                        postHtml += '<small>' + data[i].renewDate + '</small>'
+                        postHtml += '</div>';
+                        // if (isAdmin) {
+                        //     postHtml += '<div class="btn-group">';
+                        //     if (data[i].top) {
+                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="unTopPost(' + data[i].postId + ')">';
+                        //         postHtml += '<i class="fa fa-hand-o-right"></i>取消置顶';
+                        //         postHtml += '</button>';
+                        //     } else {
+                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="topPost(' + data[i].postId + ')">';
+                        //         postHtml += '<i class="fa fa-hand-o-left"></i>置顶';
+                        //         postHtml += '</button>';
+                        //     }
+                        //     if (data[i].quality) {
+                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="unQualityPost(' + data[i].postId + ')">';
+                        //         postHtml += '<i class="fa fa-hand-o-down"></i>取消加精';
+                        //         postHtml += '</button>';
+                        //     } else {
+                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="qualityPost(' + data[i].postId + ')">';
+                        //         postHtml += '<i class="fa fa-hand-o-up"></i>加精';
+                        //         postHtml += '</button>';
+                        //     }
+                        //     postHtml += '</div>';
+                        // }
+                        postHtml += '</div>';
+                        postHtml += '<div class="col-sm-1 forum-info">';
+                        postHtml += '<span class="views-number">' + data[i].likes + '</span>';
+                        postHtml += '<div>';
+                        postHtml += '<small>点赞</small>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                        postHtml += '<div class="col-sm-1 forum-info">';
+                        postHtml += '<span class="views-number">' + data[i].collects + '</span>';
+                        postHtml += '<div>';
+                        postHtml += '<small>收藏</small>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                        postHtml += '</div>';
+                    }
+                    page = pageId;
+                    var posts = document.getElementById('posts');
+                    posts.innerHTML += postHtml;
+                    showPostPage();
+                }
+            },
+            error: function () {
+                toastr.error("系统异常", "操作失败");
+            }
+        })
+    }
+</script>
 </body>
 </html>
