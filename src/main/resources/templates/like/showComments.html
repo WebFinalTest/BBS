@@ -55,7 +55,7 @@
                                     <i th:case="10" class="fa fa-hand-scissors-o"></i>
                                     <i th:case="*" class="fa fa-hand-stop-o"></i>
                                 </div>
-                                <a th:href="@{/Comment/goCommentByCommentId/{commentId}(commentId=${comment.getCommentId()})}"
+                                <a th:href="@{/Comment/goFloorComment/{floorId}(floorId=${comment.getFloorId() == null ? comment.getCommentId() : comment.getFloorId()})}"
                                    th:text="${comment.getCommentContent()}"></a>
                             </div>
                         </div>
