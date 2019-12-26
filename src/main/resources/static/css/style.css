@@ -2724,7 +2724,6 @@ label.error {
 /* Toastr custom style */
 
 #toast-container > .toast {
-    background-image: none !important;
 }
 
 #toast-container > .toast:before {
@@ -4114,7 +4113,7 @@ table.table-mail tr td {
     margin: 0 0 7px;
     padding: 0;
     text-overflow: ellipsis;
-    float: left;
+    /*float: left;*/
 }
 
 .ibox-title .label {

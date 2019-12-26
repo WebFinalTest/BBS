@@ -110,7 +110,7 @@
             success: function (result) {
                 if (result.message === "success") {
                     toastr.success("创建帖子成功", "个人积分+20");
-                    // window.location.href = "/Post/view";
+                    window.location.href = "/Post/view";
                 } else
                     toastr.error("创建帖子失败", "请检查您的输入是否有误");
             },

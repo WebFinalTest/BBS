@@ -13,22 +13,25 @@ function loginin() {
         async:true,
         success:function (result) {
             if(result.message === "success"){
-                toastr.success("登陆成功!","正在跳转至主页");
-                window.location.href="/Index/index";
+                toastr.success("登陆成功!");
+                function wait(){
+                    window.location.href = "/Index/index";
+                }
+                setTimeout(wait, 600);
 
             }
             else
-                toastr.error("登陆失败！","请检查您的邮箱和密码是否正确");
+                toastr.error("登陆失败！请检查您的登录信息！","操作失败！");
         },
         error:function () {
-            toastr.error("系统繁忙！","请稍后再试");
+            toastr.error("系统繁忙！","操作失败");
         }
     });
 }
 
 function register(){
     if(!checkPasswordValue || !checkEmailValue || !checkUserNameValue){
-        alert("请检查您的注册信息！");
+        toastr.error("请检查您的注册信息", "操作失败");
     }else {
         $.ajax({
             url: "/Index/register/do",
@@ -43,15 +46,18 @@ function register(){
             async: true,
             success: function (result) {
                 if (result.message === "success") {
-                    toastr.success("注册成功!","正在跳转至登陆");
-                    window.location.href = "/Index/login";
+                    toastr.success("注册成功，正在跳转至登陆界面！","操作成功");
+                    function wait(){
+                        window.location.href = "/Index/login";
+                    }
+                    setTimeout(wait, 600);
                 }
                 else {
-                    toastr.error("注册失败！","请检查您信息是否正确");
+                    toastr.error("请检查您的注册信息","操作失败");
                 }
             },
             error: function () {
-                toastr.error("系统繁忙！","请稍后再试");
+                toastr.error("系统繁忙！","操作失败");
             }
         });
     }

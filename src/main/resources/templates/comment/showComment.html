@@ -28,6 +28,10 @@
   <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
 </head>
 <body class="gray-bg">
+<script th:inline="javascript">
+  var postId= [[${floorComment.getPostId()}]];
+  var floorCommentId = [[${floorComment.getCommentId()}]];
+</script>
 <div class="wrapper wrapper-content  animated fadeInRight">
   <div class="row">
     <div class="col-sm-12">
@@ -165,6 +169,9 @@
     var showPost = 0;
     var past = null;
 
+    function reload() {
+        window.location.reload();
+    }
     // 展示帖子评论框
     function showFooter(footerId) {
         if (past !== null && showPost % 2 === 1)
@@ -193,7 +200,8 @@
             success: function (result) {
                 if (result.message === "success") {
                     toastr.success("评论成功", "评论成功");
-                    window.location.reload();
+
+                        window.location.reload();
                 } else
                     toastr.error("评论失败", "评论失败");
             },
@@ -263,7 +271,10 @@
             success: function (result) {
                 if (result.message === "success") {
                     toastr.success("删除成功", "删除成功");
-                    setTimeout(reload, 500);
+                    if(commentId === floorCommentId)
+                        setTimeout(window.location.href="/Comment/goPostByPostId/"+postId, 500);
+                    else
+                        setTimeout(reload, 500);
                 } else
                     toastr.error("删除失败", "删除失败");
             },

@@ -164,7 +164,7 @@
               <i class="fa fa-adoptComment"></i>评论
             </button>
             <a th:href="'/Comment/goFloorComment/'+${adoptComment.getCommentId()}" class="btn btn-primary btn-xs">
-              <i class="fa fa-ellipsis-h"></i>查看回复
+              <i class="fa fa-ellipsis-v"></i>查看回复
             </a>
           </div>
         </div>
@@ -187,8 +187,7 @@
         <div th:if="${post.getAdoptCommentId()==null||post.getAdoptCommentId()!=comment.getCommentId()}"
              class="social-avatar">
           <div class="media-body">
-            <a href="#" th:text="${commentUserNames.get(comment.getUserId())}"></a>
-            <small th:text="${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
+            <small th:text="${commentUserNames.get(comment.getUserId())}+' 发表于'+${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
                    class="text-muted"></small>
           </div>
         </div>
@@ -216,7 +215,7 @@
               <i class="fa fa-comment"></i>评论
             </button>
             <a th:href="'/Comment/goFloorComment/'+${comment.getCommentId()}" class="btn btn-primary btn-xs">
-              <i class="fa fa-ellipsis-h"></i>查看回复
+              <i class="fa fa-ellipsis-v"></i>查看回复
             </a>
             <button class="btn btn-info btn-xs"
                     th:if="${post.isPostType() && post.getAdoptCommentId() == null && post.getUserId() == #session.getAttribute('user').getUserId()}"

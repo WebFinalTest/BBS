@@ -3,193 +3,193 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>查看个人信息</title>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+  <title>查看个人信息</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
 
-    <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/favicon.ico">
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css?v=3.3.6">
-    <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
-    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="/css/animate.css">
-    <link rel="stylesheet" href="/css/style.css?v=4.1.0">
-    <link rel="stylesheet" href="/css/custom/custom.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css?v=3.3.6">
+  <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
+  <link rel="stylesheet" href="/css/custom/custom.css">
 </head>
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content">
-    <div class="row animated fadeInRight">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>个人资料</h5>
-                    <div class="ibox-tools">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li>
-                                <a onclick="changeUserMessage1()">修改个人信息</a>
-                            </li>
-                            <li>
-                                <a onclick="changeUserMessage2()">修改密码</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="form-horizontal m-t" id="table1">
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                个人积分：
-                            </div>
-                            <div class="col-sm-9">
-                                <p th:text="${#session.getAttribute('user').getPoints()}"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                邮箱：
-                            </div>
-                            <div class="col-sm-9">
-                                <p th:text="${#session.getAttribute('user').getEmail()}"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                用户名：
-                            </div>
-                            <div class="col-sm-9">
-                                <p th:text="${#session.getAttribute('user').getUserName()}"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                QQ：
-                            </div>
-                            <div class="col-sm-9">
-                                <p th:text="${#session.getAttribute('user').getQq()}"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                手机号码：
-                            </div>
-                            <div class="col-sm-9">
-                                <p th:text="${#session.getAttribute('user').getPhone()}"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                工作地点：
-                            </div>
-                            <div class="col-sm-9">
-                                <p th:text="${#session.getAttribute('user').getWorkplace()}"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                居住地：
-                            </div>
-                            <div class="col-sm-9">
-                                <p th:text="${#session.getAttribute('user').getHabitation()}"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal m-t hidden" id="table2">
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                用户名：
-                            </div>
-                            <div class="col-sm-9">
-                                <input th:value="${#session.getAttribute('user').getUserName()}"
-                                       onblur="checkUsername()" type="text" id="userName"/>
-                                <sapn id="i_userName"></sapn>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                QQ：
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="text" id="qq" th:value="${#session.getAttribute('user').getQq()}"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                手机号码：
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="text" id="phone" th:value="${#session.getAttribute('user').getPhone()}"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                工作地点：
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="text" id="workplace"
-                                       th:value="${#session.getAttribute('user').getWorkplace()}"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                居住地：
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="email" id="habitation"
-                                       th:value="${#session.getAttribute('user').getHabitation()}"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-9 col-sm-offset-3">
-                                <button class="btn btn-sm btn-primary" onclick="submitUserInfo()">提交</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal m-t hidden" id="table3">
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                输入原密码：
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="text" id="password1"/>
-                                <sapn id="i_password1"></sapn>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                输入新密码：
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="password" id="password2"/>
-                                <sapn id="i_password2"></sapn>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 text-right text-bold">
-                                再次输入新密码：
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="password" id="password3" required()/>
-                                <sapn id="i_password3"></sapn>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-9 col-sm-offset-3">
-                                <button class="btn btn-sm btn-primary" onclick="submitNewPassword()">提交</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row animated fadeInRight">
+    <div class="col-sm-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <h5>个人资料</h5>
+          <div class="ibox-tools">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-wrench"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+              <li>
+                <a onclick="changeUserMessage1()">修改个人信息</a>
+              </li>
+              <li>
+                <a onclick="changeUserMessage2()">修改密码</a>
+              </li>
+            </ul>
+          </div>
         </div>
+        <div class="ibox-content">
+          <div class="form-horizontal m-t" id="table1">
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                个人积分：
+              </div>
+              <div class="col-sm-9">
+                <p th:text="${#session.getAttribute('user').getPoints()}"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                邮箱：
+              </div>
+              <div class="col-sm-9">
+                <p th:text="${#session.getAttribute('user').getEmail()}"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                用户名：
+              </div>
+              <div class="col-sm-9">
+                <p th:text="${#session.getAttribute('user').getUserName()}"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                QQ：
+              </div>
+              <div class="col-sm-9">
+                <p th:text="${#session.getAttribute('user').getQq()}"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                手机号码：
+              </div>
+              <div class="col-sm-9">
+                <p th:text="${#session.getAttribute('user').getPhone()}"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                工作地点：
+              </div>
+              <div class="col-sm-9">
+                <p th:text="${#session.getAttribute('user').getWorkplace()}"></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                居住地：
+              </div>
+              <div class="col-sm-9">
+                <p th:text="${#session.getAttribute('user').getHabitation()}"></p>
+              </div>
+            </div>
+          </div>
+          <div class="form-horizontal m-t hidden" id="table2">
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                用户名：
+              </div>
+              <div class="col-sm-9">
+                <input th:value="${#session.getAttribute('user').getUserName()}"
+                       onblur="checkUsername()" type="text" id="userName"/>
+                <sapn id="i_userName"></sapn>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                QQ：
+              </div>
+              <div class="col-sm-9">
+                <input type="text" id="qq" th:value="${#session.getAttribute('user').getQq()}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                手机号码：
+              </div>
+              <div class="col-sm-9">
+                <input type="text" id="phone" th:value="${#session.getAttribute('user').getPhone()}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                工作地点：
+              </div>
+              <div class="col-sm-9">
+                <input type="text" id="workplace"
+                       th:value="${#session.getAttribute('user').getWorkplace()}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                居住地：
+              </div>
+              <div class="col-sm-9">
+                <input type="email" id="habitation"
+                       th:value="${#session.getAttribute('user').getHabitation()}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <button class="btn btn-sm btn-primary" onclick="submitUserInfo()">提交</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-horizontal m-t hidden" id="table3">
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                输入原密码：
+              </div>
+              <div class="col-sm-9">
+                <input type="text" id="password1"/>
+                <sapn id="i_password1"></sapn>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                输入新密码：
+              </div>
+              <div class="col-sm-9">
+                <input type="password" id="password2"/>
+                <sapn id="i_password2"></sapn>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3 text-right text-bold">
+                再次输入新密码：
+              </div>
+              <div class="col-sm-9">
+                <input type="password" id="password3" required()/>
+                <sapn id="i_password3"></sapn>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                <button class="btn btn-sm btn-primary" onclick="submitNewPassword()">提交</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- 全局js -->
@@ -209,6 +209,7 @@
 <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/js/plugins/layer/layer.min.js"></script>
+<script src="/js/plugins/toastr/toastr.min.js"></script>
 <!--<script src="/js/plugins/peity/jquery.peity.min.js"></script>-->
 <!--<script src="/js/demo/peity-demo.js"></script>-->
 <script>
@@ -247,13 +248,13 @@
             async: true,
             success: function (result) {
                 if (result.message === "success") {
-                    alert("个人信息更新成功！");
-                    window.location.href = "/User/view";
+                    toastr.success("个人信息更新成功", "操作成功");
+                    top.location.href = "/Index/index";
                 } else
-                    alert("个人信息更新失败！");
+                    toastr.error("个人信息更新失败", "操作失败");
             },
             error: function () {
-                alert("个人信息更新失败！");
+                toastr.error("系统繁忙", "操作失败");
             }
         });
     }
@@ -286,73 +287,13 @@
                 },
                 error: function () {
                     span.css("color", "red");
-                    span.html("服务器出错！")
+                    span.html("系统繁忙")
                     checkUserNameValue = false;
                 }
             });
         }
     }
 
-    // function checkPassword1() {
-    //     var blank=$("input[id='password1']").val();
-    //     var span=$("#i_password1");
-    //     if(blank===""){
-    //         span.css("color","red");
-    //         span.html("密码不能为空！")
-    //     }
-    //     else{
-    //         $.ajax({
-    //             url:"/User/checkPassword",
-    //             data:{
-    //                 "password":$("input[id='password1']").val(),
-    //             },
-    //             type:"POST",
-    //             dataType:"json",
-    //             timeout:3000,
-    //             async:true,
-    //             success:function (result) {
-    //                 if(result.message === "isNotUsed") {
-    //                     checkUserNameValue = true;
-    //                     span.html("密码正确")
-    //                 }
-    //                 else{
-    //                     span.css("color","red");
-    //                     span.html("输入的原密码错误！")
-    //                     checkUserNameValue = false;
-    //                 }
-    //             },
-    //             error:function () {
-    //                 span.css("color","red");
-    //                 span.html("服务器出错！")
-    //                 checkUserNameValue = false;
-    //             }
-    //         });
-    //     }
-    // }
-    // function checkPassword2() {
-    //     var blank = document.getElementById('password2');
-    //     var span=document.getElementById('i_password2');
-    //     if(blank===""){
-    //         span.css("color","red");
-    //         span.html("密码不能为空！")
-    //     }
-    // }
-    // function checkPassword3() {
-    //     var password2=document.getElementById('password2');
-    //     var password3=document.getElementById('password3');
-    //     var span=document.getElementById('i_password3');
-    //     var span1=document.getElementById('i_password1');
-    //     if(password2!==password3){
-    //         span.css("color","red");
-    //         span.html("两次密码不一致！")
-    //         password3.value="";
-    //     }
-    //     if(span1.value !== "密码正确"){
-    //         span.css("color","red");
-    //         span.html("原密码错误")
-    //         password3.value="";
-    //     }
-    // }
     function submitNewPassword() {
         var password2 = document.getElementById('password2').value;
         var password3 = document.getElementById('password3').value;
@@ -368,42 +309,19 @@
                 async: true,
                 success: function (result) {
                     if (result.message === "success") {
-                        toastr.success("密码更新成功!", "修改成功");
+                        toastr.success("密码更新成功!", "操作成功");
                         window.location.href = "/User/view";
                     } else
-                        toastr.error("请检查您的密码是否输入正确", "修改失败!");
+                        toastr.error("请检查您的密码是否输入正确", "操作失败!");
                 },
                 error: function () {
-                    toastr.error("系统繁忙!", "修改失败");
+                    toastr.error("系统繁忙!", "操作失败");
                 }
             });
         } else {
-            alert("密码为空或两次密码不一致")
+            toastr.error("密码为空或两次密码不一致", "操作失败!");
         }
     }
-
-    // function submitNewPassword() {
-    //     $.ajax({
-    //         url: "/User/updateUserInfo/do",
-    //         data: {
-    //             "password": $("input[id='password3']").val(),
-    //         },
-    //         type: "POST",
-    //         dataType: "json",
-    //         async: true,
-    //         success: function (result) {
-    //             if(result.message === "success"){
-    //                 alert("个人信息更新成功！");
-    //                 window.location.href = "/User/view";
-    //             }
-    //             else
-    //                 alert("个人信息更新失败，密码错误！");
-    //         },
-    //         error: function () {
-    //             alert("个人信息更新失败，系统错误！");
-    //         }
-    //     });
-    // }
 </script>
 </body>
 

@@ -184,7 +184,7 @@ button.toast-close-button {
     left: 0;
     bottom: 0;
     height: 4px;
-    background-color: #000;
+    background-color: rgba(255,255,255);
     opacity: .4;
     -ms-filter: alpha(Opacity=40);
     filter: alpha(opacity=40)

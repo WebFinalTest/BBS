@@ -388,7 +388,7 @@
             success: function (result) {
                 if (result.message === "success") {
                     toastr.success("加精成功", "操作成功");
-                    window.location.reload();
+                    setTimeout(window.location.reload(), 500);
                 } else
                     toastr.error("加精失败", "操作失败");
             },
@@ -488,7 +488,10 @@
                         // console.log(data[i]);
                         topHtml += '<div class="forum-item">';
                         topHtml += '<div class="row">';
-                        topHtml += '<div class="col-sm-10">';
+                        if(data[i].post.postType)
+                            topHtml += '<div class="col-sm-9">';
+                        else
+                            topHtml += '<div class="col-sm-10">';
                         topHtml += '<div class="forum-icon">';
                         switch (i % 3) {
                             case 0:
@@ -533,6 +536,17 @@
                             topHtml += '</div>';
                         }
                         topHtml += '</div>';
+                        if(data[i].post.postType){
+                            topHtml+='<div class="col-sm-1 forum-info">';
+                            if(data[i].post.adoptCommentId===null){
+                                topHtml+='<span class="views-number">'+data[i].post.postPoints+'</span>';
+                                topHtml+='<div><small>积分</small></div>';
+                            }else{
+                                topHtml+='<span class="views-number"><i class="fa fa-check-square-o"></i></span>';
+                                topHtml+='<div><small>积分</small></div>';
+                            }
+                            topHtml+='</div>';
+                        }
                         topHtml += '<div class="col-sm-1 forum-info">';
                         topHtml += '<span class="views-number">' + data[i].post.likes + '</span>';
                         topHtml += '<div>';
@@ -582,7 +596,10 @@
                     for (var i in data) {
                         postHtml += '<div class="forum-item">';
                         postHtml += '<div class="row">';
-                        postHtml += '<div class="col-sm-10">';
+                        if(data[i].post.postType)
+                            postHtml += '<div class="col-sm-9">';
+                        else
+                            postHtml += '<div class="col-sm-10">';
                         postHtml += '<div class="forum-icon">';
                         postHtml += '<i class="fa ' + fa[i % 12] + '"></i>';
                         postHtml += '</div>';
@@ -617,6 +634,17 @@
                             postHtml += '</div>';
                         }
                         postHtml += '</div>';
+                        if(data[i].post.postType){
+                            postHtml+='<div class="col-sm-1 forum-info">';
+                            if(data[i].post.adoptCommentId===null){
+                                postHtml+='<span class="views-number">'+data[i].post.postPoints+'</span>';
+                                postHtml+='<div><small>积分</small></div>';
+                            }else{
+                                postHtml+='<span class="views-number"><i class="fa fa-check-square-o"></i></span>';
+                                postHtml+='<div><small>积分</small></div>';
+                            }
+                            postHtml+='</div>';
+                        }
                         postHtml += '<div class="col-sm-1 forum-info">';
                         postHtml += '<span class="views-number">' + data[i].post.likes + '</span>';
                         postHtml += '<div>';
