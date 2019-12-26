@@ -59,7 +59,7 @@
           <div id="tops">
             <div th:each="topPost,indexInc:${topPosts}" class="forum-item">
               <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-10" th:if="${!topPost.isPostType()}">
                   <div th:switch="${indexInc.index % 3} " class="forum-icon">
                     <i th:case="0" class="fa fa-cubes"></i>
                     <i th:case="1" class="fa fa-bed"></i>
@@ -69,9 +69,9 @@
                   <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${topPost.getPostId()})}"
                      th:text="${topPost.getPostTitle()}"></a>
                   <div class="forum-sub-title">
-                    <p th:text="${#strings.abbreviate(topPost.getPostContent(),20)}"></p>
-                    <p th:text="${userNames.get(topPost.getUserId())}"></p>
-                    <small th:text="${#dates.format(topPost.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
+                    <p th:text="${#strings.abbreviate(topPost.getPostContent(), 40)}"></p>
+                    <small
+                        th:text="'发表人：'+${userNames.get(topPost.getUserId())}+' 最后更新时间：'+${#dates.format(topPost.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
                   </div>
                   <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
                     <button th:if="${!topPost.isTop()}" class="btn btn-white btn-xs"
@@ -90,6 +90,52 @@
                             th:onclick="'javascript:unQualityPost('+${topPost.getPostId()}+')'">
                       <i class="fa fa-hand-o-down"></i>取消加精
                     </button>
+                  </div>
+                </div>
+                <div class="col-sm-9" th:if="${topPost.isPostType()}">
+                  <div th:switch="${indexInc.index % 3} " class="forum-icon">
+                    <i th:case="0" class="fa fa-cubes"></i>
+                    <i th:case="1" class="fa fa-bed"></i>
+                    <i th:case="*" class="fa fa-shield"></i>
+                  </div>
+                  <i class="fa fa-vine" style="color: red;" th:if="${topPost.isQuality()}"></i>
+                  <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${topPost.getPostId()})}"
+                     th:text="${topPost.getPostTitle()}"></a>
+                  <div class="forum-sub-title">
+                    <p th:text="${#strings.abbreviate(topPost.getPostContent(), 40)}"></p>
+                    <small
+                        th:text="'发表人：'+${userNames.get(topPost.getUserId())}+' 最后更新时间：'+${#dates.format(topPost.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
+                  </div>
+                  <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
+                    <button th:if="${!topPost.isTop()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:topPost('+${topPost.getPostId()}+')'">
+                      <i class="fa fa-hand-o-left"></i>置顶
+                    </button>
+                    <button th:if="${!topPost.isQuality()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:qualityPost('+${topPost.getPostId()}+')'">
+                      <i class="fa fa-hand-o-up"></i>加精
+                    </button>
+                    <button th:if="${topPost.isTop()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:unTopPost('+${topPost.getPostId()}+')'">
+                      <i class="fa fa-hand-o-right"></i>取消置顶
+                    </button>
+                    <button th:if="${topPost.isQuality()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:unQualityPost('+${topPost.getPostId()}+')'">
+                      <i class="fa fa-hand-o-down"></i>取消加精
+                    </button>
+                  </div>
+                </div>
+                <div class="col-sm-1 forum-info" th:if="${topPost.isPostType()}">
+                  <span class="views-number" th:if="${topPost.adoptCommentId==null}"
+                        th:text="${topPost.getPostPoints()}"></span>
+                  <div th:if="${topPost.adoptCommentId==null}">
+                    <small>积分</small>
+                  </div>
+                  <span class="views-number" th:if="${topPost.adoptCommentId!=null}">
+                    <i class="fa fa-check-square-o"></i>
+                  </span>
+                  <div th:if="${topPost.adoptCommentId!=null}">
+                    <small>已采纳</small>
                   </div>
                 </div>
                 <div class="col-sm-1 forum-info">
@@ -118,7 +164,7 @@
           <div id="upPosts">
             <div th:each="post,indexInc:${posts}" class="forum-item">
               <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-10" th:if="${!post.isPostType()}">
                   <div th:switch="${indexInc.index%12}" class="forum-icon">
                     <i th:case="0" class="fa fa-hand-spock-o"></i>
                     <i th:case="1" class="fa fa-hand-lizard-o"></i>
@@ -137,9 +183,9 @@
                   <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}"
                      th:text="${post.getPostTitle()}"></a>
                   <div class="forum-sub-title">
-                    <p th:text="${#strings.abbreviate(post.getPostContent(),20)}"></p>
-                    <p th:text="${userNames.get(post.getUserId())}"></p>
-                    <small th:text="${#dates.format(post.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
+                    <p th:text="${#strings.abbreviate(post.getPostContent(),40)}"></p>
+                    <small
+                        th:text="'发表人：'+${userNames.get(post.getUserId())}+' 最后更新时间：'+${#dates.format(post.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
                   </div>
                   <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
                     <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
@@ -158,6 +204,62 @@
                             th:onclick="'javascript:unQualityPost('+${post.getPostId()}+')'">
                       <i class="fa fa-hand-o-down"></i>取消加精
                     </button>
+                  </div>
+                </div>
+                <div class="col-sm-9" th:if="${post.isPostType()}">
+                  <div th:switch="${indexInc.index%12}" class="forum-icon">
+                    <i th:case="0" class="fa fa-hand-spock-o"></i>
+                    <i th:case="1" class="fa fa-hand-lizard-o"></i>
+                    <i th:case="2" class="fa fa-hand-o-down"></i>
+                    <i th:case="3" class="fa fa-hand-o-left"></i>
+                    <i th:case="4" class="fa fa-hand-o-right"></i>
+                    <i th:case="5" class="fa fa-hand-o-up"></i>
+                    <i th:case="6" class="fa fa-hand-paper-o"></i>
+                    <i th:case="7" class="fa fa-hand-peace-o"></i>
+                    <i th:case="8" class="fa fa-hand-pointer-o"></i>
+                    <i th:case="9" class="fa fa-hand-rock-o"></i>
+                    <i th:case="10" class="fa fa-hand-scissors-o"></i>
+                    <i th:case="*" class="fa fa-hand-stop-o"></i>
+                  </div>
+                  <i class="fa fa-vine" style="color: red;" th:if="${post.isQuality()}"></i>
+                  <a th:href="@{/Comment/goPostByPostId/{postId}(postId=${post.getPostId()})}"
+                     th:text="${post.getPostTitle()}"></a>
+                  <div class="forum-sub-title">
+                    <p th:text="${#strings.abbreviate(post.getPostContent(),40)}"></p>
+                    <small
+                        th:text="'发表人：'+${userNames.get(post.getUserId())}+' 最后更新时间：'+${#dates.format(post.getRenewDate(),'yyyy-MM-dd HH:mm')}"></small>
+                  </div>
+                  <div class="btn-group" th:if="${#session.getAttribute('user').isUserType()}">
+                    <button th:if="${!post.isTop()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:topPost('+${post.getPostId()}+')'">
+                      <i class="fa fa-hand-o-left"></i>置顶
+                    </button>
+                    <button th:if="${!post.isQuality()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:qualityPost('+${post.getPostId()}+')'">
+                      <i class="fa fa-hand-o-up"></i>加精
+                    </button>
+                    <button th:if="${post.isTop()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:unTopPost('+${post.getPostId()}+')'">
+                      <i class="fa fa-hand-o-right"></i>取消置顶
+                    </button>
+                    <button th:if="${post.isQuality()}" class="btn btn-white btn-xs"
+                            th:onclick="'javascript:unQualityPost('+${post.getPostId()}+')'">
+                      <i class="fa fa-hand-o-down"></i>取消加精
+                    </button>
+                  </div>
+                </div>
+                <div class="col-sm-1 forum-info" th:if="${post.isPostType()}">
+                  <span class="views-number" th:if="${post.adoptCommentId==null}"
+                        th:text="${post.getPostPoints()}">
+                  </span>
+                  <div th:if="${post.adoptCommentId==null}">
+                    <small>积分</small>
+                  </div>
+                  <span class="views-number" th:if="${post.adoptCommentId!=null}">
+                   <i class="fa fa-check-square-o"></i>
+                 </span>
+                  <div th:if="${post.adoptCommentId!=null}">
+                    <small>已采纳</small>
                   </div>
                 </div>
                 <div class="col-sm-1 forum-info">
@@ -405,9 +507,8 @@
                         }
                         topHtml += '<a href="/Comment/goPostByPostId/' + data[i].post.postId + '">' + data[i].post.postTitle + '</a>';
                         topHtml += '<div class="forum-sub-title">';
-                        topHtml += '<p>' + data[i].post.postContent.substring(0, 20) + '</p>';
-                        topHtml += '<p>' + data[i].userName + '</p>';
-                        topHtml += '<small>' + data[i].post.renewDate + '</small>';
+                        topHtml += '<p>' + data[i].post.postContent.substring(0, 40) + '</p>';
+                        topHtml += '<small>发表人：' + data[i].userName + ' 最后更新时间：' + data[i].post.renewDate + '</small>';
                         topHtml += '</div>';
                         if (isAdmin) {
                             topHtml += '<div class="btn-group">';
@@ -490,9 +591,8 @@
                         }
                         postHtml += '<a href="/Comment/goPostByPostId/' + data[i].post.postId + '">' + data[i].post.postTitle + '</a>';
                         postHtml += '<div class="forum-sub-title">';
-                        postHtml += '<p>' + data[i].post.postContent.substring(0, 20) + '</p>';
-                        postHtml += '<p>' + data[i].userName + '</p>';
-                        postHtml += '<small>' + data[i].post.renewDate + '</small>'
+                        postHtml += '<p>' + data[i].post.postContent.substring(0, 40) + '</p>';
+                        postHtml += '<small>发表人：' + data[i].userName + ' 最后更新时间：' + data[i].post.renewDate + '</small>';
                         postHtml += '</div>';
                         if (isAdmin) {
                             postHtml += '<div class="btn-group">';

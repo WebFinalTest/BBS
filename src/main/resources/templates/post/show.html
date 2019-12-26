@@ -52,8 +52,25 @@
           </div>
         </div>
         <div class="social-body">
-          <div class="col-sm-10">
+          <div class="col-sm-10" th:if="${!post.isPostType()}">
             <p th:text="${post.getPostContent()}"></p>
+          </div>
+          <div class="col-sm-9" th:if="${post.isPostType()}">
+            <p th:text="${post.getPostContent()}"></p>
+          </div>
+          <div class="col-sm-1 forum-info" th:if="${post.isPostType()}">
+            <span class="views-number" th:if="${post.adoptCommentId==null}"
+                  th:text="${post.getPostPoints()}">
+            </span>
+            <div th:if="${post.adoptCommentId==null}">
+              <small>积分</small>
+            </div>
+            <span class="views-number" th:if="${post.adoptCommentId!=null}">
+                   <i class="fa fa-check-square-o"></i>
+                 </span>
+            <div th:if="${post.adoptCommentId!=null}">
+              <small>已采纳</small>
+            </div>
           </div>
           <div class="col-sm-1 forum-info">
             <span class="views-number" th:text="${post.getLikes()}"></span>
@@ -169,7 +186,7 @@
               </div>
               <div class="col-sm-1">
                 <button class="btn btn-primary"
-                        th:onclick="'javascript:commentComment('+${adoptComment.getCommentId()}+','+'Adopt'+')'">评论
+                  th:onclick="'javascript:commentComment('+${adoptComment.getCommentId()}+',\'Adopt\')'">评论
                 </button>
               </div>
             </div>
@@ -177,14 +194,16 @@
         </div>
       </div>
       <div th:each="comment,indexInc:${comments}" class="social-feed-box">
-        <div class="social-avatar">
+        <div th:if="${post.getAdoptCommentId()==null||post.getAdoptCommentId()!=comment.getCommentId()}"
+             class="social-avatar">
           <div class="media-body">
             <a href="#" th:text="${commentUserNames.get(comment.getUserId())}"></a>
             <small th:text="${#dates.format(comment.getCreateDate(),'yyyy-MM-dd HH:mm')}"
                    class="text-muted"></small>
           </div>
         </div>
-        <div class="social-body">
+        <div th:if="${post.getAdoptCommentId()==null||post.getAdoptCommentId()!=comment.getCommentId()}"
+             class="social-body">
           <div class="col-sm-11">
             <p th:text="${comment.getCommentContent()}"></p>
           </div>
@@ -214,13 +233,16 @@
                     th:onclick="'javascript:adoptComment('+${comment.getCommentId()}+','+${post.getPostId()}+')'">
               <i class="fa fa-check-square-o"></i>采纳评论
             </button>
-            <button th:if="${#session.getAttribute('user').isUserType() || #session.getAttribute('user').getUserId() == post.getUserId()}" class="btn btn-danger btn-xs"
-                    th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
+            <button
+                th:if="${#session.getAttribute('user').isUserType() || #session.getAttribute('user').getUserId() == post.getUserId()}"
+                class="btn btn-danger btn-xs"
+                th:onclick="'javascript:deleteComment('+${comment.getCommentId()}+')'">
               <i class="fa fa-trash"></i>删除
             </button>
           </div>
         </div>
-        <div class="social-footer hidden" th:id="|showFooter${indexInc.index}|">
+        <div th:if="${post.getAdoptCommentId()==null||post.getAdoptCommentId()!=comment.getCommentId()}"
+             class="social-footer hidden" th:id="|showFooter${indexInc.index}|">
           <div class="social-comment">
             <div class="media-body">
               <div class="col-sm-12">
