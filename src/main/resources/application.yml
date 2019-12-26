@@ -14,9 +14,9 @@ spring:
     time-zone: Asia/Shanghai
 #配置数据源
   datasource:
-    url: jdbc:mysql://localhost:3306/bbsforum?&useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://139.9.131.64:3306/bbsforum?&useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: "000413"
+    password: "yzh123YZH&"
     driver-class-name: com.mysql.cj.jdbc.Driver
 #配置mybatis
 mybatis:

@@ -17,18 +17,12 @@
 
   <link rel="shortcut icon" href="/img/favicon.ico">
 
-  <link rel="stylesheet" href="/BBs/static/css/bootstrap.min.css?v=3.3.6">
-  <link rel="stylesheet" href="/BBs/static/css/font-awesome.min.css?v=4.7.0">
-  <link rel="stylesheet" href="/BBs/static/css/plugins/toastr/toastr.min.css">
-  <link rel="stylesheet" href="/BBs/static/css/animate.css">
-  <link rel="stylesheet" href="/BBs/static/css/style.css?v=4.1.0">
-  <link rel="stylesheet" href="/BBs/static/css/custom/custom.css">
-
   <link rel="stylesheet" href="/css/bootstrap.min.css?v=3.3.6">
   <link rel="stylesheet" href="/css/font-awesome.min.css?v=4.7.0">
   <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
   <link rel="stylesheet" href="/css/animate.css">
   <link rel="stylesheet" href="/css/style.css?v=4.1.0">
+  <link rel="stylesheet" href="/css/custom/custom.css">
 </head>
 <body class="gray-bg">
 <script th:inline="javascript">
@@ -162,28 +156,6 @@
                         postHtml += '<p>' + data[i].postContent.substring(0, 20) + '</p>';
                         postHtml += '<small>' + data[i].renewDate + '</small>'
                         postHtml += '</div>';
-                        // if (isAdmin) {
-                        //     postHtml += '<div class="btn-group">';
-                        //     if (data[i].top) {
-                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="unTopPost(' + data[i].postId + ')">';
-                        //         postHtml += '<i class="fa fa-hand-o-right"></i>取消置顶';
-                        //         postHtml += '</button>';
-                        //     } else {
-                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="topPost(' + data[i].postId + ')">';
-                        //         postHtml += '<i class="fa fa-hand-o-left"></i>置顶';
-                        //         postHtml += '</button>';
-                        //     }
-                        //     if (data[i].quality) {
-                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="unQualityPost(' + data[i].postId + ')">';
-                        //         postHtml += '<i class="fa fa-hand-o-down"></i>取消加精';
-                        //         postHtml += '</button>';
-                        //     } else {
-                        //         postHtml += '<button class="btn btn-white btn-xs" onclick="qualityPost(' + data[i].postId + ')">';
-                        //         postHtml += '<i class="fa fa-hand-o-up"></i>加精';
-                        //         postHtml += '</button>';
-                        //     }
-                        //     postHtml += '</div>';
-                        // }
                         postHtml += '</div>';
                         postHtml += '<div class="col-sm-1 forum-info">';
                         postHtml += '<span class="views-number">' + data[i].likes + '</span>';

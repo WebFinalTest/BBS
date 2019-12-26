@@ -94,6 +94,7 @@ public class IndexHandler {
             else
                 result.put("message","fail");
         } catch (Exception e) {
+            e.printStackTrace();
             result.put("message","error");
         }
         return result;
